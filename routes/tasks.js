@@ -1,8 +1,8 @@
-var express = require("express");
-var router = express.Router();
-var { io } = require("../io");
+const express = require("express");
+const router = express.Router();
+const { io } = require("../io");
 
-router.post("/", function(req, res, next) {
+router.post("/", (req, res) => {
   const task = req.body;
   io.sockets.emit("newTask", task);
   res.send(task);

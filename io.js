@@ -1,4 +1,4 @@
-var io = require("socket.io").listen(4000);
+const io = require("socket.io").listen(4000);
 
 socketCounter = 0;
 
