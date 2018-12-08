@@ -6,10 +6,30 @@
          <!-- START: PAGE CONTENT -->
          <div class="padd-box clear-mrg">
             <section class="section brd-btm">
-               <div class="row">
-                  <div class="col-sm-12 clear-mrg text-box">
-                     <h2 class="title-lg text-upper">General Information</h2>
-                     <canvas id="myChart" width="400" height="400"></canvas>
+               <div class="row brd-btm"  style="padding-bottom: 15px;margin-bottom: 15px; text-align: center;">
+                  <div class="col-sm-5 clear-mrg text-box">
+                     <h4 class="title-lg text-upper">Successful/Failed calls</h4>
+                     <canvas id="callSuccessRateChart" width="100" height="100"></canvas>
+                  </div>
+               </div>
+               <div class="row brd-btm"  style="margin-bottom: 15px;">
+                  <div class="col-sm-6 clear-mrg text-box">
+                     <h4 class="title-lg text-upper">Incoming Packet Lose</h4>
+                     <canvas id="incomingPacketLoseChart" width="100" height="100"></canvas>
+                  </div>
+                  <div class="col-sm-6 clear-mrg text-box">
+                     <h4 class="title-lg text-upper">Outgoing Packet Lose</h4>
+                     <canvas id="outgoingPacketLoseChart" width="100" height="100"></canvas>
+                  </div>
+               </div>
+               <div class="row"  style="margin-bottom: 15px;">
+                  <div class="col-sm-6 clear-mrg text-box">
+                     <h4 class="title-lg text-upper">Incoming Max Jitter</h4>
+                     <canvas id="incomingJitterChart" width="100" height="100"></canvas>
+                  </div>
+                  <div class="col-sm-6 clear-mrg text-box">
+                     <h4 class="title-lg text-upper">Outgoing Max Jitter</h4>
+                     <canvas id="outgoingJitterChart" width="100" height="100"></canvas>
                   </div>
                </div>
             </section>
@@ -89,8 +109,8 @@
 <!-- .ace-wrapper -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
 <script>
-	var dataStr = "<%=results_str%>"
-	var data = JSON.parse(dataStr.replace(new RegExp("&#34;", "g"), '"'));
+   var dataStr = "<%=results_str%>"
+   var data = JSON.parse(dataStr.replace(new RegExp("&#34;", "g"), '"'));
 </script>
 <script src="/javascripts/myCharts.js"></script>
 </body>
