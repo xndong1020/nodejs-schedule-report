@@ -158,12 +158,12 @@
         </section><!-- .section -->
         <% for(var i=0; i< results.length; i++) {%>
         <section class="section brd-btm">
-          <h2 class="title-thin text-muted">Call Status Summary for call Id <%= results[i].callId %></h2>
+          <h2 class="title-thin text-muted">Call Status Report Id: <%= results[i].reportId %></h2>
           <div class="row">
             <div class="col-sm-6 clear-mrg" style="padding-bottom: 60px;">
-                  <div>Report Id: <%= results[i].reportId %>&nbsp;&nbsp;&nbsp;&nbsp;<a href="/reports/<%= results[i].reportId %>">Details</a></div>
                   <div>Date: <%= results[i].date %></div>
                   <div>Call Status: <%= results[i].status %></div>
+                  <div>Click >>> <a href="/reports/<%= results[i].reportId %>">Details</a></div>
             </div><!-- .col-sm-6 -->
             <div class="col-sm-6 clear-mrg">
                 <div class="award-box">
