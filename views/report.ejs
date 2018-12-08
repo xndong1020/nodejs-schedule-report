@@ -88,6 +88,10 @@
 </div>
 <!-- .ace-wrapper -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+<script>
+	var dataStr = "<%=results_str%>"
+	var data = JSON.parse(dataStr.replace(new RegExp("&#34;", "g"), '"'));
+</script>
 <script src="/javascripts/myCharts.js"></script>
 </body>
 </html>

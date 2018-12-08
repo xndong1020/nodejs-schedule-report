@@ -10,7 +10,7 @@ const {
 router.get("/:reportId", async (req, res) => {
   const id = req.params.reportId;
   const result = await readCallHistoryGetResultByID(id);
-  res.render("report", { title: `Report for ${id}`, results: result.data });
+  res.render("report", { title: `Report for ${id}`, results: result.data, results_str: JSON.stringify(result.data)  });
 });
 
 router.get("/", async (req, res) => {
