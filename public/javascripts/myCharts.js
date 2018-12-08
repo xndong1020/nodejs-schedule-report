@@ -3,15 +3,28 @@
   var jitterIncomingArray = data.map(item =>
     parseFloat(item.VoiceIncomingMaxJitter)
   );
+  var jitterIncomingColorArray = jitterIncomingArray.map(item =>
+    randomColorGenerator(0.2)
+  );
+  var jitterIncomingBorderColorArray = getBorderColor(jitterIncomingColorArray);
+
   var jitterOutgoingArray = data.map(item =>
     parseFloat(item.VoiceOutgoingMaxJitter)
   );
+
+  var jitterOutgoingColorArray = jitterOutgoingArray.map(item =>
+    randomColorGenerator(0.2)
+  );
+
+  var jitterOutgoingBorderColorArray = getBorderColor(jitterOutgoingColorArray);
+
   var incomingPacketLosePercentArray = data.map(item =>
     parseFloat(item.VoiceIncomingPacketLosePercent)
   );
   var outgoingPacketLosePercentArray = data.map(item =>
     parseFloat(item.VoiceOutgoingPacketLosePercent)
   );
+
   var successfulCallArray = data.filter(item => item.status === "OK");
   var callSuccesfulRateArray = [
     successfulCallArray.length,
@@ -46,15 +59,15 @@
     .getElementById("incomingPacketLoseChart")
     .getContext("2d");
   new Chart(ctx1, {
-    type: "line",
+    type: "bar",
     data: {
       labels: callIdLabels,
       datasets: [
         {
           label: "Percentage",
           data: incomingPacketLosePercentArray,
-          backgroundColor: "rgba(54, 162, 235, 0.2)",
-          borderColor: "rgba(54, 162, 235, 1)",
+          backgroundColor: jitterIncomingColorArray,
+          borderColor: jitterIncomingBorderColorArray,
           borderWidth: 1
         }
       ]
@@ -135,15 +148,15 @@
   // incomingJitterChart
   var ctx4 = document.getElementById("outgoingJitterChart").getContext("2d");
   new Chart(ctx4, {
-    type: "line",
+    type: "bar",
     data: {
       labels: callIdLabels,
       datasets: [
         {
           label: "Percentage",
           data: jitterOutgoingArray,
-          backgroundColor: "rgba(255, 159, 64, 0.2)",
-          borderColor: "rgba(255, 159, 64, 1)",
+          backgroundColor: jitterOutgoingColorArray,
+          borderColor: jitterOutgoingBorderColorArray,
           borderWidth: 1
         }
       ]
@@ -160,4 +173,25 @@
       }
     }
   });
+
+  // utility methods
+  // generate random color
+  function randomColorGenerator(alpha) {
+    return (
+      "rgb(" +
+      Math.floor(Math.random() * 255).toString() +
+      "," +
+      Math.floor(Math.random() * 255).toString() +
+      "," +
+      Math.floor(Math.random() * 255).toString() +
+      "," +
+      alpha +
+      ")"
+    );
+  }
+
+  // generate border color based on colorArray provided
+  function getBorderColor(colorArray) {
+    return colorArray.map(item => item.replace(new RegExp("0.2", "g"), "1"));
+  }
 })(data);
