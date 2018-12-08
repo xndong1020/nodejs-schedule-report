@@ -19,7 +19,19 @@ const readCallHistoryGetResultByID = id => {
   });
 };
 
+const getCallHistoryReportList = async () => {
+  return new Promise((resolve, reject) => {
+    CallHistoryGetResultReport.find({}, (err, data) => {
+      if (err) {
+        return reject(err);
+      }
+      return resolve(data);
+    });
+  });
+};
+
 module.exports = {
   saveCallHistoryGetResult,
-  readCallHistoryGetResultByID
+  readCallHistoryGetResultByID,
+  getCallHistoryReportList
 };

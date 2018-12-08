@@ -10,6 +10,10 @@ io.sockets.on("connection", socket => {
     socketCounter--;
     io.sockets.emit("client connect", socketCounter);
   });
+
+  socket.on("taskComplete", data => {
+    console.log("taskComplete", data);
+  });
 });
 
 module.exports = {
