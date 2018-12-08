@@ -10,9 +10,6 @@ const {
 router.get("/:reportId", async (req, res) => {
   const id = req.params.reportId;
   const result = await readCallHistoryGetResultByID(id);
-
-  // send email to users
-  // await mailer.sendMail("isdance2004@hotmail.com", result.data);
   res.render("report", { title: `Report for ${id}`, results: result.data });
 });
 
