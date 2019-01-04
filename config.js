@@ -7,7 +7,7 @@ exports.config = {
     password: "Cc51315704",
     call_wait_time: 30000,
     repeat_call: 3,
-    email_username: "isdance2004.yg@gmail.com",
-    email_password: "Cc51315704"
+    email_username: "******",
+    email_password: "******"
   };
   
