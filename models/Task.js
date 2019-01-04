@@ -6,6 +6,7 @@ const TaskSchema = new mongoose.Schema({
     start_date: Date,
     end_date: Date,
     task_type: String,
+    recipient: String,
     color: String
   });
 
