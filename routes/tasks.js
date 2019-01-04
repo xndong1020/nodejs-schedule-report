@@ -40,8 +40,8 @@ router.post("/data", (req, res) => {
   //get operation type
   const mode = data["!nativeeditor_status"];
   //get id of record
-  const sid = data.id;
-  const tid = sid;
+  let sid = data.id;
+  let tid = sid;
 
   //remove properties which we do not want to save in DB
   delete data.id;
