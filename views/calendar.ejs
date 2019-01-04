@@ -1,0 +1,68 @@
+<!doctype html>
+<head>
+    <meta content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="codebase/dhtmlxscheduler.css">
+    <style type="text/css" media="screen">
+        html, body{
+            margin:0px;
+            padding:0px;
+            height:100%;
+            overflow:hidden;
+        }   
+    </style>
+</head>
+
+
+<script type="text/javascript" charset="utf-8">
+    function init() {
+        scheduler.init('scheduler_here',Date.now(),"month"); // display the initial calendar
+        scheduler.templates.xml_date = function(value){ return new Date(value); };  // defines how to parse dates from the incoming data
+        scheduler.load("/tasks/data", "json");
+
+        scheduler.config.xml_date="%Y-%m-%d %H:%i";
+
+        scheduler.form_blocks["task_type_editor"]={
+        render:function(sns){
+            return "<div class='dhx_cal_ltext' style='height:60px;'><select><option value='call_test'>Call Test</option><option value='onhold_test'>On Hold Test</option></select></div>";
+        },
+        set_value:function(node,value,ev){
+            node.childNodes[0].value=value||"";
+        },
+        get_value:function(node,ev){
+            return node.childNodes[0].value;
+        },
+        focus:function(node){
+            var a=node.childNodes[0]; a.select(); a.focus(); 
+        }
+    }
+
+        scheduler.config.lightbox.sections = [
+            { name:"description", height:50, map_to:"text", type:"textarea", focus:true },
+            { name:"Task type", height:43, map_to:"task_type", type:"task_type_editor"},
+            { name:"time", height:72, type:"time", map_to:"auto"}
+        ];
+
+        var dp = new dataProcessor("/tasks/data");
+        dp.init(scheduler);
+        dp.setTransactionMode("POST", false);
+    }
+</script>
+
+<body onload="init();">
+    <div id="scheduler_here" class="dhx_cal_container" style='width:100%; height:100%;'>
+        <div class="dhx_cal_navline">
+            <div class="dhx_cal_prev_button">&nbsp;</div>
+            <div class="dhx_cal_next_button">&nbsp;</div>
+            <div class="dhx_cal_today_button"></div>
+            <div class="dhx_cal_date"></div>
+            <div class="dhx_cal_tab" name="day_tab"></div>
+            <div class="dhx_cal_tab" name="week_tab"></div>
+            <div class="dhx_cal_tab" name="month_tab"></div>
+        </div>
+        <div class="dhx_cal_header">
+        </div>
+        <div class="dhx_cal_data">
+        </div>
+    </div>
+    <script src="codebase/dhtmlxscheduler.js" ></script>
+</body>
