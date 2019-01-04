@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const { Task } = require("../models/Task");
+const { randomHexGenerator } = require("../utils/color.util");
 const { io } = require("../io");
-
 
 router.get("/", async (req, res) => {
   res.render("calendar");
@@ -14,8 +14,8 @@ router.get("/", async (req, res) => {
 //   res.status(200).send(newTask);
 // });
 
-router.get('/data', async (req, res) => {
-  const tasks = await Task.find({},{ __v:0 });
+router.get("/data", async (req, res) => {
+  const tasks = await Task.find({}, { __v: 0 });
   const results = tasks.map(task => {
     return {
       id: task._id,
@@ -24,48 +24,45 @@ router.get('/data', async (req, res) => {
       text: task.text,
       start_date: task.start_date,
       end_date: task.end_date,
-      color: task.color || "" 
-    }
+      color: task.color || ""
+    };
   });
   res.send(results);
 });
 
-router.post('/data', function(req, res){
-  var data = req.body;
+router.post("/data", (req, res) => {
+  const body = req.body;
+  const data = body.color
+    ? { ...body }
+    : { ...body, color: randomHexGenerator() };
+  console.log(data);
+
   //get operation type
-  var mode = data["!nativeeditor_status"];
+  const mode = data["!nativeeditor_status"];
   //get id of record
-  var sid = data.id;
-  var tid = sid;
+  const sid = data.id;
+  const tid = sid;
 
   //remove properties which we do not want to save in DB
   delete data.id;
   delete data["!nativeeditor_status"];
 
-
   //output confirmation response
-   callback_response = (err, result) => {
-      if (err)
-          mode = "error";
-      else if (mode == "inserted")
-          tid = data._id;
+  callback_response = (err, result) => {
+    if (err) mode = "error";
+    else if (mode == "inserted") tid = data._id;
 
-      const newTask = {action: mode, sid: sid, tid: tid};
-      io.sockets.emit("newTask", newTask);
-      res.setHeader("Content-Type","application/json");
-      res.send(newTask);
-
-  }
+    const newTask = { action: mode, sid: sid, tid: tid };
+    io.sockets.emit("newTask", newTask);
+    res.setHeader("Content-Type", "application/json");
+    res.send(newTask);
+  };
 
   //run db operation
-  if (mode == "updated")
-      Task.updateOne({_id: sid}, data, callback_response);
-  else if (mode == "inserted")
-      Task.create(data, callback_response);
-  else if (mode == "deleted")
-      Task.deleteOne( {_id: sid}, callback_response);
-  else
-      res.send("Not supported operation");
+  if (mode == "updated") Task.updateOne({ _id: sid }, data, callback_response);
+  else if (mode == "inserted") Task.create(data, callback_response);
+  else if (mode == "deleted") Task.deleteOne({ _id: sid }, callback_response);
+  else res.send("Not supported operation");
 });
 
 module.exports = router;
