@@ -1,5 +1,5 @@
-const Email = require("email-templates");
-const { config } = require("../config");
+const Email = require('email-templates')
+const { config } = require('../config')
 
 const sendMail = async (to, data) => {
   const email = new Email({
@@ -8,7 +8,7 @@ const sendMail = async (to, data) => {
     },
     send: true,
     transport: {
-      service: "Gmail",
+      service: 'Gmail',
       auth: {
         user: config.email_username,
         pass: config.email_password
@@ -16,21 +16,21 @@ const sendMail = async (to, data) => {
     },
     views: {
       options: {
-        extension: "ejs"
+        extension: 'ejs'
       }
     }
-  });
+  })
 
   await email.send({
-    template: "reports",
+    template: 'reports',
     message: {
       to
     },
     locals: {
-      name: "Webex User",
+      name: 'Webex User',
       results: data
     }
-  });
-};
+  })
+}
 
-exports.sendMail = sendMail;
+exports.sendMail = sendMail
