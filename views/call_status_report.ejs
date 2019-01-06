@@ -40,7 +40,7 @@
                <div class="row">
                   <div class="col-sm-6 clear-mrg" style="padding-bottom: 60px;">
                      <div>Call status: <%= results[i].status %></div>
-                     <div>Call Duration: <%= results[i].Duration %></div>
+                     <div>Call Duration: <%= results[i].Duration %> second(s)</div>
                      <div>Call History Id: <%= results[i].CallHistoryId %></div>
                      <div>Disconnect Cause: <%= results[i].DisconnectCause %></div>
                      <div>Disconnect Cause Origin: <%= results[i].DisconnectCauseOrigin %></div>
@@ -113,6 +113,6 @@
    var dataStr = "<%=results_str%>"
    var data = JSON.parse(dataStr.replace(new RegExp("&#34;", "g"), '"'));
 </script>
-<script src="/javascripts/myCharts.js"></script>
+<script src="/javascripts/call_status_charts.js"></script>
 </body>
 </html>
