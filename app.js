@@ -2,6 +2,9 @@ const createError = require('http-errors')
 const express = require('express')
 const path = require('path')
 const cookieParser = require('cookie-parser')
+const flash = require('connect-flash')
+const session = require('express-session')
+const passport = require('passport')
 const logger = require('morgan')
 
 const indexRouter = require('./routes/index')
@@ -9,7 +12,11 @@ const usersRouter = require('./routes/users')
 const reportsRouter = require('./routes/reports')
 const tasksRouter = require('./routes/tasks')
 const emailsRouter = require('./routes/email')
+
+// mongodb
 require('./db')
+// passport
+require('./auth/passport')(passport)
 require('dotenv').config() // e.g. process.env.Environment
 
 const app = express()
@@ -23,6 +30,32 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
+
+// Express session
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: true,
+    saveUninitialized: true
+  })
+)
+
+// connect flash
+app.use(flash())
+
+// put after session
+// create a custom middleware for adding global variables for flash msg
+app.use((req, res, next) => {
+  res.locals.success_msg = req.flash('success_msg')
+  res.locals.error_msg = req.flash('error_msg')
+  res.locals.error = req.flash('error') // for passport error
+  next()
+})
+
+// put after session
+// passport middleware
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use('/', indexRouter)
 app.use('/users', usersRouter)
