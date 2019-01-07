@@ -8,7 +8,7 @@ const {
 } = require('../mongodbHelpers')
 // const mailer = require("../services/emailService");
 
-// GET: /reports/call_status/
+// GET: /reports/
 router.get('/', async (req, res) => {
   res.render('reports_lists', {
     title: `All Reports`
@@ -54,16 +54,18 @@ router.get('/hold_resume/:reportId', async (req, res) => {
 
 // GET: /reports/hold_resume/
 router.get('/hold_resume', async (req, res) => {
-  const results = (await getCallHoldResumeReportList()).map((data, idx) => {
+  const response = await getCallHoldResumeReportList()
+  const results = response.map((data, idx, results) => {
+    const { _id, date } = data
+    const allTests = results[0].data
+    const failedTest = allTests.filter(
+      test => test.CallHoldStatus !== 'OK' || test.CallResumeStatus !== 'OK'
+    )
+
     return {
-      reportId: data._id,
-      date: data.date,
-      passed:
-        data.data[idx].CallHoldStatus === 'OK' &&
-        data.data[idx].CallResumeStatus === 'OK',
-      status: `Hold status is ${
-        data.data[idx].CallHoldStatus
-      }, resume status is ${data.data[idx].CallResumeStatus}`
+      reportId: _id,
+      date,
+      passed: failedTest.length === 0
     }
   })
 
