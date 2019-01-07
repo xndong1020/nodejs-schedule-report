@@ -8,6 +8,13 @@ const {
 } = require('../mongodbHelpers')
 // const mailer = require("../services/emailService");
 
+// GET: /reports/call_status/
+router.get('/', async (req, res) => {
+  res.render('reports_lists', {
+    title: `All Reports`
+  })
+})
+
 // GET: /reports/call_status/:reportId
 router.get('/call_status/:reportId', async (req, res) => {
   const id = req.params.reportId
