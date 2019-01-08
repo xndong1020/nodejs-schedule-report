@@ -3,7 +3,9 @@
 const { CallHistoryGetResultReport } = require('../models/CallHistoryGetResult')
 const { CallHoldResumeResultReport } = require('../models/CallHoldResumeResult')
 const { Task } = require('../models/Task')
+const { Device } = require('../models/Device')
 
+/* for Call History */
 const saveCallHistoryGetResult = async data => {
   const result = await CallHistoryGetResultReport.create({ data })
   return result._id
@@ -25,6 +27,7 @@ const getCallHistoryReportList = async () => {
   return result
 }
 
+/* for Call Hold and Resume */
 const readCallHoldResumeReportByID = id => {
   return new Promise((resolve, reject) => {
     CallHoldResumeResultReport.findById(id, (err, data) => {
@@ -40,6 +43,8 @@ const getCallHoldResumeReportList = async () => {
   const result = await CallHoldResumeResultReport.find({}).sort({ date: -1 })
   return result
 }
+
+/* for Task */
 
 const findTaskByID = id => {
   return new Promise((resolve, reject) => {
@@ -83,6 +88,18 @@ const updateTaskStatus = async (taskId, status, date, reportId) => {
   }
 }
 
+/* for Device */
+const getDeviceSettingsByUserID = userID => {
+  return new Promise((resolve, reject) => {
+    Device.findOne({ userID }, (err, data) => {
+      if (err) {
+        return reject(err)
+      }
+      return resolve(data)
+    })
+  })
+}
+
 module.exports = {
   saveCallHistoryGetResult,
   readCallHistoryGetResultByID,
@@ -91,5 +108,6 @@ module.exports = {
   getCallHoldResumeReportList,
   updateTaskStatus,
   findTaskByID,
-  updateTaskByID
+  updateTaskByID,
+  getDeviceSettingsByUserID
 }

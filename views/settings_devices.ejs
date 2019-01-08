@@ -11,8 +11,15 @@
             <div class="form-group">
               <label for="deviceType">Device Type</label>
               <select name="deviceType" id="device_type">
-                 <option value="DX-70">DX-70</option>
-                 <option value="DX-80">DX-80</option>
+                <%
+                var options = [ "DX-70", "DX-80" ];
+                var deviceIndex = settings && settings.deviceType ? options.findIndex(option => option === settings.deviceType) : 0
+                for ( var i = 0; i < options.length; i++ )
+                {
+                    var selected = ( i == deviceIndex ) ? "selected" : "";
+                    %><option value="<%=options[i] %>" <%=selected %>><%=options[i] %></option><%
+                }
+                %>
               </select>
             </div>
             <div class="form-group">
@@ -23,6 +30,7 @@
                 name="deviceUrl"
                 class="form-control"
                 placeholder="Enter Endpoint Url"
+                value="<%= settings && settings.deviceUrl ? settings.deviceUrl : '' %>"
               />
             </div>            
             <div class="form-group">
@@ -33,6 +41,7 @@
                     name="deviceUsername"
                     class="form-control"
                     placeholder="Enter Device Login Username"
+                    value="<%= settings && settings.deviceUsername ? settings.deviceUsername : '' %>"
                   />
                 </div>
             <div class="form-group">
@@ -43,6 +52,7 @@
                 name="devicePassword"
                 class="form-control"
                 placeholder="Enter Device Login Password"
+                value="<%= settings && settings.devicePassword ? settings.devicePassword : '' %>"
               />
             </div>
             <button type="submit" class="btn btn-primary btn-block">

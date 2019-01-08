@@ -11,8 +11,10 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/data', async (req, res) => {
+  const { _id } = req.user
   const tasks = await Task.find({}, { __v: 0 })
-  const results = tasks.map(task => {
+  const userTasks = tasks.filter(task => task.userID === _id)
+  const results = userTasks.map(task => {
     return {
       id: task._id,
       recipient: task.recipient,
@@ -27,8 +29,8 @@ router.get('/data', async (req, res) => {
 })
 
 router.post('/data', (req, res) => {
-  const body = req.body
   const { _id } = req.user
+  const body = req.body
   let data = body.color ? { ...body } : { ...body, color: randomHexGenerator() }
   data.userID = _id
   data.status = 'pending'
