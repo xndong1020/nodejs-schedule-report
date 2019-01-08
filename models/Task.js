@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 
 // Define a schema
 const TaskSchema = new mongoose.Schema({
+  userID: String,
   text: String,
   start_date: Date,
   end_date: Date,

@@ -20,6 +20,8 @@ require('./db')
 require('./auth/passport')(passport)
 require('dotenv').config() // e.g. process.env.Environment
 
+const { ensureAuthenticated } = require('./auth/auth')
+
 const app = express()
 
 // view engine setup
@@ -60,10 +62,10 @@ app.use(passport.session())
 
 app.use('/', indexRouter)
 app.use('/users', usersRouter)
-app.use('/reports', reportsRouter)
-app.use('/tasks', tasksRouter)
-app.use('/emails', emailsRouter)
-app.use('/settings', settingsRouter)
+app.use('/reports', [ensureAuthenticated], reportsRouter)
+app.use('/tasks', [ensureAuthenticated], tasksRouter)
+app.use('/emails', [ensureAuthenticated], emailsRouter)
+app.use('/settings', [ensureAuthenticated], settingsRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

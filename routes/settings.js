@@ -1,10 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const Device = require('../models/Device')
-const { ensureAuthenticated } = require('../auth/auth')
 
 // GET /settings/devices
-router.get('/devices', [ensureAuthenticated], (req, res) => {
+router.get('/devices', (req, res) => {
   console.log(req.user)
   const { name } = req.user
   // read user settings
@@ -12,7 +11,7 @@ router.get('/devices', [ensureAuthenticated], (req, res) => {
 })
 
 // POST /settings/devices
-router.post('/devices', [ensureAuthenticated], (req, res) => {
+router.post('/devices', (req, res) => {
   const body = req.body
   const { _id } = req.user
   const newDevice = { ...body, userID: _id }

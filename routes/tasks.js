@@ -28,9 +28,11 @@ router.get('/data', async (req, res) => {
 
 router.post('/data', (req, res) => {
   const body = req.body
-  const data = body.color
+  const { _id } = req.user
+  let data = body.color
     ? { ...body }
     : { ...body, color: randomHexGenerator() }
+  data.userID = _id
   console.log(data)
 
   // get operation type
