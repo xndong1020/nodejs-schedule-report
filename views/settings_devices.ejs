@@ -1,0 +1,61 @@
+<% include ./partials/header %>
+<!-- .ace-nav-wrap -->
+<div class="row mt-5">
+      <div class="col-md-8 m-auto">
+        <div class="card card-body">
+          <h1 class="text-center mb-3">
+            <i class="fas fa-desktop"></i> Register a Device for Testing
+          </h1>
+          <% include ./partials/messages %>
+          <form action="/settings/devices" method="POST">
+            <div class="form-group">
+              <label for="deviceType">Device Type</label>
+              <select name="deviceType" id="device_type">
+                 <option value="DX-70">DX-70</option>
+                 <option value="DX-80">DX-80</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="email">Device Endpoint Url</label>
+              <input
+                type="text"
+                id="deviceUrl"
+                name="deviceUrl"
+                class="form-control"
+                placeholder="Enter Endpoint Url"
+              />
+            </div>            
+            <div class="form-group">
+                  <label for="device_username">Device Login Username</label>
+                  <input
+                    type="text"
+                    id="deviceUsername"
+                    name="deviceUsername"
+                    class="form-control"
+                    placeholder="Enter Device Login Username"
+                  />
+                </div>
+            <div class="form-group">
+              <label for="password">Device Login Password</label>
+              <input
+                type="text"
+                id="devicePassword"
+                name="devicePassword"
+                class="form-control"
+                placeholder="Enter Device Login Password"
+              />
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">
+              Register
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+<!-- #ace-content -->
+<% include ./partials/sidebar %>
+<% include ./partials/triangle %>
+</div>
+</body>
+</html>
