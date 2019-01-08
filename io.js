@@ -1,4 +1,8 @@
+/* eslint camelcase:0 */
+
+const moment = require('moment')
 const io = require('socket.io').listen(4000)
+const { updateTaskStatus } = require('./mongodbHelpers')
 
 let socketCounter = 0
 
@@ -11,8 +15,17 @@ io.sockets.on('connection', socket => {
     io.sockets.emit('client connect', socketCounter)
   })
 
-  socket.on('taskComplete', data => {
-    console.log('taskComplete', data)
+  socket.on('taskComplete', async data => {
+    const { reportId, taskID, error } = data
+    const task_status = reportId && !error ? 'complete' : 'fail'
+    const completion_date = moment().format('MMMM Do YYYY, h:mm:ss a')
+    const result = await updateTaskStatus(
+      taskID,
+      task_status,
+      completion_date,
+      reportId
+    )
+    console.log('taskComplete saving to db', result)
   })
 })
 
