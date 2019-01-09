@@ -22,8 +22,10 @@ const readCallHistoryGetResultByID = id => {
   })
 }
 
-const getCallHistoryReportList = async () => {
-  const result = await CallHistoryGetResultReport.find({}).sort({ date: -1 })
+const getCallHistoryReportList = async userID => {
+  const result = await CallHistoryGetResultReport.find({ userID }).sort({
+    date: -1
+  })
   return result
 }
 
@@ -39,8 +41,10 @@ const readCallHoldResumeReportByID = id => {
   })
 }
 
-const getCallHoldResumeReportList = async () => {
-  const result = await CallHoldResumeResultReport.find({}).sort({ date: -1 })
+const getCallHoldResumeReportList = async userID => {
+  const result = await CallHoldResumeResultReport.find({ userID }).sort({
+    date: -1
+  })
   return result
 }
 

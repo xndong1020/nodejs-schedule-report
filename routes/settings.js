@@ -7,7 +7,6 @@ const { getDeviceSettingsByUserID } = require('../mongodbHelpers')
 router.get('/devices', async (req, res) => {
   const { _id } = req.user
   const settings = await getDeviceSettingsByUserID(_id)
-  console.log(settings)
   const { name } = req.user
   // read user settings
   res.render('settings_devices', { title: 'Devices', name, settings })

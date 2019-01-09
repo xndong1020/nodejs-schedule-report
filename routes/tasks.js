@@ -12,9 +12,8 @@ router.get('/', async (req, res) => {
 
 router.get('/data', async (req, res) => {
   const { _id } = req.user
-  const tasks = await Task.find({}, { __v: 0 })
-  const userTasks = tasks.filter(task => task.userID === _id)
-  const results = userTasks.map(task => {
+  const tasks = await Task.find({ userID: _id }, { __v: 0, color: 0 })
+  const results = tasks.map(task => {
     return {
       id: task._id,
       recipient: task.recipient,
@@ -36,7 +35,6 @@ router.post('/data', (req, res) => {
   data.status = 'pending'
   data.reportId = ''
   data.completion_date = []
-  console.log(data)
 
   // get operation type
   let mode = data['!nativeeditor_status']

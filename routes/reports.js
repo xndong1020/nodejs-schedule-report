@@ -28,7 +28,8 @@ router.get('/call_status/:reportId', async (req, res) => {
 
 // GET: /reports/call_status/
 router.get('/call_status', async (req, res) => {
-  const results = (await getCallHistoryReportList()).map(data => {
+  const { _id } = req.user
+  const results = (await getCallHistoryReportList(_id)).map(data => {
     return {
       reportId: data._id,
       date: data.date,
@@ -54,7 +55,8 @@ router.get('/hold_resume/:reportId', async (req, res) => {
 
 // GET: /reports/hold_resume/
 router.get('/hold_resume', async (req, res) => {
-  const response = await getCallHoldResumeReportList()
+  const { _id } = req.user
+  const response = await getCallHoldResumeReportList(_id)
   const results = response.map((data, idx, results) => {
     const { _id, date } = data
     const allTests = results[0].data
