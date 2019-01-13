@@ -2,6 +2,7 @@
 
 const { CallHistoryGetResultReport } = require('../models/CallHistoryGetResult')
 const { CallHoldResumeResultReport } = require('../models/CallHoldResumeResult')
+const { CallUnattendedTransferResultReport } = require('../models/CallUnattendedTransferResult')
 const { Task } = require('../models/Task')
 const { Device } = require('../models/Device')
 
@@ -48,6 +49,24 @@ const getCallHoldResumeReportList = async userID => {
   return result
 }
 
+/* for Call Unattended Transfer */
+const readCallUnattendedTransferResultReportID = id => {
+  return new Promise((resolve, reject) => {
+    CallUnattendedTransferResultReport.findById(id, (err, data) => {
+      if (err) {
+        return reject(err)
+      }
+      return resolve(data)
+    })
+  })
+}
+
+const getCallUnattendedTransferResultReportList = async userID => {
+  const result = await CallUnattendedTransferResultReport.find({ userID }).sort({
+    date: -1
+  })
+  return result
+}
 /* for Task */
 
 const findTaskByID = id => {
@@ -110,6 +129,8 @@ module.exports = {
   getCallHistoryReportList,
   readCallHoldResumeReportByID,
   getCallHoldResumeReportList,
+  readCallUnattendedTransferResultReportID,
+  getCallUnattendedTransferResultReportList,
   updateTaskStatus,
   findTaskByID,
   updateTaskByID,

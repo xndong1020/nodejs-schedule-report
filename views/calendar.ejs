@@ -25,7 +25,7 @@ function init() {
 
     scheduler.form_blocks["task_type_editor"] = {
         render: function(sns) {
-            return "<div class='dhx_cal_ltext' style='height:43px;'><select><option value='call_status'>Call Status</option><option value='hold_resume'>Hold and Resume Test</option></select></div>";
+            return "<div class='dhx_cal_ltext' style='height:43px;'><select><option value='call_status'>Call Status</option><option value='hold_resume'>Hold and Resume Test</option><option value='call_UnattendedTransfer'>Call UnattendedTransfer</option></select></div>";
         },
         set_value: function(node, value, ev) {
             node.childNodes[0].value = value || "";

@@ -1,0 +1,65 @@
+<% include ./partials/header %>
+<!-- .ace-nav-wrap -->
+<div class="ace-paper-stock">
+   <main class="ace-paper clearfix">
+      <div class="ace-paper-cont clear-mrg">
+         <!-- START: PAGE CONTENT -->
+         <div class="padd-box clear-mrg">
+            <section class="section brd-btm">
+               <div class="row brd-btm"  style="padding-bottom: 15px;margin-bottom: 15px; text-align: center;">
+                  <div class="col-sm-6 clear-mrg text-box">
+                     <h4 class="title-lg text-upper">Hold and Resume both success</h4>
+                     <canvas id="bothSuccessChart" width="100" height="100"></canvas>
+                  </div>
+               </div>
+            </section>
+            <!-- .section -->
+            <% for(var i=0; i< results.length; i++) {%>
+            <section class="section brd-btm">
+               <h2 class="title-thin text-muted">Call Hold and Resume testing Summary for call Id <%= results[i].callId %></h2>
+               <div class="row">
+                  <div class="col-sm-6 clear-mrg" style="padding-bottom: 60px;">
+                     <div>Call Id: <%= results[i].callId %></div>
+                     <div>Call Unattended Transfer Status: <%= results[i].CallUnattendedTransferStatus %></div>
+                     <div>Call Unattended Transfer Error Cause: <%= results[i].CallUnattendedTransferErrorCause %></div>
+                     <div>Call Unattended Transfer Error Description: <%= results[i].CallUnattendedTransferDescription %></div>
+
+                  </div>
+                  <!-- .col-sm-6 -->
+                  <div class="col-sm-6 clear-mrg">
+                     <div class="award-box">
+                        <figure class="award-img" style="text-align:center">
+                           <img src="/images/uploads/awards/status.png" alt="">
+                        </figure>
+                     </div>
+                  </div>
+                  <!-- .col-sm-6 -->
+               </div>               
+            </section>
+            <!-- .section -->
+            <% } %>
+         </div>
+         <!-- .padd-box -->
+         <!-- END: PAGE CONTENT -->
+      </div>
+      <!-- .ace-paper-cont -->
+   </main>
+   <!-- .ace-paper -->
+</div>
+<!-- .ace-paper-stock -->
+</div>
+<!-- .ace-container -->
+</div>
+<!-- #ace-content -->
+<% include ./partials/sidebar %>
+<% include ./partials/triangle %>
+</div>
+<!-- .ace-wrapper -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+<script>
+   var dataStr = "<%=results_str%>"
+   var data = JSON.parse(dataStr.replace(new RegExp("&#34;", "g"), '"'));
+</script>
+<script src="/javascripts/unattended_transfer_charts.js"></script>
+</body>
+</html>
