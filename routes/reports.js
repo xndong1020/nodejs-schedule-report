@@ -99,7 +99,7 @@ router.get('/unattended_transfer', async (req, res) => {
     const { _id, date } = data
     const allTests = results[0].data
     const failedTest = allTests.filter(
-      test => test.callUnattendedTransferStatus !== 'OK'
+      test => test.CallUnattendedTransferStatus !== 'OK'
     )
 
     return {
