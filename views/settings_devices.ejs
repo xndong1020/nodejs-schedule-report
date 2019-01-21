@@ -1,71 +1,57 @@
-<% include ./partials/header %>
 <!-- .ace-nav-wrap -->
-<div class="row mt-5">
-      <div class="col-md-8 m-auto">
-        <div class="card card-body">
-          <h1 class="text-center mb-3">
-            <i class="fas fa-desktop"></i> Register a Device for Testing
-          </h1>
-          <% include ./partials/messages %>
-          <form action="/settings/devices" method="POST">
-            <div class="form-group">
-              <label for="deviceType">Device Type</label>
-              <select name="deviceType" id="device_type">
-                <%
-                var options = [ "DX-70", "DX-80" ];
-                var deviceIndex = settings && settings.deviceType ? options.findIndex(option => option === settings.deviceType) : 0
-                for ( var i = 0; i < options.length; i++ )
-                {
-                    var selected = ( i == deviceIndex ) ? "selected" : "";
-                    %><option value="<%=options[i] %>" <%=selected %>><%=options[i] %></option><%
-                }
-                %>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="email">Device Endpoint Url</label>
-              <input
-                type="text"
-                id="deviceUrl"
-                name="deviceUrl"
-                class="form-control"
-                placeholder="Enter Endpoint Url"
-                value="<%= settings && settings.deviceUrl ? settings.deviceUrl : '' %>"
-              />
-            </div>            
-            <div class="form-group">
-                  <label for="device_username">Device Login Username</label>
-                  <input
-                    type="text"
-                    id="deviceUsername"
-                    name="deviceUsername"
-                    class="form-control"
-                    placeholder="Enter Device Login Username"
-                    value="<%= settings && settings.deviceUsername ? settings.deviceUsername : '' %>"
-                  />
-                </div>
-            <div class="form-group">
-              <label for="password">Device Login Password</label>
-              <input
-                type="text"
-                id="devicePassword"
-                name="devicePassword"
-                class="form-control"
-                placeholder="Enter Device Login Password"
-                value="<%= settings && settings.devicePassword ? settings.devicePassword : '' %>"
-              />
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">
-              Register
-            </button>
-          </form>
+<section class="ui center aligned page grid" style="width: 80%;">
+  <div class="row">
+    <h1>
+      <i class="fas fa-desktop"></i> Add a Device for Testing
+    </h1>
+  </div>
+  <div class="ui hidden divider"></div>
+  <div class="row">
+      <% include ./partials/messages %>
+      <form action="/settings/devices" method="POST" class="ui form">
+        <div class="form-group">
+          <label for="deviceType">Device Type</label>
+          <select name="deviceType" id="device_type">
+            <% var options = [ "DX-70", "DX-80" ];  var deviceIndex = settings &&  settings.deviceType ? options.findIndex(option => option ===  settings.deviceType) : 0;  var selected = ( i == deviceIndex ) ? "selected" : ""; for (var i = 0; i < options.length; i++ )  { %>
+                <option value="<%=options[i] %>" <%="selected"%>><%= options[i] %></option>
+              <% } %>
+          </select>
         </div>
-      </div>
-    </div>
-</div>
-<!-- #ace-content -->
-<% include ./partials/sidebar %>
-<% include ./partials/triangle %>
-</div>
-</body>
-</html>
+        <div class="form-group">
+          <label for="email">Device Endpoint Url</label>
+          <input
+            type="text"
+            id="deviceUrl"
+            name="deviceUrl"
+            class="form-control"
+            placeholder="Enter Endpoint Url"
+            value="<%= settings && settings.deviceUrl ? settings.deviceUrl : '' %>"
+          />
+        </div>
+        <div class="form-group">
+          <label for="device_username">Device Login Username</label>
+          <input
+            type="text"
+            id="deviceUsername"
+            name="deviceUsername"
+            class="form-control"
+            placeholder="Enter Device Login Username"
+            value="<%= settings && settings.deviceUsername ? settings.deviceUsername : '' %>"
+          />
+        </div>
+        <div class="form-group">
+          <label for="password">Device Login Password</label>
+          <input
+            type="text"
+            id="devicePassword"
+            name="devicePassword"
+            class="form-control"
+            placeholder="Enter Device Login Password"
+            value="<%= settings && settings.devicePassword ? settings.devicePassword : '' %>"
+          />
+        </div>
+        <div class="ui hidden divider"></div>
+        <button type="submit" class="ui primary button">Add</button>
+      </form>
+  </div>
+</section>

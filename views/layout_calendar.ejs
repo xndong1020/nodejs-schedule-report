@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<head>
+  <meta content="text/html; charset=utf-8" />
+  <link rel="stylesheet" href="codebase/dhtmlxscheduler.css" />
+  <style type="text/css" media="screen">
+    html,
+    body {
+      margin: 0px;
+      padding: 0px;
+      height: 100%;
+      overflow: hidden;
+    }
+  </style>
+  <!-- semantic ui -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
+  />
+  <!-- font awesome -->
+  <link
+    rel="stylesheet"
+    href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+    integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+    crossorigin="anonymous"
+  />
+  <link rel="stylesheet" href="/stylesheets/style.css" />
+</head>
+
+<script type="text/javascript" charset="utf-8">
+  function init() {
+    scheduler.init('scheduler_here', Date.now(), 'month') // display the initial calendar
+    scheduler.templates.xml_date = function(value) {
+      return new Date(value)
+    } // defines how to parse dates from the incoming data
+    scheduler.load('/tasks/data', 'json')
+
+    scheduler.config.xml_date = '%Y-%m-%d %H:%i'
+
+    scheduler.form_blocks['task_type_editor'] = {
+      render: function(sns) {
+        return "<div class='dhx_cal_ltext' style='height:43px;'><select><option value='call_status'>Call Status</option><option value='hold_resume'>Hold and Resume Test</option><option value='call_UnattendedTransfer'>Call UnattendedTransfer</option></select></div>"
+      },
+      set_value: function(node, value, ev) {
+        node.childNodes[0].value = value || ''
+      },
+      get_value: function(node, ev) {
+        return node.childNodes[0].value
+      },
+      focus: function(node) {
+        var a = node.childNodes[0]
+        a.select()
+        a.focus()
+      }
+    }
+    scheduler.renderEvent = function(container, ev) {
+      var container_width = container.style.width // e.g. "105px"
+
+      // move section
+      var html =
+        "<div class='dhx_event_move my_event_move' style='width: " +
+        container_width +
+        "'></div>"
+
+      // container for event's content
+      html += "<div class='my_event_body'>"
+      html += "<span class='event_date'>"
+      //two options here:show only start date for short events or start+end for long
+      if ((ev.end_date - ev.start_date) / 60000 > 40) {
+        //if event is longer than 40 minutes
+        html += scheduler.templates.event_header(ev.start_date, ev.end_date, ev)
+        html += '</span><br/>'
+      } else {
+        html += scheduler.templates.event_date(ev.start_date) + '</span>'
+      }
+      // displaying event's text
+      html +=
+        '<span>' +
+        scheduler.templates.event_text(ev.start_date, ev.end_date, ev) +
+        '</span>' +
+        '</div>'
+
+      // resize section
+      html +=
+        "<div class='dhx_event_resize my_event_resize' style='width: " +
+        container_width +
+        "'></div>"
+
+      container.innerHTML = html
+      return true //required, true - display a custom form, false - the default form
+    }
+
+    scheduler.config.lightbox.sections = [
+      {
+        name: 'description',
+        height: 50,
+        map_to: 'text',
+        type: 'textarea',
+        focus: true
+      },
+      {
+        name: 'recipient',
+        height: 50,
+        map_to: 'recipient',
+        type: 'textarea'
+      },
+      {
+        name: 'Task type',
+        height: 43,
+        map_to: 'task_type',
+        type: 'task_type_editor'
+      },
+      {
+        name: 'time',
+        height: 72,
+        type: 'time',
+        map_to: 'auto'
+      }
+    ]
+
+    var dp = new dataProcessor('/tasks/data')
+    dp.init(scheduler)
+    dp.setTransactionMode('POST', false)
+  }
+</script>
+
+<body onload="init();">
+  <div class="ui visible inverted left vertical borderless sidebar menu">
+    <div class="ui accordion inverted">
+      <div class="title item" style="padding-left:15px;">
+        <img class="ui avatar image" src="/images/avatar-01.jpg" alt="logo" />
+        Pinnacle Call Testing
+      </div>
+      <div class="title item" style="padding-left:15px;">
+        <i class="ion-ios-world titleIcon icon"></i>
+        <i class="dropdown icon"></i> Reports Management
+      </div>
+      <div class="icon content">
+        <a class="item" href="/reports/call_status">Call Status Reports</a>
+        <a class="item" href="/reports/hold_resume"
+          >Call Hold and Resume Reports</a
+        >
+        <a class="item" href="/reports/unattended_transfer"
+          >Unattended Transfer Reports</a
+        >
+      </div>
+      <div class="title item" style="padding-left:15px;">
+        <i class="ion-ios-world titleIcon  icon"></i>
+        <i class="dropdown icon"></i> Task Management
+      </div>
+      <div class="content">
+        <a class="item" href="/tasks">Task Scheduler</a>
+        <a class="item" href="#">List My Tasks</a>
+      </div>
+      <div class="title item" style="padding-left:15px;">
+        <i class="ion-ios-world titleIcon  icon"></i>
+        <i class="dropdown icon"></i> Devices Management
+      </div>
+      <div class="content">
+        <a class="item" href="#">Add Device(s)</a>
+        <a class="item" href="/settings/devices">List My Devices</a>
+      </div>
+      <div class="title item" style="padding-left:15px;">
+        <i class="ion-ios-world titleIcon  icon"></i>
+        <i class="dropdown icon"></i> User Management
+      </div>
+      <div class="content">
+        <a class="item" href="#">User Administration</a>
+        <a class="item" href="#">User Activities</a>
+      </div>
+    </div>
+  </div>
+  <div
+    id="scheduler_here"
+    class="dhx_cal_container pusher"
+    style="width:89.5%; height:97%;"
+  >
+    <div class="ui inverted blue large menu">
+      <a href="/" class="item"
+        ><img
+          src="/images/logo.png"
+          alt="logo"
+          style="width: 120px;"
+      /></a>
+      <a href="/buttons.html" class="item ui animated button">
+        <div class="visible content">Reports Management</div>
+        <div class="hidden content">Click Me</div>
+      </a>
+      <a href="/dividers.html" class="item ui animated button">
+        <div class="visible content">Task Management</div>
+        <div class="hidden content">Click Me</div>
+      </a>
+      <a href="/input.html" class="item ui animated button">
+        <div class="visible content">Devices Management</div>
+        <div class="hidden content">Click Me</div>
+      </a>
+      <a href="/label.html" class="item ui animated button">
+        <div class="visible content">User Management</div>
+        <div class="hidden content">Click Me</div>
+      </a>
+    </div>
+    <div><%- body %></div>
+  </div>
+  <script src="codebase/dhtmlxscheduler.js"></script>
+  <script
+      src="https://code.jquery.com/jquery-1.12.4.min.js"
+      integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+      crossorigin="anonymous"
+    ></script>
+    <!-- semantic ui -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+    <script>
+      // left sidebar nav
+      $('.accordion').accordion({
+        selector: {
+          trigger: '.title .icon'
+        }
+      })
+    </script>
+</body>

@@ -1,35 +1,73 @@
-<% include ./partials/header_without_navbar %>
-<div class="row mt-5">
-  <div class="col-md-12 m-auto">
-    <div class="card card-body">
-      <h1 class="text-center mb-3"><i class="fas fa-sign-in-alt"></i> Dashboard</h1>
-      <% include ./partials/messages %>
-      <table>
-        <tr>
-          <td style="font-size:20px;">
-           <a href="/reports">
-              <span class="fas fa-file-alt" style="color:#75b73b"></span>
-              <span>Testing Reports</span>
-           </a>
-          </td>
-          <td style="font-size:20px;">
-            <a href="/tasks">
-              <span class="fas fa-tasks" style="color:#75b73b"></span>
-              <span>Tasks Scheduler</span>
-            </a>
-          </td>
-          <td style="font-size:20px;">
-           <a href="/settings/devices">
-            <span class="fas fa-desktop" style="color:#75b73b"></span>
-            <span>Devices for Testings</span>
-           </a>
-          </td>
-        </tr>
-      </table>
+<div class="ui grid" style="margin-left:30px; margin-top: 50px;">
+  <div class="six wide column">
+    <div class="ui raised padded segment">
+      <div style="display:inline-block;">
+        <span
+          class="fas fa-file-alt"
+          style="font-size:80px; color: #2185d0;padding-right: 30px;"
+        ></span>
+      </div>
+      <div style="display:inline-block; vertical-align: top;">
+        <h3>Reports Management</h3>
+        <div><a href="/reports/call_status">Call Status Reports</a></div>
+        <div>
+          <a href="/reports/hold_resume">Call Hold and Resume Reports</a>
+        </div>
+        <div>
+          <a href="/reports/unattended_transfer">Unattended Transfer Reports</a>
+          <span class="ui left pointing red label">New!</span>
+        </div>
+      </div>
     </div>
   </div>
+  <div class="six wide column">
+    <div class="ui raised padded segment">
+      <div style="display:inline-block;">
+        <span
+          class="fas fa-tasks"
+          style="font-size:80px; color: #2185d0;padding-right: 30px;"
+        ></span>
+      </div>
+      <div style="display:inline-block; vertical-align: top;">
+        <h3>Task Management</h3>
+        <div><a href="/tasks">Task Scheduler</a></div>
+        <div><a href="#">List My Tasks</a></div>
+        <div><br /></div>
+      </div>
+    </div>
+  </div>
+  <div class="six wide column">
+      <div class="ui raised padded segment">
+        <div style="display:inline-block;">
+          <span
+            class="fas fa-network-wired"
+            style="font-size:80px; color: #2185d0;padding-right: 30px;"
+          ></span>
+        </div>
+        <div style="display:inline-block; vertical-align: top;">
+          <h3>Devices Management</h3>
+          <div><a href="/reports/call_status">Add Device(s)</a></div>
+          <div>
+            <a href="/reports/hold_resume">List My Devices</a>
+          </div>
+          <div><br /></div>
+        </div>
+      </div>
+    </div>
+    <div class="six wide column">
+      <div class="ui raised padded segment">
+        <div style="display:inline-block;">
+          <span
+            class="fas fa-users"
+            style="font-size:80px; color: #2185d0;padding-right: 30px;"
+          ></span>
+        </div>
+        <div style="display:inline-block; vertical-align: top;">
+          <h3>User Management</h3>
+          <div><a href="/tasks">User Administration</a></div>
+          <div><a href="#">User Activities</a></div>
+          <div><br /></div>
+        </div>
+      </div>
+    </div>
 </div>
-<% include ./partials/sidebar %>
-<% include ./partials/triangle %><!-- .ace-wrapper -->
-</body>
-</html>

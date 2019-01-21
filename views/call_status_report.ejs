@@ -1,118 +1,94 @@
-<% include ./partials/header %>
-<!-- .ace-nav-wrap -->
-<div class="ace-paper-stock">
-   <main class="ace-paper clearfix">
-      <div class="ace-paper-cont clear-mrg">
-         <!-- START: PAGE CONTENT -->
-         <div class="padd-box clear-mrg">
-            <section class="section brd-btm">
-               <div class="row brd-btm"  style="padding-bottom: 15px;margin-bottom: 15px; text-align: center;">
-                  <div class="col-sm-5 clear-mrg text-box">
-                     <h4 class="title-lg text-upper">Successful/Failed calls</h4>
-                     <canvas id="callSuccessRateChart" width="100" height="100"></canvas>
-                  </div>
-               </div>
-               <div class="row brd-btm"  style="margin-bottom: 15px;">
-                  <div class="col-sm-6 clear-mrg text-box">
-                     <h4 class="title-lg text-upper">Incoming Packet Lose</h4>
-                     <canvas id="incomingPacketLoseChart" width="100" height="100"></canvas>
-                  </div>
-                  <div class="col-sm-6 clear-mrg text-box">
-                     <h4 class="title-lg text-upper">Outgoing Packet Lose</h4>
-                     <canvas id="outgoingPacketLoseChart" width="100" height="100"></canvas>
-                  </div>
-               </div>
-               <div class="row"  style="margin-bottom: 15px;">
-                  <div class="col-sm-6 clear-mrg text-box">
-                     <h4 class="title-lg text-upper">Incoming Max Jitter</h4>
-                     <canvas id="incomingJitterChart" width="100" height="100"></canvas>
-                  </div>
-                  <div class="col-sm-6 clear-mrg text-box">
-                     <h4 class="title-lg text-upper">Outgoing Max Jitter</h4>
-                     <canvas id="outgoingJitterChart" width="100" height="100"></canvas>
-                  </div>
-               </div>
-            </section>
-            <!-- .section -->
-            <% for(var i=0; i< results.length; i++) {%>
-            <section class="section brd-btm">
-               <h2 class="title-thin text-muted">Call Status Summary for call Id <%= results[i].callId %></h2>
-               <div class="row">
-                  <div class="col-sm-6 clear-mrg" style="padding-bottom: 60px;">
-                     <div>Call status: <%= results[i].status %></div>
-                     <div>Call Duration: <%= results[i].Duration %> second(s)</div>
-                     <div>Call History Id: <%= results[i].CallHistoryId %></div>
-                     <div>Disconnect Cause: <%= results[i].DisconnectCause %></div>
-                     <div>Disconnect Cause Origin: <%= results[i].DisconnectCauseOrigin %></div>
-                     <div>Disconnec Cause Type: <%= results[i].DisconnectCauseType %></div>
-                  </div>
-                  <!-- .col-sm-6 -->
-                  <div class="col-sm-6 clear-mrg">
-                     <div class="award-box">
-                        <figure class="award-img" style="text-align:center">
-                           <img src="/images/uploads/awards/status.png" alt="">
-                        </figure>
-                     </div>
-                  </div>
-                  <!-- .col-sm-6 -->
-               </div>
-               <!-- .row -->
-               <div class="row">
-                  <div class="col-sm-6 clear-mrg">
-                     <div class="award-box">
-                        <figure class="award-img">
-                           <img src="/images/uploads/awards/incoming.png" alt="">
-                        </figure>
-                        <h3 class="award-title">Incoming Audio Status</h3>
-                        <div class="award-text text-muted clear-mrg">
-                           <div>Packet Lose: <%= results[i].VoiceIncomingPacketLose %></div>
-                           <div>Packet Lose Percent: <%= results[i].VoiceIncomingPacketLosePercent %></div>
-                           <div>Max Jitter: <%= results[i].VoiceIncomingMaxJitter %></div>
-                        </div>
-                     </div>
-                  </div>
-                  <!-- .col-sm-6 -->
-                  <div class="col-sm-6 clear-mrg">
-                     <div class="award-box">
-                        <figure class="award-img">
-                           <img src="/images/uploads/awards/outgoing.png" alt="">
-                        </figure>
-                        <h3 class="award-title">Outgoing Audio Status</h3>
-                        <div class="award-text text-muted clear-mrg">
-                           <div>Packet Lose: <%= results[i].VoiceOutgoingPacketLose %></div>
-                           <div>Packet Lose Percent: <%= results[i].VoiceOutgoingPacketLosePercent %></div>
-                           <div>Max Jitter: <%= results[i].VoiceOutgoingMaxJitter %></div>
-                        </div>
-                     </div>
-                  </div>
-                  <!-- .col-sm-6 -->
-               </div>
-               <!-- .row -->
-            </section>
-            <!-- .section -->
-            <% } %>
-         </div>
-         <!-- .padd-box -->
-         <!-- END: PAGE CONTENT -->
-      </div>
-      <!-- .ace-paper-cont -->
-   </main>
-   <!-- .ace-paper -->
-</div>
-<!-- .ace-paper-stock -->
-</div>
-<!-- .ace-container -->
-</div>
-<!-- #ace-content -->
-<% include ./partials/sidebar %>
-<% include ./partials/triangle %>
-</div>
-<!-- .ace-wrapper -->
+<section class="ui center aligned page grid">
+  <div class="row">
+    <div
+      class="five wide column"
+    >
+      <h4>Successful/Failed calls</h4>
+      <canvas id="callSuccessRateChart" width="100" height="100"></canvas>
+    </div>
+  </div>
+  <div class="row">
+    <div class="four wide column">
+      <h4>Incoming Packet Lose</h4>
+      <canvas id="incomingPacketLoseChart" width="100" height="100"></canvas>
+    </div>
+    <div class="four wide column">
+      <h4>Outgoing Packet Lose</h4>
+      <canvas id="outgoingPacketLoseChart" width="100" height="100"></canvas>
+    </div>
+    <div class="four wide column">
+      <h4>Incoming Max Jitter</h4>
+      <canvas id="incomingJitterChart" width="100" height="100"></canvas>
+    </div>
+    <div class="four wide column">
+      <h4>Outgoing Max Jitter</h4>
+      <canvas id="outgoingJitterChart" width="100" height="100"></canvas>
+    </div>
+  </div>
+</section>
+<!-- .section -->
+<table class="ui stripped celled  center aligned table " style="width: 89%">
+  <thead>
+    <tr>
+      <th rowspan="3" class="one wide">Call Id</th>
+      <th rowspan="3" class="one wide">Call status</th>
+      <th rowspan="3" class="one wide">Call Duration</th>
+      <th rowspan="3" class="one wide">Disconnect Cause</th>
+      <th rowspan="3" class="one wide">Disconnect Cause Origin</th>
+      <th rowspan="3" class="one wide">Disconnect Cause Type</th>
+      <th colspan="6" class="five wide">Incoming Quality Statistics</th>
+      <th colspan="6" class="five wide">Outgoing Quality Statistics</th>
+    </tr>
+    <tr>
+      <th colspan="3">Video</th>
+      <th colspan="3">Audio</th>
+      <th colspan="3">Video</th>
+      <th colspan="3">Audio</th>
+    </tr>
+    <tr>
+      <th>Packet Lose</th>
+      <th>Packet Lose Percent</th>
+      <th>Max Jitter</th>
+      <th>Packet Lose</th>
+      <th>Packet Lose Percent</th>
+      <th>Max Jitter</th>
+      <th>Packet Lose</th>
+      <th>Packet Lose Percent</th>
+      <th>Max Jitter</th>
+      <th>Packet Lose</th>
+      <th>Packet Lose Percent</th>
+      <th>Max Jitter</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% for(var i=0; i< results.length; i++) {%>
+    <tr>
+      <td><%= results[i].callId %></td>
+      <td><%= results[i].status %></td>
+      <td><%= results[i].Duration %> second(s)</td>
+      <td><%= results[i].DisconnectCause %></td>
+      <td><%= results[i].DisconnectCauseOrigin %></td>
+      <td><%= results[i].DisconnectCauseType %></td>
+      <td><%= results[i].VoiceIncomingPacketLose %></td>
+      <td><%= results[i].VoiceIncomingPacketLosePercent %></td>
+      <td><%= results[i].VoiceIncomingMaxJitter %></td>
+      <td><%= results[i].VoiceIncomingPacketLose %></td>
+      <td><%= results[i].VoiceIncomingPacketLosePercent %></td>
+      <td><%= results[i].VoiceIncomingMaxJitter %></td>
+      <td><%= results[i].VoiceOutgoingPacketLose %></td>
+      <td><%= results[i].VoiceOutgoingPacketLosePercent %></td>
+      <td><%= results[i].VoiceOutgoingMaxJitter %></td>
+      <td><%= results[i].VoiceOutgoingPacketLose %></td>
+      <td><%= results[i].VoiceOutgoingPacketLosePercent %></td>
+      <td><%= results[i].VoiceOutgoingMaxJitter %></td>
+    </tr>
+    <% } %>
+  </tbody>
+</table>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
 <script>
-   var dataStr = "<%=results_str%>"
-   var data = JSON.parse(dataStr.replace(new RegExp("&#34;", "g"), '"'));
+  var dataStr = '<%=results_str%>'
+  var data = JSON.parse(dataStr.replace(new RegExp('&#34;', 'g'), '"'))
 </script>
 <script src="/javascripts/call_status_charts.js"></script>
-</body>
-</html>

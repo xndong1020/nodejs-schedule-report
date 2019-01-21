@@ -1,63 +1,38 @@
-<% include ./partials/header %>
-<div class="ace-paper-stock">
-   <main class="ace-paper clearfix">
-      <div class="ace-paper-cont clear-mrg">
-         <!-- START: PAGE CONTENT -->
-         <div class="padd-box clear-mrg">
-            <section class="section brd-btm">
-               <div class="row">
-                  <div class="col-sm-12 clear-mrg text-box">
-                     <h2 class="title-lg text-upper">General Information</h2>
-                     <p><b>Helo, I’m Ola Lowe!</b><br>
-                        Logo or your Company Name, unless of course you are Microsoft or the Yellow Pages online directorye core of
-                        your marketing, the central theme around your products and services.
-                        Your brand is not your Logo or your Company Name, unless of course you are Microsoft or the Yellow Pages
-                        online directory.
-                     </p>
-                     <p class="text-right">
-                        <img src="/images/uploads/signature.png" alt="">
-                     </p>
-                  </div>
-               </div>
-            </section>
-            <!-- .section -->
-            <% for(var i=0; i< results.length; i++) {%>
-            <section class="section brd-btm">
-               <h2 class="title-thin text-muted">Call Status Report Id: <%= results[i].reportId %></h2>
-               <div class="row">
-                  <div class="col-sm-12 clear-mrg" style="padding-bottom: 60px;">
-                     <div>Date: <%= results[i].date %></div>
-                     <div>Call Status: <%= results[i].status %>
-                        <% if(results[i].passed) {%>
-                           <img src="/images/pass_icon.png" width="30"/>
-                        <% } else { %>
-                           <img src="/images/fail_icon.png" width="30"/>
-                        <% } %>
-                     </div>
-                     <div>Click >>> <a href="/reports/hold_resume/<%= results[i].reportId %>">Details</a> </div>
-                     <div>Click >>> <a href="/emails/<%= results[i].reportId %>">Email this report to me</a></div>
-                  </div>
-                  <!-- .col-sm-12 -->                
-               </div>
-               <!-- .row -->
-            </section>
-            <!-- .section -->
-            <% } %>
-         </div>
-         <!-- .padd-box -->
-         <!-- END: PAGE CONTENT -->
-      </div>
-      <!-- .ace-paper-cont -->
-   </main>
-   <!-- .ace-paper -->
-</div>
-<!-- .ace-paper-stock -->
-</div><!-- .ace-container -->
-</div><!-- #ace-content -->
-<% include ./partials/sidebar %>
-<% include ./partials/triangle %>
-</div><!-- .ace-wrapper -->
-<script>
-</script>
-</body>
-</html>
+<!-- .section -->
+<section class="ui raised segment">
+  <h2>Call Hold And Resume Report</h2>
+  <table class="ui striped celled  table">
+    <thead>
+      <tr>
+        <th>Report Id</th>
+        <th>Date</th>
+        <th>Call Status</th>
+        <th>Details</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for(var i=0; i< results.length; i++) {%>
+      <tr>
+        <td><%= results[i].reportId %></td>
+        <td><%= results[i].date %></td>
+        <td>
+          <%= results[i].status %> <% if(results[i].passed) {%>
+          <img src="/images/pass_icon.png" width="30" /> <% } else { %>
+          <img src="/images/fail_icon.png" width="30" /> <% } %>
+        </td>
+        <td>
+          <a href="/reports/hold_resume/<%= results[i].reportId %>">Details</a>
+        </td>
+        <td>
+          <a href="/emails/<%= results[i].reportId %>"
+            >Email this report to me</a
+          >
+        </td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+  <!--  data table -->
+</section>
+<!-- .section -->

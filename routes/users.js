@@ -7,7 +7,7 @@ const router = express.Router()
 
 // GET: /users/login
 router.get('/login', (req, res) => {
-  res.render('login')
+  res.render('login', { layout: 'layout_clear' })
 })
 
 // POST: /users/login
@@ -28,7 +28,7 @@ router.get('/logout', (req, res) => {
 
 // GET: /users/register
 router.get('/register', (req, res) => {
-  res.render('register')
+  res.render('register', { layout: 'layout_clear' })
 })
 
 // POST: /users/register

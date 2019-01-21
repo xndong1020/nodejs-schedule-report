@@ -7,7 +7,7 @@ const { randomHexGenerator } = require('../utils/color.util')
 const { io } = require('../io')
 
 router.get('/', async (req, res) => {
-  res.render('calendar')
+  res.render('calendar', { layout: 'layout_calendar' })
 })
 
 router.get('/data', async (req, res) => {
