@@ -33,11 +33,12 @@
       <th rowspan="3" class="one wide">Call Id</th>
       <th rowspan="3" class="one wide">Call status</th>
       <th rowspan="3" class="one wide">Call Duration</th>
+      <th rowspan="3" class="one wide">Call Protocol</th>
       <th rowspan="3" class="one wide">Disconnect Cause</th>
       <th rowspan="3" class="one wide">Disconnect Cause Origin</th>
       <th rowspan="3" class="one wide">Disconnect Cause Type</th>
-      <th colspan="6" class="five wide">Incoming Quality Statistics</th>
-      <th colspan="6" class="five wide">Outgoing Quality Statistics</th>
+      <th colspan="6" class="four wide">Incoming Quality Statistics</th>
+      <th colspan="6" class="four wide">Outgoing Quality Statistics</th>
     </tr>
     <tr>
       <th colspan="3">Video</th>
@@ -66,18 +67,19 @@
       <td><%= results[i].callId %></td>
       <td><%= results[i].status %></td>
       <td><%= results[i].Duration %> second(s)</td>
+      <td><%= results[i].Protocol %></td>
       <td><%= results[i].DisconnectCause %></td>
       <td><%= results[i].DisconnectCauseOrigin %></td>
       <td><%= results[i].DisconnectCauseType %></td>
+      <td><%= results[i].VideoIncomingPacketLose %></td>
+      <td><%= results[i].VideoIncomingPacketLosePercent %></td>
+      <td><%= results[i].VideoIncomingMaxJitter %></td>
       <td><%= results[i].VoiceIncomingPacketLose %></td>
       <td><%= results[i].VoiceIncomingPacketLosePercent %></td>
       <td><%= results[i].VoiceIncomingMaxJitter %></td>
-      <td><%= results[i].VoiceIncomingPacketLose %></td>
-      <td><%= results[i].VoiceIncomingPacketLosePercent %></td>
-      <td><%= results[i].VoiceIncomingMaxJitter %></td>
-      <td><%= results[i].VoiceOutgoingPacketLose %></td>
-      <td><%= results[i].VoiceOutgoingPacketLosePercent %></td>
-      <td><%= results[i].VoiceOutgoingMaxJitter %></td>
+      <td><%= results[i].VideoOutgoingPacketLose %></td>
+      <td><%= results[i].VideoOutgoingPacketLosePercent %></td>
+      <td><%= results[i].VideoOutgoingMaxJitter %></td>
       <td><%= results[i].VoiceOutgoingPacketLose %></td>
       <td><%= results[i].VoiceOutgoingPacketLosePercent %></td>
       <td><%= results[i].VoiceOutgoingMaxJitter %></td>
