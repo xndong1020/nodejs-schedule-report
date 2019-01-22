@@ -16,6 +16,7 @@
       <th>Call Resume Status</th>
       <th>Call Resume Error Cause</th>
       <th>Call Resume Error Description</th>
+      <th>Call Status</th>
     </tr>
   </thead>
   <tbody>
@@ -28,6 +29,7 @@
       <td><%= results[i].CallResumeStatus %></td>
       <td><%= results[i].CallResumeErrorCause %></td>
       <td><%= results[i].CallResumeErrorDescription %></td>
+      <td><a href="/reports/call_history/<%= reportId %>">Call Status</a></td>
     </tr>
     <% } %>
   </tbody>

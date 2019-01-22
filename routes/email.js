@@ -1,11 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const { readCallHistoryGetResultByID } = require('../mongodbHelpers')
+const { getCallHistoryGetResultByID } = require('../mongodbHelpers')
 const mailer = require('../services/emailService')
 
 router.get('/:reportId', async (req, res) => {
   const reportId = req.params.reportId
-  const result = await readCallHistoryGetResultByID(reportId)
+  const result = await getCallHistoryGetResultByID(reportId)
   // send email to users
   try {
     await mailer.sendMail('isdance2004@hotmail.com', result.data)

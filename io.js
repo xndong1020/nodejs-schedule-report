@@ -17,15 +17,15 @@ io.sockets.on('connection', socket => {
 
   socket.on('taskComplete', async data => {
     const { reportId, taskID, error } = data
+    console.log('reportId', reportId)
     const task_status = reportId && !error ? 'complete' : 'fail'
     const completion_date = moment().format('MMMM Do YYYY, h:mm:ss a')
-    const result = await updateTaskStatus(
+    await updateTaskStatus(
       taskID,
       task_status,
       completion_date,
       reportId
     )
-    console.log('taskComplete saving to db', result)
   })
 })
 

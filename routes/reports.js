@@ -1,13 +1,13 @@
 const express = require('express')
 const router = express.Router()
 const {
-  readCallHistoryGetResultByID,
+  getCallHistoryGetResultByID,
+  getCallHistoryGetResultByAssociatedReportId,
   getCallHistoryReportList,
-  readCallHoldResumeReportByID,
+  getCallHoldResumeReportByID,
   getCallHoldResumeReportList,
-  readCallUnattendedTransferResultReportID,
+  getCallUnattendedTransferResultReportID,
   getCallUnattendedTransferResultReportList
-
 } = require('../mongodbHelpers')
 // const mailer = require("../services/emailService");
 
@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
 // GET: /reports/call_status/:reportId
 router.get('/call_status/:reportId', async (req, res) => {
   const id = req.params.reportId
-  const result = await readCallHistoryGetResultByID(id)
+  const result = await getCallHistoryGetResultByID(id)
   res.render('call_status_report', {
     title: `Report for ${id}`,
     results: result.data,
@@ -32,7 +32,8 @@ router.get('/call_status/:reportId', async (req, res) => {
 // GET: /reports/call_status/
 router.get('/call_status', async (req, res) => {
   const { _id } = req.user
-  const results = (await getCallHistoryReportList(_id)).map(data => {
+  const response = await getCallHistoryReportList(_id)
+  const results = response.map(data => {
     return {
       reportId: data._id,
       date: data.date,
@@ -45,12 +46,24 @@ router.get('/call_status', async (req, res) => {
   })
 })
 
+// GET: /reports/call_history/:reportId
+router.get('/call_history/:reportId', async (req, res) => {
+  const id = req.params.reportId
+  const result = await getCallHistoryGetResultByAssociatedReportId(id)
+  res.render('call_status_report', {
+    title: `Report for ${id}`,
+    results: result.data,
+    results_str: JSON.stringify(result.data)
+  })
+})
+
 // GET: /reports/hold_resume/:reportId
 router.get('/hold_resume/:reportId', async (req, res) => {
   const id = req.params.reportId
-  const result = await readCallHoldResumeReportByID(id)
+  const result = await getCallHoldResumeReportByID(id)
   res.render('hold_resume_report', {
     title: `Report for ${id}`,
+    reportId: id,
     results: result.data,
     results_str: JSON.stringify(result.data)
   })
@@ -83,9 +96,10 @@ router.get('/hold_resume', async (req, res) => {
 // GET: /reports/unattended_transfer/:reportId
 router.get('/unattended_transfer/:reportId', async (req, res) => {
   const id = req.params.reportId
-  const result = await readCallUnattendedTransferResultReportID(id)
+  const result = await getCallUnattendedTransferResultReportID(id)
   res.render('unattended_transfer_report', {
     title: `Report for ${id}`,
+    reportId: id,
     results: result.data,
     results_str: JSON.stringify(result.data)
   })

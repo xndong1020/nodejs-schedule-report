@@ -2,9 +2,12 @@
 
 const { CallHistoryGetResultReport } = require('../models/CallHistoryGetResult')
 const { CallHoldResumeResultReport } = require('../models/CallHoldResumeResult')
-const { CallUnattendedTransferResultReport } = require('../models/CallUnattendedTransferResult')
+const {
+  CallUnattendedTransferResultReport
+} = require('../models/CallUnattendedTransferResult')
 const { Task } = require('../models/Task')
 const { Device } = require('../models/Device')
+const { taskType } = require('../enums')
 
 /* for Call History */
 const saveCallHistoryGetResult = async data => {
@@ -12,26 +15,36 @@ const saveCallHistoryGetResult = async data => {
   return result._id
 }
 
-const readCallHistoryGetResultByID = id => {
+const getCallHistoryGetResultByID = id => {
   return new Promise((resolve, reject) => {
     CallHistoryGetResultReport.findById(id, (err, data) => {
-      if (err) {
-        return reject(err)
-      }
+      if (err) return reject(err)
+      return resolve(data)
+    })
+  })
+}
+
+const getCallHistoryGetResultByAssociatedReportId = associatedReportId => {
+  return new Promise((resolve, reject) => {
+    CallHistoryGetResultReport.findOne({ associatedReportId }, (err, data) => {
+      if (err) return reject(err)
       return resolve(data)
     })
   })
 }
 
 const getCallHistoryReportList = async userID => {
-  const result = await CallHistoryGetResultReport.find({ userID }).sort({
+  const result = await CallHistoryGetResultReport.find({
+    userID,
+    type: taskType.CALL_STATUS
+  }).sort({
     date: -1
   })
   return result
 }
 
 /* for Call Hold and Resume */
-const readCallHoldResumeReportByID = id => {
+const getCallHoldResumeReportByID = id => {
   return new Promise((resolve, reject) => {
     CallHoldResumeResultReport.findById(id, (err, data) => {
       if (err) {
@@ -50,7 +63,7 @@ const getCallHoldResumeReportList = async userID => {
 }
 
 /* for Call Unattended Transfer */
-const readCallUnattendedTransferResultReportID = id => {
+const getCallUnattendedTransferResultReportID = id => {
   return new Promise((resolve, reject) => {
     CallUnattendedTransferResultReport.findById(id, (err, data) => {
       if (err) {
@@ -62,9 +75,11 @@ const readCallUnattendedTransferResultReportID = id => {
 }
 
 const getCallUnattendedTransferResultReportList = async userID => {
-  const result = await CallUnattendedTransferResultReport.find({ userID }).sort({
-    date: -1
-  })
+  const result = await CallUnattendedTransferResultReport.find({ userID }).sort(
+    {
+      date: -1
+    }
+  )
   return result
 }
 /* for Task */
@@ -125,11 +140,12 @@ const getDeviceSettingsByUserID = userID => {
 
 module.exports = {
   saveCallHistoryGetResult,
-  readCallHistoryGetResultByID,
+  getCallHistoryGetResultByID,
+  getCallHistoryGetResultByAssociatedReportId,
   getCallHistoryReportList,
-  readCallHoldResumeReportByID,
+  getCallHoldResumeReportByID,
   getCallHoldResumeReportList,
-  readCallUnattendedTransferResultReportID,
+  getCallUnattendedTransferResultReportID,
   getCallUnattendedTransferResultReportList,
   updateTaskStatus,
   findTaskByID,

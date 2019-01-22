@@ -14,6 +14,7 @@
       <th>Call Unattended Transfer Status</th>
       <th>Call Unattended Transfer Error Cause</th>
       <th>Call Unattended Transfer Error Description</th>
+      <th>Call Status</th>
     </tr>
   </thead>
   <tbody>
@@ -23,6 +24,7 @@
       <td><%= results[i].CallUnattendedTransferStatus %></td>
       <td><%= results[i].CallUnattendedTransferErrorCause %></td>
       <td><%= results[i].CallUnattendedTransferDescription %></td>
+      <td><a href="/reports/call_history/<%= reportId %>">Call Status</a></td>
     </tr>
     <% } %>
   </tbody>
