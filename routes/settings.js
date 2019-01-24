@@ -4,16 +4,16 @@ const { Device } = require('../models/Device')
 const { getDeviceSettingsByUserID } = require('../mongodbHelpers')
 
 // GET /settings/devices
-router.get('/devices', async (req, res) => {
+router.get('/add_devices', async (req, res) => {
   const { _id } = req.user
   const settings = await getDeviceSettingsByUserID(_id)
   const { name } = req.user
   // read user settings
-  res.render('settings_devices', { title: 'Devices', name, settings })
+  res.render('add_devices', { title: 'Devices', name, settings })
 })
 
 // POST /settings/devices
-router.post('/devices', (req, res) => {
+router.post('/add_devices', (req, res) => {
   const { _id } = req.user
   const body = req.body
   const newDevice = { ...body, userID: _id }

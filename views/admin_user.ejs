@@ -1,0 +1,71 @@
+<section class="ui center aligned page" style="margin-left: 1vw; width: 88%;">
+  <div class="row">
+    <h1><i class="fas fa-users"></i> Register User</h1>
+  </div>
+  <div class="ui hidden divider"></div>
+  <table class="ui stripped celled sortable table">
+    <thead>
+      <tr>
+        <th class="three wide">Name</th>
+        <th class="three wide">Email</th>
+        <th class="two wide">Role</th>
+        <th class="four wide">Activated Since</th>
+        <th class="four wide">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for(var i=0; i< users.length; i++) {%>
+      <tr>
+        <td class="three wide"><%= users[i].name %></td>
+        <td class="three wide"><%= users[i].email %></td>
+        <td class="two wide"><%= users[i].role %></td>
+        <td class="four wide"><%= users[i].data %></td>
+        <td class="four wide">
+          <div class="ui two buttons">
+            <a href="/users/edit/<%= users[i]._id %>">
+              <button class="ui positive button">Edit</button>
+            </a>
+            <div class="or"></div>
+            <a href="/users/delete/<%= users[i]._id %>">
+              <form action="/users/delete" method="POST" class="delete_user" name="<%= users[i]._id %>">
+                <button
+                  class="ui negative button"
+                  type="submit"
+                >
+                  Delete
+                </button>
+              </form>
+            </a>
+          </div>
+        </td>
+      </tr>
+      <% } %>
+    </tbody>
+    <tfoot>
+      <tr>
+        <th></th>
+        <th colspan="4">
+          <a href="/users/register">
+            <div class="ui right floated small primary labeled icon button">
+              <i class="user icon"></i> Add User
+            </div>
+          </a>
+        </th>
+      </tr>
+    </tfoot>
+  </table>
+</section>
+<div class="ui basic modal">
+  <div class="ui icon header">
+    <i class="user icon"></i> Deleting An Existing User
+  </div>
+  <div class="content"><p>Are you sure you want to delete this user?</p></div>
+  <div class="actions">
+    <div class="ui red basic cancel inverted button">
+      <i class="remove icon"></i> No
+    </div>
+    <div class="ui green ok inverted button">
+      <i class="checkmark icon"></i> Yes
+    </div>
+  </div>
+</div>

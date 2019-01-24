@@ -1,0 +1,87 @@
+<section class="ui center aligned page relaxed grid" style="width: 80%;">
+  <div class="row">
+    <h1><i class="fas fa-users"></i> Edit User</h1>
+  </div>
+  <div class="ui hidden divider"></div>
+  <div class="four column relaxed row">
+    <div class="ui top attached tabular menu">
+      <a class="item active" data-tab="Update Profile">Edit User Profile</a>
+      <a class="item" data-tab="Reset Password">Reset User Password</a>
+    </div>
+    <div
+      class="ui bottom attached tab segment active"
+      data-tab="Update Profile"
+    >
+      <div class="ui stacked segment eight wide column">
+        <% include ./partials/messages %>
+        <form
+          action="/users/edit/<%= userId %>"
+          method="POST"
+          class="ui medium form"
+        >
+          <div class="field">
+            <label for="name" style="text-align:left;">Name</label>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              placeholder="Enter Name"
+              value="<%= typeof name != 'undefined' ? name : '' %>"
+            />
+          </div>
+          <div class="field">
+            <label for="email" style="text-align:left;">Email</label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="Enter Email"
+              value="<%= typeof email != 'undefined' ? email : '' %>"
+            />
+          </div>
+          <div class="ui hidden divider"></div>
+          <button type="submit" class="ui primary button">
+            Update Profile
+          </button>
+        </form>
+      </div>
+    </div>
+    <div class="ui bottom attached tab segment" data-tab="Reset Password">
+      <div class="ui stacked segment eight wide column">
+        <% include ./partials/messages %>
+        <form
+          action="/users/reset_password/<%= userId %>"
+          method="POST"
+          class="ui medium form"
+        >
+          <div class="field">
+            <label for="password" style="text-align:left;"
+              >Create Password</label
+            >
+            <input
+              type="password"
+              name="password"
+              id="password"
+              placeholder="Create Password"
+            />
+          </div>
+          <div class="field">
+            <label for="password2" style="text-align:left;"
+              >Confirm Password</label
+            >
+            <input
+              type="password"
+              name="password2"
+              id="password2"
+              placeholder="Confirm Password"
+            />
+          </div>
+          <div class="ui hidden divider"></div>
+          <button type="submit" class="ui primary button">
+            Reset Password
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
