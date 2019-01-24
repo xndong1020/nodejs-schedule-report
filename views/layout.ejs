@@ -125,13 +125,13 @@
             trigger: '.title .icon'
           }
         })
-
+        // user table sortable
         $('table').tablesort()
-
+        // edit user/update password
         $('.menu .item').tab()
-
+        // navbar dropdown
         $('.ui.dropdown').dropdown()
-
+        // delete user modal handler
         $('form.delete_user').submit(function(event) {
           event.preventDefault()
           $('.ui.basic.modal')
@@ -153,6 +153,7 @@
         })
       })
 
+      // generate sidebar
       var showAdminComponents = localStorage.getItem('showAdminComponents')
       var showWebexComponents = localStorage.getItem('showWebexComponents')
       var showPurecloudComponents = localStorage.getItem(
@@ -162,13 +163,6 @@
       showAdminComponents = showAdminComponents === 'true'
       showWebexComponents = showWebexComponents === 'true'
       showPurecloudComponents = showPurecloudComponents === 'true'
-
-      console.log(
-        'layout',
-        showAdminComponents,
-        showWebexComponents,
-        showPurecloudComponents
-      )
 
       if (!showAdminComponents) $('#admin_menu').hide()
       else $('#admin_menu').show()

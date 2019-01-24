@@ -12,7 +12,13 @@ const userRole = {
   PURECLOUD_USER: 'purecloud_user'
 }
 
+const deviceTypes = {
+  'DX-70': 'DX-70',
+  'DX-80': 'DX-80'
+}
+
 module.exports = {
   taskType,
-  userRole
+  userRole,
+  deviceTypes
 }

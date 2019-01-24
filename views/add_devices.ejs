@@ -13,8 +13,8 @@
         <div class="field">
           <label for="deviceType">Device Type</label>
           <select name="deviceType" id="device_type">
-            <% var options = [ "DX-70", "DX-80" ];  var deviceIndex = settings &&  settings.deviceType ? options.findIndex(option => option ===  settings.deviceType) : 0;  var selected = ( i == deviceIndex ) ? "selected" : ""; for (var i = 0; i < options.length; i++ )  { %>
-                <option value="<%=options[i] %>" <%="selected"%>><%= options[i] %></option>
+              <% for(var i=0;i<deviceKeys.length;i++) { var selected = ( i === currentDeviceIndex ) ? "selected" : ""; %>
+                <option value=<%= deviceKeys[i] %> <%= selected %> ><%= deviceKeys[i] %></option>
               <% } %>
           </select>
         </div>
@@ -62,9 +62,9 @@
         <div class="field">
           <label for="deviceType">Device Type</label>
           <select name="deviceType" id="device_type">
-            <% var options = [ "DX-70", "DX-80" ];  var deviceIndex = settings &&  settings.deviceType ? options.findIndex(option => option ===  settings.deviceType) : 0;  var selected = ( i == deviceIndex ) ? "selected" : ""; for (var i = 0; i < options.length; i++ )  { %>
-                <option value="<%=options[i] %>" <%="selected"%>><%= options[i] %></option>
-              <% } %>
+            <% for(var i=0;i<deviceKeys.length;i++) { var selected = ( i === currentDeviceIndex ) ? "selected" : ""; %>
+              <option value=<%= deviceKeys[i] %> <%= selected %> ><%= deviceKeys[i] %></option>
+            <% } %>
           </select>
         </div>
         <div class="field">
@@ -111,9 +111,9 @@
         <div class="field">
           <label for="deviceType">Device Type</label>
           <select name="deviceType" id="device_type">
-            <% var options = [ "DX-70", "DX-80" ];  var deviceIndex = settings &&  settings.deviceType ? options.findIndex(option => option ===  settings.deviceType) : 0;  var selected = ( i == deviceIndex ) ? "selected" : ""; for (var i = 0; i < options.length; i++ )  { %>
-                <option value="<%=options[i] %>" <%="selected"%>><%= options[i] %></option>
-              <% } %>
+            <% for(var i=0;i<deviceKeys.length;i++) { var selected = ( i === currentDeviceIndex ) ? "selected" : ""; %>
+              <option value=<%= deviceKeys[i] %> <%= selected %> ><%= deviceKeys[i] %></option>
+            <% } %>
           </select>
         </div>
         <div class="field">
@@ -160,9 +160,9 @@
         <div class="field">
           <label for="deviceType">Device Type</label>
           <select name="deviceType" id="device_type">
-            <% var options = [ "DX-70", "DX-80" ];  var deviceIndex = settings &&  settings.deviceType ? options.findIndex(option => option ===  settings.deviceType) : 0;  var selected = ( i == deviceIndex ) ? "selected" : ""; for (var i = 0; i < options.length; i++ )  { %>
-                <option value="<%=options[i] %>" <%="selected"%>><%= options[i] %></option>
-              <% } %>
+            <% for(var i=0;i<deviceKeys.length;i++) { var selected = ( i === currentDeviceIndex ) ? "selected" : ""; %>
+              <option value=<%= deviceKeys[i] %> <%= selected %> ><%= deviceKeys[i] %></option>
+            <% } %>
           </select>
         </div>
         <div class="field">
