@@ -130,42 +130,46 @@
         <img class="ui avatar image" src="/images/avatar-01.jpg" alt="logo" />
         Pinnacle Call Testing
       </div>
-      <div class="title item" style="padding-left:15px;">
-        <i class="ion-ios-world titleIcon icon"></i>
-        <i class="dropdown icon"></i> Reports Management
+      <div id="webex_menu">
+        <div class="title item" style="padding-left:15px;">
+          <i class="ion-ios-world titleIcon icon"></i>
+          <i class="dropdown icon"></i> Reports Management
+        </div>
+        <div class="icon content">
+          <a class="item" href="/reports/call_status">Call Status Reports</a>
+          <a class="item" href="/reports/hold_resume"
+            >Call Hold and Resume Reports</a
+          >
+          <a class="item" href="/reports/unattended_transfer"
+            >Unattended Transfer Reports</a
+          >
+        </div>
+        <div class="title item" style="padding-left:15px;">
+          <i class="ion-ios-world titleIcon  icon"></i>
+          <i class="dropdown icon"></i> Task Management
+        </div>
+        <div class="content">
+          <a class="item" href="/tasks">Task Scheduler</a>
+          <a class="item" href="#">List My Tasks</a>
+        </div>
+        <div class="title item" style="padding-left:15px;">
+          <i class="ion-ios-world titleIcon  icon"></i>
+          <i class="dropdown icon"></i> Devices Management
+        </div>
+        <div class="content">
+          <a class="item" href="/settings/add_devices">Add Device(s)</a>
+          <a class="item" href="/settings/list_devices">List My Devices</a>
+        </div>
       </div>
-      <div class="icon content">
-        <a class="item" href="/reports/call_status">Call Status Reports</a>
-        <a class="item" href="/reports/hold_resume"
-          >Call Hold and Resume Reports</a
-        >
-        <a class="item" href="/reports/unattended_transfer"
-          >Unattended Transfer Reports</a
-        >
-      </div>
-      <div class="title item" style="padding-left:15px;">
-        <i class="ion-ios-world titleIcon  icon"></i>
-        <i class="dropdown icon"></i> Task Management
-      </div>
-      <div class="content">
-        <a class="item" href="/tasks">Task Scheduler</a>
-        <a class="item" href="#">List My Tasks</a>
-      </div>
-      <div class="title item" style="padding-left:15px;">
-        <i class="ion-ios-world titleIcon  icon"></i>
-        <i class="dropdown icon"></i> Devices Management
-      </div>
-      <div class="content">
-        <a class="item" href="/settings/add_devices">Add Device(s)</a>
-        <a class="item" href="/settings/list_devices">List My Devices</a>
-      </div>
-      <div class="title item" style="padding-left:15px;">
-        <i class="ion-ios-world titleIcon  icon"></i>
-        <i class="dropdown icon"></i> User Management
-      </div>
-      <div class="content">
-        <a class="item" href="/users/admin">Manage Existing User</a>
-        <a class="item" href="/users/register">Add New User</a>
+      <div id="admin_menu">
+        <div class="title item" style="padding-left:15px;">
+          <i class="ion-ios-world titleIcon  icon"></i>
+          <i class="dropdown icon"></i> User Management
+        </div>
+        <div class="content">
+          <a class="item" href="/users/admin">Manage Existing User</a>
+          <a class="item" href="/users/register">Add New User</a>
+        </div>
       </div>
     </div>
   </div>
@@ -176,10 +180,7 @@
   >
     <div class="ui inverted blue large menu">
       <a href="/" class="item"
-        ><img
-          src="/images/logo.png"
-          alt="logo"
-          style="width: 120px;"
+        ><img src="/images/logo.png" alt="logo" style="width: 120px;"
       /></a>
       <a href="/buttons.html" class="item ui animated button">
         <div class="visible content">Reports Management</div>
@@ -202,18 +203,39 @@
   </div>
   <script src="codebase/dhtmlxscheduler.js"></script>
   <script
-      src="https://code.jquery.com/jquery-1.12.4.min.js"
-      integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
-      crossorigin="anonymous"
-    ></script>
-    <!-- semantic ui -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
-    <script>
+    src="https://code.jquery.com/jquery-1.12.4.min.js"
+    integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+    crossorigin="anonymous"
+  ></script>
+  <!-- semantic ui -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+  <script>
+    $(document).ready(function() {
       // left sidebar nav
       $('.accordion').accordion({
         selector: {
           trigger: '.title .icon'
         }
       })
-    </script>
+
+      var showAdminComponents = localStorage.getItem('showAdminComponents')
+      var showWebexComponents = localStorage.getItem('showWebexComponents')
+      var showPurecloudComponents = localStorage.getItem(
+        'showPurecloudComponents'
+      )
+
+      showAdminComponents = showAdminComponents === 'true'
+      showWebexComponents = showWebexComponents === 'true'
+      showPurecloudComponents = showPurecloudComponents === 'true'
+
+      if (!showAdminComponents) $('#admin_menu').hide()
+      else $('#admin_menu').show()
+
+      if (!showWebexComponents) $('#webex_menu').hide()
+      else $('#webex_menu').show()
+
+      if (!showPurecloudComponents) $('#pourcloud_menu').hide()
+      else $('#pourcloud_menu').show()
+    })
+  </script>
 </body>

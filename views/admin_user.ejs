@@ -1,6 +1,6 @@
 <section class="ui center aligned page" style="margin-left: 1vw; width: 88%;">
   <div class="row">
-    <h1><i class="fas fa-users"></i> Register User</h1>
+    <h1><i class="fas fa-users"></i> User Management</h1>
   </div>
   <div class="ui hidden divider"></div>
   <table class="ui stripped celled sortable table">
@@ -19,7 +19,7 @@
         <td class="three wide"><%= users[i].name %></td>
         <td class="three wide"><%= users[i].email %></td>
         <td class="two wide"><%= users[i].role %></td>
-        <td class="four wide"><%= users[i].data %></td>
+        <td class="four wide"><%= users[i].date %></td>
         <td class="four wide">
           <div class="ui two buttons">
             <a href="/users/edit/<%= users[i]._id %>">

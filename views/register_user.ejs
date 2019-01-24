@@ -1,4 +1,4 @@
-<section class="ui center aligned page relaxed grid" style="width: 80%;">
+<section class="ui center aligned middle aligned page relaxed grid" style="width: 80vw;">
   <div class="row">
     <h1><i class="fas fa-users"></i> Register User</h1>
   </div>
@@ -27,6 +27,15 @@
             value="<%= typeof email != 'undefined' ? email : '' %>"
           />
         </div>
+        <div class="field">
+            <label for="role" style="text-align:left;">Role</label>
+            <select name="role" id="role">
+              <option value="">-- Please select --</option>
+              <% for(var i=0;i<roleKeys.length;i++) { %>
+              <option value=<%= roleValues[i] %>><%= roleKeys[i] %></option>
+              <% } %>
+            </select>
+          </div>
         <div class="field">
           <label for="password" style="text-align:left;">Create Password</label>
           <input

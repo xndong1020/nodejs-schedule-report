@@ -1,4 +1,5 @@
 <div class="ui grid" style="margin-left:30px; margin-top: 50px;">
+  <% if(showWebexComponents){ %>
   <div class="six wide column">
     <div class="ui raised padded segment">
       <div style="display:inline-block;">
@@ -52,6 +53,8 @@
       </div>
     </div>
   </div>
+  <% } %>
+  <% if(showAdminComponents){ %>
   <div class="six wide column">
     <div class="ui raised padded segment">
       <div style="display:inline-block;">
@@ -68,4 +71,28 @@
       </div>
     </div>
   </div>
+  <% } %>
 </div>
+<script
+  src="https://code.jquery.com/jquery-1.12.4.min.js"
+  integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+  crossorigin="anonymous"
+></script>
+<script>
+  var showAdminComponents = '<%= showAdminComponents %>' === 'true'
+  var showWebexComponents = '<%= showWebexComponents %>' === 'true'
+  var showPurecloudComponents = '<%= showPurecloudComponents %>' === 'true'
+
+  localStorage.setItem('showAdminComponents', showAdminComponents)
+  localStorage.setItem('showWebexComponents', showWebexComponents)
+  localStorage.setItem('showPurecloudComponents', showPurecloudComponents)
+
+  if (!showAdminComponents) $('#admin_menu').hide()
+  else $('#admin_menu').show()
+
+  if (!showWebexComponents) $('#webex_menu').hide()
+  else $('#webex_menu').show()
+
+  if (!showPurecloudComponents) $('#pourcloud_menu').hide()
+  else $('#pourcloud_menu').show()
+</script>

@@ -14,12 +14,16 @@ const UserSchema = new mongoose.Schema({
       message: props => `${props.value} is not a valid email address!`
     }
   },
+  role: {
+    type: String,
+    required: true
+  },
   password: {
     type: String,
     min: [6, 'Password should be at lease 6 digits long'],
     required: true
   },
-  data: {
+  date: {
     type: Date,
     default: Date.now
   }

@@ -3,7 +3,8 @@ const { check, validationResult } = require('express-validator/check')
 const bcrypt = require('bcryptjs')
 const User = require('../models/User')
 const passport = require('passport')
-const { ensureAuthenticated } = require('../auth/auth')
+const { ensureAuthenticated, ensureAdminAccess } = require('../auth/auth')
+const { userRole } = require('../enums')
 const router = express.Router()
 
 // GET: /users/login
@@ -28,15 +29,27 @@ router.get('/logout', (req, res) => {
 })
 
 // GET: /users/admin
-router.get('/admin', [ensureAuthenticated], async (req, res) => {
-  const users = await User.find({})
-  console.log('users', users)
-  res.render('admin_user', { users })
-})
+router.get(
+  '/admin',
+  [ensureAuthenticated, ensureAdminAccess],
+  async (req, res) => {
+    const users = await User.find({})
+    console.log('users', users)
+    res.render('admin_user', { users })
+  }
+)
 
 // GET: /users/register
 router.get('/register', [ensureAuthenticated], (req, res) => {
-  res.render('register_user')
+  const roleKeys = Object.keys(userRole)
+  const roleValues = Object.keys(userRole).map(key => {
+    return userRole[key]
+  })
+  console.log(roleKeys, roleValues)
+  res.render('register_user', {
+    roleKeys,
+    roleValues
+  })
 })
 
 router.post('/delete', (req, res) => {
@@ -49,12 +62,21 @@ router.post('/delete', (req, res) => {
 
 router.get('/edit/:userId', [ensureAuthenticated], async (req, res) => {
   const { userId } = req.params
+  const roleKeys = Object.keys(userRole)
+  const roleValues = Object.keys(userRole).map(key => {
+    return userRole[key]
+  })
   const user = await User.findOne({ _id: userId })
-  const { name, email } = user
+  const { name, email, role } = user
+  const selectedIndex = roleValues.findIndex(roleValue => roleValue === role)
+  console.log('selectedIndex', selectedIndex)
   res.render('edit_user', {
     name,
     email,
-    userId
+    userId,
+    selectedIndex,
+    roleKeys,
+    roleValues
   })
 })
 
@@ -67,7 +89,7 @@ router.post(
       .withMessage('Please provide a valid email address')
   ],
   async (req, res) => {
-    const { name, email } = req.body
+    const { name, email, role } = req.body
     const { userId } = req.params
     const checkResult = validationResult(req)
     let errors = []
@@ -83,7 +105,7 @@ router.post(
       })
     } else {
       // client-side validation passed
-      const updatedUser = { name, email }
+      const updatedUser = { name, email, role }
       try {
         await User.updateOne({ _id: userId }, updatedUser)
         req.flash('success_msg', 'You have successfully updated an user')
@@ -158,7 +180,11 @@ router.post(
       .withMessage('Password must be at least 6 chars long')
   ],
   async (req, res) => {
-    const { name, email, password, password2 } = req.body
+    const roleKeys = Object.keys(userRole)
+    const roleValues = Object.keys(userRole).map(key => {
+      return userRole[key]
+    })
+    const { name, email, role, password, password2 } = req.body
     const checkResult = validationResult(req)
     let errors = []
     checkResult.array().map(item => errors.push(item.msg))
@@ -168,6 +194,9 @@ router.post(
         errors,
         name,
         email,
+        role,
+        roleKeys,
+        roleValues,
         password,
         password2,
         error_msg: '',
@@ -183,6 +212,9 @@ router.post(
             errors: ['User with the same email address already exists'],
             name,
             email,
+            role,
+            roleKeys,
+            roleValues,
             password,
             password2,
             error_msg: '',
@@ -191,16 +223,10 @@ router.post(
         } else {
           const salt = await bcrypt.genSalt(10)
           const hash = await bcrypt.hash(password, salt)
-          const newUser = { name, email, password: hash }
+          const newUser = { name, email, role, password: hash }
           await User.create(newUser)
           req.flash('success_msg', 'You have successfully created a new user')
-          res.render('register_user', {
-            errors,
-            name,
-            email,
-            password,
-            password2
-          })
+          res.redirect('/users/admin')
         }
       } catch (error) {
         console.log(error)

@@ -39,6 +39,15 @@
               value="<%= typeof email != 'undefined' ? email : '' %>"
             />
           </div>
+          <div class="field">
+            <label for="email" style="text-align:left;">Role</label>
+            <select name="role" id="role">
+              <option value="">-- Please select --</option>
+              <% for(var i=0;i<roleKeys.length;i++) { var selected = i=== selectedIndex ? 'selected': ''; %>
+                <option value=<%= roleValues[i] %> <%= selected %> ><%= roleKeys[i] %></option>
+              <% } %>
+            </select>
+          </div>
           <div class="ui hidden divider"></div>
           <button type="submit" class="ui primary button">
             Update Profile
