@@ -45,7 +45,6 @@ router.get('/register', [ensureAuthenticated], (req, res) => {
   const roleValues = Object.keys(userRole).map(key => {
     return userRole[key]
   })
-  console.log(roleKeys, roleValues)
   res.render('register_user', {
     roleKeys,
     roleValues
@@ -110,14 +109,24 @@ router.post(
     const { name, email, role } = req.body
     const { userId } = req.params
     const checkResult = validationResult(req)
-    let errors = []
-    checkResult.array().map(item => errors.push(item.msg))
+    const errors = checkResult.array()
+
+    const roleKeys = Object.keys(userRole)
+    const roleValues = Object.keys(userRole).map(key => {
+      return userRole[key]
+    })
+    const selectedIndex = roleValues.findIndex(roleValue => roleValue === role)
+
     if (!checkResult.isEmpty()) {
       // client-side validation failed
       res.render('edit_user', {
         errors,
         name,
         email,
+        userId,
+        roleKeys,
+        roleValues,
+        selectedIndex,
         error_msg: '',
         success_msg: ''
       })
@@ -132,6 +141,12 @@ router.post(
         console.log('error', error)
         res.render('edit_user', {
           errors: error,
+          name,
+          email,
+          userId,
+          roleKeys,
+          roleValues,
+          selectedIndex,
           error_msg: '',
           success_msg: ''
         })
@@ -151,15 +166,27 @@ router.post(
   async (req, res) => {
     const { password, password2 } = req.body
     const { userId } = req.params
+    const user = await User.findOne({ _id: userId })
+    const { role } = user
     const checkResult = validationResult(req)
-    let errors = []
-    checkResult.array().map(item => errors.push(item.msg))
+    const errors = checkResult.array()
+
+    const roleKeys = Object.keys(userRole)
+    const roleValues = Object.keys(userRole).map(key => {
+      return userRole[key]
+    })
+    const selectedIndex = roleValues.findIndex(roleValue => roleValue === role)
+
     if (!checkResult.isEmpty()) {
       // client-side validation failed
-      res.render('register_user', {
+      res.render('edit_user', {
         errors,
         password,
         password2,
+        userId,
+        roleKeys,
+        roleValues,
+        selectedIndex,
         error_msg: '',
         success_msg: ''
       })
@@ -173,9 +200,14 @@ router.post(
         req.flash('success_msg', 'You have successfully updated user password')
         res.redirect('/users/admin')
       } catch (error) {
-        console.log('error reset_password', error)
-        res.render('register_user', {
+        res.render('edit_user', {
           errors: error,
+          password,
+          password2,
+          userId,
+          roleKeys,
+          roleValues,
+          selectedIndex,
           error_msg: '',
           success_msg: ''
         })
@@ -204,8 +236,7 @@ router.post(
     })
     const { name, email, role, password, password2 } = req.body
     const checkResult = validationResult(req)
-    let errors = []
-    checkResult.array().map(item => errors.push(item.msg))
+    const errors = checkResult.array()
     if (!checkResult.isEmpty()) {
       // client-side validation failed
       res.render('register_user', {
@@ -250,6 +281,13 @@ router.post(
         console.log(error)
         res.render('register_user', {
           errors: error,
+          name,
+          email,
+          role,
+          roleKeys,
+          roleValues,
+          password,
+          password2,
           error_msg: '',
           success_msg: ''
         })
