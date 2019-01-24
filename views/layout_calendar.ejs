@@ -178,28 +178,38 @@
     class="dhx_cal_container pusher"
     style="width:89.5%; height:97%;"
   >
-    <div class="ui inverted blue large menu">
-      <a href="/" class="item"
-        ><img src="/images/logo.png" alt="logo" style="width: 120px;"
-      /></a>
-      <a href="/buttons.html" class="item ui animated button">
-        <div class="visible content">Reports Management</div>
-        <div class="hidden content">Click Me</div>
-      </a>
-      <a href="/dividers.html" class="item ui animated button">
-        <div class="visible content">Task Management</div>
-        <div class="hidden content">Click Me</div>
-      </a>
-      <a href="/input.html" class="item ui animated button">
-        <div class="visible content">Devices Management</div>
-        <div class="hidden content">Click Me</div>
-      </a>
-      <a href="/label.html" class="item ui animated button">
-        <div class="visible content">User Management</div>
-        <div class="hidden content">Click Me</div>
-      </a>
+    <!--navbar starts-->
+    <div class="ui menu icon inverted blue borderless grid">
+      <div class="right menu colhidden" >
+        <div class="ui dropdown item labeled icon">
+          <i class="bell icon"></i>
+          <div class="ui red label mini circular">6</div>
+        </div>
+        <div class="ui dropdown item">
+          Language <i class="dropdown icon"></i>
+          <div class="menu">
+            <a class="item"><i class="united kingdom flag"></i>English</a>
+            <a class="item"><i class="turkey flag"></i>Turkish</a>
+            <a class="item"><i class="spain flag"></i>Spanish</a>
+          </div>
+        </div>
+        <div class="ui dropdown item">
+          <img
+            class="ui mini circular image"
+            src="http://yellowred.info/stagb/img/avatar/people/enid.png"
+            alt="label-image"
+          />
+          <div class="menu">
+            <a class="item" href="/users/edit">User Profile</a>
+            <div class="ui divider"></div>
+            <a class="item">Need Help?</a>
+            <a class="item" href="/users/logout">Sign Out</a>
+          </div>
+        </div>
+      </div>
     </div>
-    <div><%- body %></div>
+    <!--navbar ends -->
+    <div ><%- body %></div>
   </div>
   <script src="codebase/dhtmlxscheduler.js"></script>
   <script
@@ -211,6 +221,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
   <script>
     $(document).ready(function() {
+      // navbar dropdown
+      $('.ui.dropdown').dropdown()
       // left sidebar nav
       $('.accordion').accordion({
         selector: {

@@ -60,6 +60,25 @@ router.post('/delete', (req, res) => {
   })
 })
 
+router.get('/edit', [ensureAuthenticated], async (req, res) => {
+  const { _id } = req.user
+  const roleKeys = Object.keys(userRole)
+  const roleValues = Object.keys(userRole).map(key => {
+    return userRole[key]
+  })
+  const user = await User.findOne({ _id })
+  const { name, email, role } = user
+  const selectedIndex = roleValues.findIndex(roleValue => roleValue === role)
+  res.render('edit_user', {
+    name,
+    email,
+    userId: _id,
+    selectedIndex,
+    roleKeys,
+    roleValues
+  })
+})
+
 router.get('/edit/:userId', [ensureAuthenticated], async (req, res) => {
   const { userId } = req.params
   const roleKeys = Object.keys(userRole)
@@ -69,7 +88,6 @@ router.get('/edit/:userId', [ensureAuthenticated], async (req, res) => {
   const user = await User.findOne({ _id: userId })
   const { name, email, role } = user
   const selectedIndex = roleValues.findIndex(roleValue => roleValue === role)
-  console.log('selectedIndex', selectedIndex)
   res.render('edit_user', {
     name,
     email,
