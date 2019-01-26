@@ -161,6 +161,31 @@
             })
             .modal('show')
         })
+
+        // delete device modal handler
+        $('form.delete_device').submit(function(event) {
+          event.preventDefault()
+          $('.ui.basic.modal')
+            .modal({
+              onDeny: function() {},
+              onApprove: function() {
+                var args = event.target.name
+                var argList = args.split('_')
+                if (argList && argList.length === 2) {
+                  $.post(
+                    '/settings/' + argList[0] + '/delete_device/' + argList[1],
+                    { deviceId: argList[0], role: argList[1] },
+                    function(data, status) {
+                      if (status === 'success') {
+                        location.reload()
+                      }
+                    }
+                  )
+                }
+              }
+            })
+            .modal('show')
+        })
       })
 
       // generate sidebar
