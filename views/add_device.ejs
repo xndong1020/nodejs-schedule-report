@@ -8,8 +8,7 @@
   <div class="four column relaxed row">
      <div class="ui stacked segment five wide column">
       <% include ./partials/messages_semantic_ui %>
-      <form action="/settings/devices" method="POST" class="ui medium form">
-        <input type="hidden" name="role" value="primary">
+      <form action="/settings/add_device" method="POST" class="ui medium form">
         <div class="field">
           <label for="deviceType">Device Type</label>
           <select name="deviceType" id="device_type">
@@ -51,155 +50,16 @@
             value="<%= settings && settings.devicePassword ? settings.devicePassword : '' %>"
           />
         </div>
+        <div class="field">
+          <label for="role">Device Role</label>
+          <select name="role" id="role">
+              <% for(var i=0;i<deviceRoleKeys.length;i++) { var selected = ( i === currentDeviceRoleIndex ) ? "selected" : ""; %>
+                <option value=<%= deviceRoleKeys[i].toLowerCase() %> <%= selected %> ><%= deviceRoleKeys[i] %></option>
+              <% } %>
+          </select>
+        </div>
         <div class="ui hidden divider"></div>
         <button type="submit" class="ui primary button">Add Primary Device</button>
-      </form>
-     </div>
-     <div class="ui stacked segment five wide column">
-      <% include ./partials/messages_semantic_ui %>
-      <form action="/settings/devices" method="POST" class="ui medium form">
-        <input type="hidden" name="role" value="secondary">
-        <div class="field">
-          <label for="deviceType">Device Type</label>
-          <select name="deviceType" id="device_type">
-            <% for(var i=0;i<deviceKeys.length;i++) { var selected = ( i === currentDeviceIndex ) ? "selected" : ""; %>
-              <option value=<%= deviceKeys[i] %> <%= selected %> ><%= deviceKeys[i] %></option>
-            <% } %>
-          </select>
-        </div>
-        <div class="field">
-          <label for="email">Device Endpoint Url</label>
-          <input
-            type="text"
-            id="deviceUrl"
-            name="deviceUrl"
-            class="form-control"
-            placeholder="Enter Endpoint Url"
-            value="<%= settings && settings.deviceUrl ? settings.deviceUrl : '' %>"
-          />
-        </div>
-        <div class="field">
-          <label for="device_username">Device Login Username</label>
-          <input
-            type="text"
-            id="deviceUsername"
-            name="deviceUsername"
-            class="form-control"
-            placeholder="Enter Device Login Username"
-            value="<%= settings && settings.deviceUsername ? settings.deviceUsername : '' %>"
-          />
-        </div>
-        <div class="field">
-          <label for="password">Device Login Password</label>
-          <input
-            type="text"
-            id="devicePassword"
-            name="devicePassword"
-            class="form-control"
-            placeholder="Enter Device Login Password"
-            value="<%= settings && settings.devicePassword ? settings.devicePassword : '' %>"
-          />
-        </div>
-        <div class="ui hidden divider"></div>
-        <button type="submit" class="ui green button">Add Secondary Device</button>
-      </form>
-     </div>
-     <div class="ui stacked segment five wide column">
-      <% include ./partials/messages_semantic_ui %>
-      <form action="/settings/devices" method="POST" class="ui medium form">
-        <input type="hidden" name="role" value="third">
-        <div class="field">
-          <label for="deviceType">Device Type</label>
-          <select name="deviceType" id="device_type">
-            <% for(var i=0;i<deviceKeys.length;i++) { var selected = ( i === currentDeviceIndex ) ? "selected" : ""; %>
-              <option value=<%= deviceKeys[i] %> <%= selected %> ><%= deviceKeys[i] %></option>
-            <% } %>
-          </select>
-        </div>
-        <div class="field">
-          <label for="email">Device Endpoint Url</label>
-          <input
-            type="text"
-            id="deviceUrl"
-            name="deviceUrl"
-            class="form-control"
-            placeholder="Enter Endpoint Url"
-            value="<%= settings && settings.deviceUrl ? settings.deviceUrl : '' %>"
-          />
-        </div>
-        <div class="field">
-          <label for="device_username">Device Login Username</label>
-          <input
-            type="text"
-            id="deviceUsername"
-            name="deviceUsername"
-            class="form-control"
-            placeholder="Enter Device Login Username"
-            value="<%= settings && settings.deviceUsername ? settings.deviceUsername : '' %>"
-          />
-        </div>
-        <div class="field">
-          <label for="password">Device Login Password</label>
-          <input
-            type="text"
-            id="devicePassword"
-            name="devicePassword"
-            class="form-control"
-            placeholder="Enter Device Login Password"
-            value="<%= settings && settings.devicePassword ? settings.devicePassword : '' %>"
-          />
-        </div>
-        <div class="ui hidden divider"></div>
-        <button type="submit" class="ui yellow button">Add Third Device</button>
-      </form>
-     </div>
-     <div class="ui stacked segment five wide column">
-      <% include ./partials/messages_semantic_ui %>
-      <form action="/settings/devices" method="POST" class="ui medium form">
-        <input type="hidden" name="role" value="fourth">
-        <div class="field">
-          <label for="deviceType">Device Type</label>
-          <select name="deviceType" id="device_type">
-            <% for(var i=0;i<deviceKeys.length;i++) { var selected = ( i === currentDeviceIndex ) ? "selected" : ""; %>
-              <option value=<%= deviceKeys[i] %> <%= selected %> ><%= deviceKeys[i] %></option>
-            <% } %>
-          </select>
-        </div>
-        <div class="field">
-          <label for="email">Device Endpoint Url</label>
-          <input
-            type="text"
-            id="deviceUrl"
-            name="deviceUrl"
-            class="form-control"
-            placeholder="Enter Endpoint Url"
-            value="<%= settings && settings.deviceUrl ? settings.deviceUrl : '' %>"
-          />
-        </div>
-        <div class="field">
-          <label for="device_username">Device Login Username</label>
-          <input
-            type="text"
-            id="deviceUsername"
-            name="deviceUsername"
-            class="form-control"
-            placeholder="Enter Device Login Username"
-            value="<%= settings && settings.deviceUsername ? settings.deviceUsername : '' %>"
-          />
-        </div>
-        <div class="field">
-          <label for="password">Device Login Password</label>
-          <input
-            type="text"
-            id="devicePassword"
-            name="devicePassword"
-            class="form-control"
-            placeholder="Enter Device Login Password"
-            value="<%= settings && settings.devicePassword ? settings.devicePassword : '' %>"
-          />
-        </div>
-        <div class="ui hidden divider"></div>
-        <button type="submit" class="ui teal button">Add Fourth Device</button>
       </form>
      </div>
   </div>

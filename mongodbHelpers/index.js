@@ -129,7 +129,7 @@ const updateTaskStatus = async (taskId, status, date, reportId) => {
 /* for Device */
 const getDeviceSettingsByUserID = userID => {
   return new Promise((resolve, reject) => {
-    Device.findOne({ userID }, (err, data) => {
+    Device.findOne({ userID }, { __v: 0 }, (err, data) => {
       if (err) {
         return reject(err)
       }

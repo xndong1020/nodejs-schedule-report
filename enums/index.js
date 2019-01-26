@@ -17,8 +17,15 @@ const deviceTypes = {
   'DX-80': 'DX-80'
 }
 
+const deviceRoles = {
+  PRIMARY: 'primary',
+  SECONDARY: 'secondary',
+  THIRD: 'third'
+}
+
 module.exports = {
   taskType,
   userRole,
-  deviceTypes
+  deviceTypes,
+  deviceRoles
 }

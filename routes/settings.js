@@ -1,18 +1,29 @@
 const express = require('express')
 const router = express.Router()
 const { Device } = require('../models/Device')
-const { deviceTypes } = require('../enums')
+const { deviceTypes, deviceRoles } = require('../enums')
 const { getDeviceSettingsByUserID } = require('../mongodbHelpers')
 
 // GET /settings/add_device
 router.get('/add_device', async (req, res) => {
   const { _id } = req.user
   const settings = (await getDeviceSettingsByUserID(_id)) || {}
+  const { devices } = settings
+  const deviceExitingRoles = devices.map(device => device.role)
   const { name } = req.user
 
   const deviceKeys = Object.keys(deviceTypes)
   const currentDeviceIndex = deviceKeys.findIndex(
     key => key === settings.deviceType
+  )
+
+  let deviceRoleKeys = Object.keys(deviceRoles)
+
+  deviceRoleKeys = deviceRoleKeys.filter(key => {
+    return !deviceExitingRoles.includes(key.toLocaleLowerCase())
+  })
+  const currentDeviceRoleIndex = deviceRoleKeys.findIndex(
+    key => key === settings.role
   )
 
   // read user settings
@@ -21,7 +32,9 @@ router.get('/add_device', async (req, res) => {
     name,
     settings,
     deviceKeys,
-    currentDeviceIndex
+    currentDeviceIndex,
+    deviceRoleKeys,
+    currentDeviceRoleIndex
   })
 })
 
@@ -46,14 +59,25 @@ router.get('/admin_devices', async (req, res) => {
 })
 
 // POST /settings/add_device
-router.post('/add_device', (req, res) => {
+router.post('/add_device', async (req, res) => {
   const { _id } = req.user
-  const body = req.body
-  const newDevice = { ...body, userID: _id }
-  Device.create(newDevice)
-  req.flash('success_msg', 'Your device has been saved for testing')
-  // read user settings
-  res.redirect('/')
+  try {
+    const settings = (await getDeviceSettingsByUserID(_id)) || {}
+    const { devices } = settings || []
+    const newDeviceObj = { userID: _id, devices: [...devices, req.body] }
+    if (devices.length === 0) await Device.create(newDeviceObj)
+    else await Device.updateOne({ _id: settings._id }, newDeviceObj)
+
+    req.flash('success_msg', 'Your device has been saved for testing')
+    // read user settings
+    res.redirect('/settings/admin_devices')
+  } catch (err) {
+    req.flash(
+      'error_msg',
+      'Oops. Something went wrong on our server. Please try again later' + err
+    )
+    res.redirect('/settings/admin_devices')
+  }
 })
 
 // POST /settings/add_device
@@ -61,7 +85,7 @@ router.post('/:deviceId/delete_device/:role', async (req, res) => {
   const { deviceId, role } = req.params
   try {
     const targetDeviceObj = await Device.findOne({ _id: deviceId })
-    const { devices } = targetDeviceObj
+    const { devices } = targetDeviceObj || []
     const newDeviceList = devices.filter(device => device.role !== role)
     const newDeviceObj = {
       _id: deviceId,
