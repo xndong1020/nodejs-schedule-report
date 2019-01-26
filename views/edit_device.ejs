@@ -8,7 +8,7 @@
   <div class="four column relaxed row">
      <div class="ui stacked segment five wide column">
       <% include ./partials/messages_semantic_ui %>
-      <form action="/settings/add_device" method="POST" class="ui medium form">
+      <form action="/settings/<%= deviceId %>/edit_device/<%= currentDeviceRole %>" method="POST" class="ui medium form">
         <div class="field">
           <label for="deviceType">Device Type</label>
           <select name="deviceType" id="device_type">

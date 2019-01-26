@@ -25,11 +25,11 @@
         <td class="three wide "><div class="ui <%= colors[i] %> tag label"><%= devices[i].role %></div></td>
         <td class="three wide">
           <div class="ui two buttons">
-            <a href="/settings/edit/<%= devices[i]._id %>">
+            <a href="/settings/<%= deviceId %>/edit_device/<%= devices[i].role %>">
               <button class="ui positive button">Edit</button>
             </a>
             <div class="or"></div>
-            <a href="/settings/<%= devices[i]._id %>/delete_device/<%= devices[i].role %>">
+            <a href="/settings/<%= deviceId %>/delete_device/<%= devices[i].role %>">
               <form action="/settings/delete" method="POST" class="delete_device" name="<%= deviceId %>_<%= devices[i].role %>">
                 <button
                   class="ui negative button"
