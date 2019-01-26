@@ -1,0 +1,21 @@
+<% if(typeof errors != 'undefined'){ %> <% errors.forEach(function(error) { %>
+<div class="ui negative message">
+  <i class="close icon"></i>
+  <%= error.msg %>
+</div>
+<% }); %> <% } %> <% if(success_msg != ''){ %>
+<div class="ui positive message">
+  <i class="close icon"></i>
+  <%= success_msg %>
+</div>
+<% } %> <% if(error_msg != ''){ %>
+<div class="ui negative message">
+  <i class="close icon"></i>
+  <%= error_msg %>
+</div>
+<% } %> <% if(error != ''){ %>
+<div class="ui negative message">
+  <i class="close icon"></i>
+  <%= error %>
+</div>
+<% } %>

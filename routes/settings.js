@@ -4,8 +4,8 @@ const { Device } = require('../models/Device')
 const { deviceTypes } = require('../enums')
 const { getDeviceSettingsByUserID } = require('../mongodbHelpers')
 
-// GET /settings/devices
-router.get('/add_devices', async (req, res) => {
+// GET /settings/add_device
+router.get('/add_device', async (req, res) => {
   const { _id } = req.user
   const settings = await getDeviceSettingsByUserID(_id) || {}
   const { name } = req.user
@@ -16,7 +16,7 @@ router.get('/add_devices', async (req, res) => {
   )
 
   // read user settings
-  res.render('add_devices', {
+  res.render('add_device', {
     title: 'Devices',
     name,
     settings,
@@ -25,8 +25,26 @@ router.get('/add_devices', async (req, res) => {
   })
 })
 
-// POST /settings/devices
-router.post('/add_devices', (req, res) => {
+// GET /settings/admin_devices
+router.get('/admin_devices', async (req, res) => {
+  const { _id } = req.user
+  const settings = await getDeviceSettingsByUserID(_id) || {}
+  const { devices } = settings
+  const { name } = req.user
+
+  const deviceKeys = Object.keys(deviceTypes)
+
+  // read user settings
+  res.render('admin_devices', {
+    title: 'Devices',
+    name,
+    devices,
+    deviceKeys
+  })
+})
+
+// POST /settings/add_device
+router.post('/add_device', (req, res) => {
   const { _id } = req.user
   const body = req.body
   const newDevice = { ...body, userID: _id }

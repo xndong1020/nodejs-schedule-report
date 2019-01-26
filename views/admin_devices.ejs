@@ -7,28 +7,30 @@
   <table class="ui stripped celled sortable table">
     <thead>
       <tr>
-        <th class="three wide">Name</th>
-        <th class="three wide">Email</th>
-        <th class="two wide">Role</th>
-        <th class="four wide">Activated Since</th>
-        <th class="four wide">Actions</th>
+        <th class="three wide">Device Type</th>
+        <th class="three wide">Device Endpoint Url</th>
+        <th class="three wide">Account Username</th>
+        <th class="three wide">Account Password</th>
+        <th class="three wide">Role</th>
+        <th class="three wide">Actions</th>
       </tr>
     </thead>
     <tbody>
-      <% for(var i=0; i< users.length; i++) {%>
+      <% for(var i=0; i< devices.length; i++) { var colors =['blue', 'green', 'yellow'] %>
       <tr>
-        <td class="three wide"><%= users[i].name %></td>
-        <td class="three wide"><%= users[i].email %></td>
-        <td class="two wide"><%= users[i].role %></td>
-        <td class="four wide"><%= users[i].date %></td>
-        <td class="four wide">
+        <td class="three wide"><%= devices[i].deviceType %></td>
+        <td class="three wide"><%= devices[i].deviceUrl %></td>
+        <td class="three wide"><%= devices[i].deviceUsername %></td>
+        <td class="three wide"><%= devices[i].devicePassword %></td>
+        <td class="three wide "><div class="ui <%= colors[i] %> tag label"><%= devices[i].role %></div></td>
+        <td class="three wide">
           <div class="ui two buttons">
-            <a href="/users/edit/<%= users[i]._id %>">
+            <a href="/settings/edit/<%= devices[i]._id %>">
               <button class="ui positive button">Edit</button>
             </a>
             <div class="or"></div>
-            <a href="/users/delete/<%= users[i]._id %>">
-              <form action="/users/delete" method="POST" class="delete_user" name="<%= users[i]._id %>">
+            <a href="/settings/delete/<%= devices[i]._id %>">
+              <form action="/settings/delete" method="POST" class="delete_user" name="<%= devices[i]._id %>">
                 <button
                   class="ui negative button"
                   type="submit"
@@ -45,10 +47,10 @@
     <tfoot>
       <tr>
         <th></th>
-        <th colspan="4">
-          <a href="/users/register">
+        <th colspan="5">
+          <a href="/settings/add_device">
             <div class="ui right floated small primary labeled icon button">
-              <i class="user icon"></i> Add User
+              <i class="desktop icon"></i> Add Device
             </div>
           </a>
         </th>

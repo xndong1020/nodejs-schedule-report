@@ -1,10 +1,6 @@
 const mongoose = require('mongoose')
 
-const DeviceSchema = new mongoose.Schema({
-  userID: {
-    type: String,
-    required: true
-  },
+const DeviceListSchema = new mongoose.Schema({
   deviceType: {
     type: String,
     required: true
@@ -20,7 +16,19 @@ const DeviceSchema = new mongoose.Schema({
   devicePassword: {
     type: String,
     required: true
+  },
+  role: {
+    type: String,
+    required: true
   }
+})
+
+const DeviceSchema = new mongoose.Schema({
+  userID: {
+    type: String,
+    required: true
+  },
+  devices: [DeviceListSchema]
 })
 
 const Device = mongoose.model('Device', DeviceSchema)

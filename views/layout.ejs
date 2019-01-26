@@ -15,9 +15,10 @@
       href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
       integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
       crossorigin="anonymous"
+      <link
+      rel="stylesheet"
+      href="/stylesheets/style.css"
     />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/stylesheets/style.css" />
     <title>Pinnacle</title>
   </head>
   <body>
@@ -60,8 +61,10 @@
             <i class="dropdown icon"></i> Devices Management
           </div>
           <div class="content">
-            <a class="item" href="/settings/add_devices">Add Device(s)</a>
-            <a class="item" href="/settings/list_devices">List My Devices</a>
+            <a class="item" href="/settings/admin_devices"
+              >Manage Existing Devices</a
+            >
+            <a class="item" href="/settings/add_device">Add A Device</a>
           </div>
         </div>
         <div id="admin_menu">
@@ -115,7 +118,6 @@
       integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
       crossorigin="anonymous"
     ></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
     <!-- semantic ui -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
     <script src="https://semantic-ui.com/javascript/library/tablesort.js"></script>
@@ -133,6 +135,12 @@
         $('.menu .item').tab()
         // navbar dropdown
         $('.ui.dropdown').dropdown()
+        // error/success dialog
+        $('.message .close').on('click', function() {
+          $(this)
+            .closest('.message')
+            .transition('fade')
+        })
         // delete user modal handler
         $('form.delete_user').submit(function(event) {
           event.preventDefault()

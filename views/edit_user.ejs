@@ -13,7 +13,7 @@
       data-tab="Update Profile"
     >
       <div class="ui stacked segment eight wide column">
-        <% include ./partials/messages %>
+        <% include ./partials/messages_semantic_ui %>
         <form
           action="/users/edit/<%= userId %>"
           method="POST"
@@ -57,7 +57,7 @@
     </div>
     <div class="ui bottom attached tab segment" data-tab="Reset Password">
       <div class="ui stacked segment eight wide column">
-        <% include ./partials/messages %>
+        <% include ./partials/messages_semantic_ui %>
         <form
           action="/users/reset_password/<%= userId %>"
           method="POST"
