@@ -52,6 +52,78 @@
         a.focus()
       }
     }
+    scheduler.form_blocks['primary_device_selector'] = {
+      render: function(sns) {
+        return "<div class='dhx_cal_ltext' style='height:43px;'><select><option value=''>--Please Select--</option><option value='primary'>primary</option><option value='secondary'>secondary</option><option value='third'>third</option></select> --OR Manually Enter-- <input type='text'></div>"
+      },
+      set_value: function(node, value, ev) {
+        var data = value 
+        var devices = ['primary', 'secondary', 'third']
+        if (devices.includes(data)) {
+          node.childNodes[0].value = value
+        } else {
+          node.childNodes[2].value = value || ''
+        }
+      },
+      get_value: function(node, ev) {
+        var dropdown_primary = node.childNodes[0].value
+        var manually_primary = node.childNodes[2].value
+        return dropdown_primary || manually_primary
+      },
+      focus: function(node) {
+        var a = node.childNodes[0]
+        a.select()
+        a.focus()
+      }
+    }
+    scheduler.form_blocks['secondary_device_selector'] = {
+      render: function(sns) {
+        return "<div class='dhx_cal_ltext' style='height:43px;'><select><option value=''>--Please Select--</option><option value='primary'>primary</option><option value='secondary'>secondary</option><option value='third'>third</option></select> --OR Manually Enter-- <input type='text'></div>"
+      },
+      set_value: function(node, value, ev) {
+        var data = value 
+        var devices = ['primary', 'secondary', 'third']
+        if (devices.includes(data)) {
+          node.childNodes[0].value = value
+        } else {
+          node.childNodes[2].value = value || ''
+        }
+      },
+      get_value: function(node, ev) {
+        var dropdown_primary = node.childNodes[0].value
+        var manually_primary = node.childNodes[2].value
+        return dropdown_primary || manually_primary
+      },
+      focus: function(node) {
+        var a = node.childNodes[0]
+        a.select()
+        a.focus()
+      }
+    }
+    scheduler.form_blocks['third_device_selector'] = {
+      render: function(sns) {
+        return "<div class='dhx_cal_ltext' style='height:43px;'><select><option value=''>--Please Select--</option><option value='primary'>primary</option><option value='secondary'>secondary</option><option value='third'>third</option></select> --OR Manually Enter-- <input type='text'></div>"
+      },
+      set_value: function(node, value, ev) {
+        var data = value 
+        var devices = ['primary', 'secondary', 'third']
+        if (devices.includes(data)) {
+          node.childNodes[0].value = value
+        } else {
+          node.childNodes[2].value = value || ''
+        }
+      },
+      get_value: function(node, ev) {
+        var dropdown_primary = node.childNodes[0].value
+        var manually_primary = node.childNodes[2].value
+        return dropdown_primary || manually_primary
+      },
+      focus: function(node) {
+        var a = node.childNodes[0]
+        a.select()
+        a.focus()
+      }
+    }
     scheduler.renderEvent = function(container, ev) {
       var container_width = container.style.width // e.g. "105px"
 
@@ -98,16 +170,28 @@
         focus: true
       },
       {
-        name: 'recipient',
-        height: 50,
-        map_to: 'recipient',
-        type: 'textarea'
-      },
-      {
         name: 'Task type',
         height: 43,
         map_to: 'task_type',
         type: 'task_type_editor'
+      },
+      {
+        name: 'Primary Device',
+        height: 50,
+        map_to: 'primary_device',
+        type: 'primary_device_selector'
+      },
+      {
+        name: 'Secondary Device',
+        height: 50,
+        map_to: 'secondary_device',
+        type: 'secondary_device_selector'
+      },
+      {
+        name: 'Third Device',
+        height: 50,
+        map_to: 'third_device',
+        type: 'third_device_selector'
       },
       {
         name: 'time',
@@ -180,7 +264,7 @@
   >
     <!--navbar starts-->
     <div class="ui menu icon inverted blue borderless grid">
-      <div class="right menu colhidden" >
+      <div class="right menu colhidden">
         <div class="ui dropdown item labeled icon">
           <i class="bell icon"></i>
           <div class="ui red label mini circular">6</div>
@@ -209,7 +293,7 @@
       </div>
     </div>
     <!--navbar ends -->
-    <div ><%- body %></div>
+    <div><%- body %></div>
   </div>
   <script src="codebase/dhtmlxscheduler.js"></script>
   <script
