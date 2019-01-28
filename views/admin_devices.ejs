@@ -7,8 +7,9 @@
   <table class="ui stripped celled sortable table">
     <thead>
       <tr>
-        <th class="three wide">Device Type</th>
-        <th class="three wide">Device Endpoint Url</th>
+        <th class="two wide">Device Type</th>
+        <th class="two wide">Device Endpoint Url</th>
+        <th class="two wide">Device Extension Number</th>
         <th class="three wide">Account Username</th>
         <th class="three wide">Account Password</th>
         <th class="three wide">Role</th>
@@ -18,8 +19,9 @@
     <tbody>
       <% for(var i=0; i< devices.length; i++) { var colors =['blue', 'green', 'yellow'] %>
       <tr>
-        <td class="three wide"><%= devices[i].deviceType %></td>
-        <td class="three wide"><%= devices[i].deviceUrl %></td>
+        <td class="two wide"><%= devices[i].deviceType %></td>
+        <td class="two wide"><%= devices[i].deviceUrl %></td>
+        <td class="two wide"><%= devices[i].deviceExtNo %></td>
         <td class="three wide"><%= devices[i].deviceUsername %></td>
         <td class="three wide"><%= devices[i].devicePassword %></td>
         <td class="three wide "><div class="ui <%= colors[i] %> tag label"><%= devices[i].role %></div></td>
@@ -47,7 +49,7 @@
     <tfoot>
       <tr>
         <th></th>
-        <th colspan="5">
+        <th colspan="6">
           <a href="/settings/add_device">
             <div class="ui right floated small primary labeled icon button">
               <i class="desktop icon"></i> Add Device

@@ -5,8 +5,8 @@
     </h1>
   </div>
   <div class="ui hidden divider"></div>
-  <div class="four column relaxed row">
-     <div class="ui stacked segment five wide column">
+  <div class="eight column relaxed row">
+     <div class="ui stacked segment eight wide column">
       <% include ./partials/messages_semantic_ui %>
       <form action="/settings/add_device" method="POST" class="ui medium form">
         <div class="field">
@@ -26,6 +26,17 @@
             class="form-control"
             placeholder="Enter Endpoint Url"
             value="<%= settings && settings.deviceUrl ? settings.deviceUrl : '' %>"
+          />
+        </div>
+        <div class="field">
+          <label for="deviceExtNo">Device Extension Number</label>
+          <input
+            type="text"
+            id="deviceExtNo"
+            name="deviceExtNo"
+            class="form-control"
+            placeholder="Enter Device Extension Number"
+            value="<%= settings && settings.deviceExtNo ? settings.deviceExtNo : '' %>"
           />
         </div>
         <div class="field">
