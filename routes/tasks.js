@@ -12,12 +12,15 @@ router.get('/', async (req, res) => {
 
 router.get('/data', async (req, res) => {
   const { _id } = req.user
-  const tasks = await Task.find({ userID: _id }, { __v: 0, color: 0 })
+  const tasks = await Task.find({ userID: _id }, { __v: 0 })
   const results = tasks.map(task => {
     return {
       id: task._id,
-      recipient: task.recipient,
+      userID: _id,
       task_type: task.task_type,
+      primary_device: task.primary_device,
+      secondary_device: task.secondary_device,
+      third_device: task.third_device,
       text: task.text,
       start_date: task.start_date,
       end_date: task.end_date,
