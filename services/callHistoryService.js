@@ -18,9 +18,9 @@ const getCallHistory = async settings => {
 const checkDeviceStatus = async settings => {
   try {
     const callHistoryResponse = await getCallHistory(settings)
-    return callHistoryResponse ? 'OK' : 'Offline'
+    return !!callHistoryResponse
   } catch (e) {
-    return 'Offline'
+    return false
   }
 }
 
