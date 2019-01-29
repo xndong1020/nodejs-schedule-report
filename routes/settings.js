@@ -3,6 +3,7 @@ const router = express.Router()
 const { Device } = require('../models/Device')
 const { deviceTypes, deviceRoles } = require('../enums')
 const { getDeviceSettingsByUserID } = require('../mongodbHelpers')
+const { checkDeviceStatus } = require('../services/callHistoryService')
 
 // GET /settings/add_device
 router.get('/add_device', async (req, res) => {
@@ -88,12 +89,20 @@ router.get('/admin_devices', async (req, res) => {
 
   const deviceKeys = Object.keys(deviceTypes)
 
+  // check device status
+  const deviceCheckStatus = devices.map(async device => {
+    const deviceStatus = await checkDeviceStatus(device)
+    return { ...device, deviceStatus }
+  })
+
+  const deviceWithStatus = await Promise.all(deviceCheckStatus)
+
   // read user settings
   res.render('admin_devices', {
     title: 'Devices',
     name,
     deviceId,
-    devices,
+    devices: deviceWithStatus,
     deviceKeys
   })
 })
