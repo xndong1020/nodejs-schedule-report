@@ -1,4 +1,5 @@
 apps:
-  - script   : app.js
+  - script   : ./bin/www
+    name     : webex-web
     instances: 3
     exec_mode: cluster
