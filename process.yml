@@ -1,5 +1,6 @@
 apps:
   - script   : ./bin/www
-    name     : webex-web
+    name     : 'webex-web'
+    watch    : true
     instances: 3
     exec_mode: cluster
