@@ -103,6 +103,7 @@
   $('#uncontrolled').hide()
   $('#error_msg_container').hide()
   $('#success_msg_container').hide()
+  $('#msg_loader').hide()
 
   // handle click event on add device page
   $('.ui.radio.checkbox').click(function() {
@@ -285,6 +286,9 @@
 
   function testDeviceStatus(saveButtonSelector) {
     var errors = []
+    $('#msg_loader').show()
+    $('#error_msg_container').hide()
+    $('#success_msg_container').hide()
     var deviceName = $('#deviceName').val()
     var deviceUrl = $('#deviceUrl').val()
     var deviceExtNo = $('#deviceExtNo').val()
@@ -317,6 +321,7 @@
           devicePassword: devicePassword
         },
         function(response) {
+          $('#msg_loader').hide()
           if (response) {
             $('#success_msg').text('Test Passed.')
             $('#success_msg_container').show()
