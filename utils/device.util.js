@@ -28,6 +28,17 @@ const checkDeviceNameUniqueness = async (
   }
 }
 
+const getDevicesList = async userID => {
+  try {
+    const deviceSettings = (await Device.findOne({ userID })) || {}
+    const { devices } = deviceSettings
+    return devices.map(device => device.deviceName)
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 module.exports = {
+  getDevicesList,
   checkDeviceNameUniqueness
 }

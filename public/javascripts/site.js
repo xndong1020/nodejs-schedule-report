@@ -14,6 +14,8 @@
     $('.menu .item').tab()
     // navbar dropdown
     $('.ui.dropdown').dropdown()
+    // show radio buttons
+    $('.ui.radio.checkbox').checkbox()
     // error/success dialog
     $('.message .close').on('click', function() {
       $(this)
@@ -37,10 +39,6 @@
         })
         .modal('show')
     })
-
-    // show radio buttons
-    $('.ui.radio.checkbox').checkbox()
-
     // delete device modal handler
     $('form.delete_device').submit(function(event) {
       event.preventDefault()
@@ -64,26 +62,42 @@
         })
         .modal('show')
     })
+
+    // delete task modal handler
+    $('form.delete_task').submit(function(event) {
+      event.preventDefault()
+      $('.ui.basic.modal')
+        .modal({
+          onDeny: function() {},
+          onApprove: function() {
+            var taskId = event.target.name
+            if (taskId) {
+              $.post('/tasks/delete/' + taskId, {}, function(
+                data,
+                status
+              ) {
+                if (status === 'success') {
+                  location.reload()
+                }
+              })
+            }
+          }
+        })
+        .modal('show')
+    })
   })
 
-  $('#once_off_datepicker_container').hide()
-  $('#recurring_task_datepicker_container').hide()
-
-  $('#taskRepentance').change(function() {
-    var selectedValue = $(this).val()
-    if (selectedValue === 'once_off') {
-      $('#once_off_datepicker_container').show()
-      $('#recurring_task_datepicker_container').hide()
-    } else if (selectedValue === 'recurring_job') {
-      $('#once_off_datepicker_container').hide()
-      $('#recurring_task_datepicker_container').show()
-    }
+  // show datepickers on create task page
+  $('#task_start_date_picker').calendar({
+    type: 'date'
   })
-
-  // show datepickers on add device page
-  $('#once_off_datepicker').calendar()
-  $('#recurring_task_start_datepicker').calendar()
-  $('#recurring_task_end_datepicker').calendar()
+  $('#task_end_date_picker').calendar({
+    type: 'date'
+  })
+  $('#run_at_time_picker').calendar({
+    ampm: false,
+    type: 'time'
+  })
 
   $('#controlled').hide()
   $('#uncontrolled').hide()

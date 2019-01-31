@@ -7,34 +7,38 @@
   <table class="ui stripped celled sortable table">
     <thead>
       <tr>
-        <th class="two wide">task_type</th>
-        <th class="two wide">primary_device</th>
-        <th class="two wide">secondary_device</th>
-        <th class="two wide">third_device</th>
         <th class="two wide">Description</th>
-        <th class="two wide">Start Date</th>
-        <th class="two wide">End Date</th>
+        <th class="one wide">Task Type</th>
+        <th class="two wide">Primary Device</th>
+        <th class="two wide">Secondary Device</th>
+        <th class="two wide">Third Device</th>
+        <th class="two wide">Fourth Device</th>
+        <th class="one wide">Start Date</th>
+        <th class="one wide">End Date</th>
+        <th class="one wide">Run At</th>
         <th class="two wide">Actions</th>
       </tr>
     </thead>
     <tbody>
-      <% for(var i=0; i< results.length; i++) {%>
+      <% for(var i=0; i< tasks.length; i++) {%>
       <tr>
-        <td class="two wide"><%= results[i].task_type %></td>
-        <td class="two wide"><%= results[i].primary_device %></td>
-        <td class="two wide"><%= results[i].secondary_device %></td>
-        <td class="two wide"><%= results[i].third_device %></td>
-        <td class="two wide"><%= results[i].text %></td>
-        <td class="two wide"><%= results[i].start_date %></td>
-        <td class="two wide"><%= results[i].end_date %></td>
+        <td class="two wide"><%= tasks[i].text %></td>
+        <td class="one wide"><%= tasks[i].task_type %></td>
+        <td class="two wide"><%= tasks[i].primary_device %></td>
+        <td class="two wide"><%= tasks[i].secondary_device %></td>
+        <td class="two wide"><%= tasks[i].third_device %></td>
+        <td class="two wide"><%= tasks[i].fourth_device %></td>
+        <td class="one wide"><%= tasks[i].start_date %></td>
+        <td class="one wide"><%= tasks[i].end_date %></td>
+        <td class="one wide"><%= tasks[i].run_at %></td>
         <td class="two wide">
           <div class="ui two buttons">
-            <a href="/tasks/edit/<%= results[i]._id %>">
+            <a href="/tasks/edit/<%= tasks[i]._id %>">
               <button class="ui positive button">Edit</button>
             </a>
             <div class="or"></div>
-            <a href="/tasks/delete/<%= results[i]._id %>">
-              <form action="/tasks/delete" method="POST" class="delete_task" name="<%= results[i]._id %>">
+            <a href="/tasks/delete/<%= tasks[i]._id %>">
+              <form action="/tasks/delete/<%= tasks[i]._id %>" method="POST" class="delete_task" name="<%= tasks[i]._id %>">
                 <button
                   class="ui negative button"
                   type="submit"
@@ -51,7 +55,7 @@
     <tfoot>
       <tr>
         <th></th>
-        <th colspan="8">
+        <th colspan="10">
           <a href="/tasks/create">
             <div class="ui right floated small primary labeled icon button">
               <i class="task icon"></i> Create New Task
@@ -64,9 +68,9 @@
 </section>
 <div class="ui basic modal">
   <div class="ui icon header">
-    <i class="user icon"></i> Deleting An Existing User
+    <i class="user icon"></i> Deleting A Scheduled Task
   </div>
-  <div class="content"><p>Are you sure you want to delete this user?</p></div>
+  <div class="content"><p>Are you sure you want to delete this task?</p></div>
   <div class="actions">
     <div class="ui red basic cancel inverted button">
       <i class="remove icon"></i> No

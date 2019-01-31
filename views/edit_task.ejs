@@ -8,17 +8,17 @@
   <div class="fourteen column relaxed row">
      <div class="ui stacked segment fourteen wide column">
       <% include ./partials/messages_semantic_ui %>
-      <form action="/tasks/create" method="POST" class="ui medium form">
+      <form action="/tasks/edit/<%= task._id %>" method="POST" class="ui medium form">
         <div class="field">
           <label for="text">Task Name</label>
-          <input type="text" name="text" id="text" placeholder="Please Enter A Description of the New Task">
+          <input type="text" name="text" id="text" value=<%= task.text %> placeholder="Please Enter A Description of the New Task">
         </div>
         <div class="field">
           <label for="task_type">Task Type</label>
           <select name="task_type" id="task_type">
               <option value="">-- Please Select --</option>
-              <% for(var i=0;i<taskTypeKeys.length;i++) {  %>
-                <option value=<%= taskTypeValues[i] %> ><%= taskTypeKeys[i] %></option>
+              <% for(var i=0;i<taskTypeKeys.length;i++) { var selected = taskTypeIndex === i ? "selected" : "" %>
+                <option value=<%= taskTypeValues[i] %> <%= selected %>><%= taskTypeKeys[i] %></option>
               <% } %>
           </select>
         </div>
@@ -26,8 +26,8 @@
           <label for="text">Task Primary Device</label>
           <select name="primary_device" id="primary_device">
             <option value="">-- Please Select --</option>
-            <% for(var i=0;i<deviceNameList.length;i++) {  %>
-              <option value=<%= deviceNameList[i] %> ><%= deviceNameList[i] %></option>
+            <% for(var i=0;i<deviceNameList.length;i++) { var selected = primaryDeviceIndex === i ? "selected" : "" %>
+              <option value=<%= deviceNameList[i] %> <%= selected %>><%= deviceNameList[i] %></option>
             <% } %>
           </select>
         </div>
@@ -35,8 +35,8 @@
           <label for="text">Task Secondary Device</label>
           <select name="secondary_device" id="secondary_device">
             <option value="">-- Please Select --</option>
-            <% for(var i=0;i<deviceNameList.length;i++) {  %>
-              <option value=<%= deviceNameList[i] %> ><%= deviceNameList[i] %></option>
+            <% for(var i=0;i<deviceNameList.length;i++) { var selected = secondaryDeviceIndex === i ? "selected" : "" %>
+              <option value=<%= deviceNameList[i] %> <%= selected %>><%= deviceNameList[i] %></option>
             <% } %>
           </select>
         </div>
@@ -44,8 +44,8 @@
           <label for="text">Task Third Device</label>
           <select name="third_device" id="third_device">
             <option value="">-- Please Select --</option>
-            <% for(var i=0;i<deviceNameList.length;i++) {  %>
-              <option value=<%= deviceNameList[i] %> ><%= deviceNameList[i] %></option>
+            <% for(var i=0;i<deviceNameList.length;i++) { var selected = thirdDeviceIndex === i ? "selected" : "" %>
+              <option value=<%= deviceNameList[i] %> <%= selected %>><%= deviceNameList[i] %></option>
             <% } %>
           </select>
         </div>
@@ -53,8 +53,8 @@
           <label for="text">Task Fourth Device (Optional)</label>
           <select name="fourth_device" id="fourth_device">
             <option value="">-- Please Select --</option>
-            <% for(var i=0;i<deviceNameList.length;i++) {  %>
-              <option value=<%= deviceNameList[i] %> ><%= deviceNameList[i] %></option>
+            <% for(var i=0;i<deviceNameList.length;i++) { var selected = fourthDeviceIndex === i ? "selected" : "" %>
+              <option value=<%= deviceNameList[i] %> <%= selected %>><%= deviceNameList[i] %></option>
             <% } %>
           </select>
         </div>
@@ -64,7 +64,7 @@
                 <div class="ui calendar" id="task_start_date_picker">
                   <div class="ui input left icon">
                     <i class="calendar icon"></i>
-                    <input type="text" name="start_date" id="start_date" placeholder="Start Date">
+                    <input type="text" name="start_date" id="start_date" value=<%= start_date %> placeholder="Start Date">
                   </div>
                 </div>
             </div>
@@ -73,7 +73,7 @@
                 <div class="ui calendar" id="task_end_date_picker">
                   <div class="ui input left icon">
                     <i class="calendar icon"></i>
-                    <input type="text" name="end_date" id="end_date" placeholder="End Date">
+                    <input type="text" name="end_date" id="end_date" value=<%= end_date %> placeholder="End Date">
                   </div>
                 </div>
             </div>
@@ -82,7 +82,7 @@
               <div class="ui calendar" id="run_at_time_picker">
                 <div class="ui input left icon">
                   <i class="calendar icon"></i>
-                  <input type="text" name="run_at" id="run_at" placeholder="Run At">
+                  <input type="text" name="run_at" id="run_at" value=<%= task.run_at %> placeholder="Run At">
                 </div>
               </div>
           </div>
