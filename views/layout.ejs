@@ -19,7 +19,12 @@
       rel="stylesheet"
       href="/stylesheets/style.css"
     />
-    <title>Pinnacle</title>
+    <link
+      href="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <title>Webex Call Testing</title>
   </head>
   <body>
     <div class="ui visible inverted left vertical borderless sidebar menu">
@@ -56,8 +61,8 @@
             <i class="dropdown icon"></i> Task Management
           </div>
           <div class="content">
-            <a class="item" href="/tasks">Task Scheduler</a>
-            <a class="item" href="#">List My Tasks</a>
+            <a class="item" href="/tasks/admin_tasks">Task Scheduler</a>
+            <a class="item" href="/tasks/create">List My Tasks</a>
           </div>
           <div class="title item" style="padding-left:15px;">
             <i class="ion-ios-world titleIcon  icon"></i>
@@ -81,8 +86,12 @@
           </div>
         </div>
         <div>
-          <div class="content" style="margin-top: -5px;"><a class="item" href="#">Help</a></div>
-          <div class="content" style="margin-top: -10px;"><a class="item" href="#">About</a></div>
+          <div class="content" style="margin-top: -5px;">
+            <a class="item" href="#">Help</a>
+          </div>
+          <div class="content" style="margin-top: -10px;">
+            <a class="item" href="#">About</a>
+          </div>
         </div>
         <div style="border-top: solid 1px #333333; font-size: 0.8rem;">
           <div class="content">
@@ -132,93 +141,8 @@
     ></script>
     <!-- semantic ui -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+    <script src="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.js"></script>
     <script src="https://semantic-ui.com/javascript/library/tablesort.js"></script>
-    <script>
-      $(document).ready(function() {
-        // left sidebar nav
-        $('.accordion').accordion({
-          selector: {
-            trigger: '.title .icon'
-          }
-        })
-        // user table sortable
-        $('table').tablesort()
-        // edit user/update password
-        $('.menu .item').tab()
-        // navbar dropdown
-        $('.ui.dropdown').dropdown()
-        // error/success dialog
-        $('.message .close').on('click', function() {
-          $(this)
-            .closest('.message')
-            .transition('fade')
-        })
-        // delete user modal handler
-        $('form.delete_user').submit(function(event) {
-          event.preventDefault()
-          $('.ui.basic.modal')
-            .modal({
-              onDeny: function() {},
-              onApprove: function() {
-                var userId = event.target.name
-                $.post('/users/delete', { userId: userId }, function(
-                  data,
-                  status
-                ) {
-                  if (status === 'success') {
-                    location.reload()
-                  }
-                })
-              }
-            })
-            .modal('show')
-        })
-
-        // delete device modal handler
-        $('form.delete_device').submit(function(event) {
-          event.preventDefault()
-          $('.ui.basic.modal')
-            .modal({
-              onDeny: function() {},
-              onApprove: function() {
-                var args = event.target.name
-                var argList = args.split('_')
-                if (argList && argList.length === 2) {
-                  $.post(
-                    '/settings/' + argList[0] + '/delete_device/' + argList[1],
-                    { deviceId: argList[0], role: argList[1] },
-                    function(data, status) {
-                      if (status === 'success') {
-                        location.reload()
-                      }
-                    }
-                  )
-                }
-              }
-            })
-            .modal('show')
-        })
-      })
-
-      // generate sidebar
-      var showAdminComponents = localStorage.getItem('showAdminComponents')
-      var showWebexComponents = localStorage.getItem('showWebexComponents')
-      var showPurecloudComponents = localStorage.getItem(
-        'showPurecloudComponents'
-      )
-
-      showAdminComponents = showAdminComponents === 'true'
-      showWebexComponents = showWebexComponents === 'true'
-      showPurecloudComponents = showPurecloudComponents === 'true'
-
-      if (!showAdminComponents) $('#admin_menu').hide()
-      else $('#admin_menu').show()
-
-      if (!showWebexComponents) $('#webex_menu').hide()
-      else $('#webex_menu').show()
-
-      if (!showPurecloudComponents) $('#pourcloud_menu').hide()
-      else $('#pourcloud_menu').show()
-    </script>
+    <script src="/javascripts/site.js"></script>
   </body>
 </html>

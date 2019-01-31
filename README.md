@@ -97,6 +97,11 @@ sudo nginx -t
 sudo systemctl restart nginx
 ```
 
+References:
+https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-16-04
+https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-18-04
+
+
 ## Get Started:
 ```
 npm i 

@@ -4,6 +4,11 @@ const taskType = {
   UNATTENDED_TRANSFER: 'unattended_transfer'
 }
 
+const taskRepentance = {
+  RECURRING_JOB: 'recurring_job',
+  ONCE_OFF: 'once_off'
+}
+
 const userRole = {
   ADMIN: 'admin',
   WEBEX_ADMIN: 'webex_admin',
@@ -27,5 +32,6 @@ module.exports = {
   taskType,
   userRole,
   deviceTypes,
-  deviceRoles
+  deviceRoles,
+  taskRepentance
 }

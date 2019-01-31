@@ -4,6 +4,7 @@ const { Device } = require('../models/Device')
 const { deviceTypes, deviceRoles } = require('../enums')
 const { getDeviceSettingsByUserID } = require('../mongodbHelpers')
 const { checkDeviceStatus } = require('../services/callHistoryService')
+const { checkDeviceNameUniqueness } = require('../utils/device.util')
 
 // GET /settings/add_device
 router.get('/add_device', async (req, res) => {
@@ -89,22 +90,36 @@ router.get('/admin_devices', async (req, res) => {
 
   const deviceKeys = Object.keys(deviceTypes)
 
-  // check device status
-  const deviceCheckStatus = devices.map(async device => {
-    const deviceStatus = await checkDeviceStatus(device)
-    return { ...device, deviceStatus }
-  })
-
-  const deviceWithStatus = await Promise.all(deviceCheckStatus)
-
   // read user settings
   res.render('admin_devices', {
     title: 'Devices',
     name,
     deviceId,
-    devices: deviceWithStatus,
+    devices,
     deviceKeys
   })
+})
+
+// POST /settings/check_status
+router.post('/check_status', async (req, res) => {
+  try {
+    const response = await checkDeviceStatus(req.body)
+    res.status(200).send(response)
+  } catch (err) {
+    res.status(400).send(err)
+  }
+})
+
+// POST /settings/check_uniqueness
+router.post('/check_uniqueness', async (req, res) => {
+  try {
+    const { _id } = req.user
+    const { deviceName } = req.body
+    const response = await checkDeviceNameUniqueness(deviceName, _id)
+    res.status(200).send(response)
+  } catch (err) {
+    res.status(400).send(err)
+  }
 })
 
 // POST /settings/add_device

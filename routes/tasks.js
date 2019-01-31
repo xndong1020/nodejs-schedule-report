@@ -3,11 +3,49 @@
 const express = require('express')
 const router = express.Router()
 const { Task } = require('../models/Task')
+const { taskType, taskRepentance } = require('../enums')
 const { randomHexGenerator } = require('../utils/color.util')
 const { io } = require('../io')
 
 router.get('/', async (req, res) => {
   res.render('calendar', { layout: 'layout_calendar' })
+})
+
+router.get('/admin_tasks', async (req, res) => {
+  const { _id } = req.user
+  const tasks = await Task.find({ userID: _id }, { __v: 0 })
+  const results = tasks.map(task => {
+    return {
+      id: task._id,
+      userID: _id,
+      task_type: task.task_type,
+      primary_device: task.primary_device,
+      secondary_device: task.secondary_device,
+      third_device: task.third_device,
+      text: task.text,
+      start_date: task.start_date,
+      end_date: task.end_date
+    }
+  })
+  res.render('admin_tasks', { results })
+})
+
+router.get('/create', async (req, res) => {
+  const taskTypeKeys = Object.keys(taskType)
+  const taskTypeValues = Object.keys(taskType).map(key => {
+    return taskType[key]
+  })
+  const taskRepentanceKeys = Object.keys(taskRepentance)
+  const taskRepentanceValues = Object.keys(taskRepentance).map(key => {
+    return taskRepentance[key]
+  })
+  res.render('create_task', {
+    title: 'Create Task',
+    taskTypeKeys,
+    taskTypeValues,
+    taskRepentanceKeys,
+    taskRepentanceValues
+  })
 })
 
 router.get('/data', async (req, res) => {
