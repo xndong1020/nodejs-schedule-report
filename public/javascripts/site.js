@@ -72,10 +72,7 @@
           onApprove: function() {
             var taskId = event.target.name
             if (taskId) {
-              $.post('/tasks/delete/' + taskId, {}, function(
-                data,
-                status
-              ) {
+              $.post('/tasks/delete/' + taskId, {}, function(data, status) {
                 if (status === 'success') {
                   location.reload()
                 }
@@ -123,7 +120,7 @@
 
       $('#saveDeviceBtn').click(function(e) {
         e.preventDefault()
-        saveDeviceDetails('add', '#createDeviceForm')
+        saveControlledDeviceDetails('add', '#createDeviceForm')
       })
     } else if (isDeviceApiControlled === 'uncontrolled') {
       $('#deviceTypeContainer').hide()
@@ -134,46 +131,19 @@
 
       $('#saveDeviceBtn').click(function(e) {
         e.preventDefault()
-        var errors = []
-        var deviceName = $('#deviceName').val()
-        var deviceNumberAddr = $('#deviceNumberAddr').val()
-
-        if (!deviceName) {
-          errors.push('Device Name is required')
-        }
-        if (!deviceNumberAddr) {
-          errors.push('Device Number or Address is required')
-        }
-        if (errors.length === 0) {
-          checkDeviceNameUniqueness(deviceName, function(response) {
-            if (response) {
-              $('#error_msg').text(
-                'This Device Name is taken. Please choose another name.'
-              )
-              $('#error_msg_container').show()
-              $('#success_msg_container').hide()
-            } else {
-              $('#deviceType').val('')
-              $('#createDeviceForm').submit()
-            }
-          })
-        } else {
-          $('#error_msg').text(errors.join(' . '))
-          $('#error_msg_container').show()
-          $('#success_msg_container').hide()
-        }
+        saveUncontrolledDeviceDetails('add', '#createDeviceForm')
       })
     }
   })
 
-  //edit page
+  //edit device page
   $('#saveEditDeviceBtn').attr('disabled', 'disabled')
   $('#testEditDeviceBtn').click(function() {
     testDeviceStatus('#saveEditDeviceBtn')
   })
   $('#saveEditDeviceBtn').click(function(e) {
     e.preventDefault()
-    saveDeviceDetails('edit', '#editDeviceForm')
+    saveControlledDeviceDetails('edit', '#editDeviceForm')
   })
 
   $('.deviceTestStatusButton').click(function(e) {
@@ -218,6 +188,11 @@
     )
   })
 
+  $('#saveEditDeviceUncontrolledBtn').click(function(e) {
+    e.preventDefault()
+    saveUncontrolledDeviceDetails('edit', '#editDeviceFormUncontrolled')
+  })
+
   // generate sidebar
   var showAdminComponents = localStorage.getItem('showAdminComponents')
   var showWebexComponents = localStorage.getItem('showWebexComponents')
@@ -237,7 +212,7 @@
   else $('#pourcloud_menu').show()
 
   //utils
-  function saveDeviceDetails(action, formName) {
+  function saveControlledDeviceDetails(action, formName) {
     var errors = []
     var deviceName = $('#deviceName').val()
     var deviceUrl = $('#deviceUrl').val()
@@ -274,6 +249,41 @@
           $('#error_msg_container').show()
           $('#success_msg_container').hide()
         } else {
+          $(formName).submit()
+        }
+      })
+    } else {
+      $('#error_msg').text(errors.join(' . '))
+      $('#error_msg_container').show()
+      $('#success_msg_container').hide()
+    }
+  }
+
+  function saveUncontrolledDeviceDetails(action, formName) {
+    var errors = []
+    var deviceName = $('#deviceName').val()
+    var deviceNumberAddr = $('#deviceNumberAddr').val()
+    var oldName = $('#deviceOldName')
+    var oldNameVal = oldName ? oldName.val() : ''
+
+    if (!deviceName) {
+      errors.push('Device Name is required')
+    }
+    if (!deviceNumberAddr) {
+      errors.push('Device Number or Address is required')
+    }
+    if (errors.length === 0) {
+      checkDeviceNameUniqueness(deviceName, oldNameVal, action, function(
+        response
+      ) {
+        if (response) {
+          $('#error_msg').text(
+            'This Device Name is taken. Please choose another name.'
+          )
+          $('#error_msg_container').show()
+          $('#success_msg_container').hide()
+        } else {
+          $('#deviceType').val('')
           $(formName).submit()
         }
       })
