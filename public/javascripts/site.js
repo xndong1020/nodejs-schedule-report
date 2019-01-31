@@ -48,12 +48,11 @@
         .modal({
           onDeny: function() {},
           onApprove: function() {
-            var args = event.target.name
-            var argList = args.split('_')
-            if (argList && argList.length === 2) {
+            var deviceName = event.target.name
+            if (deviceName) {
               $.post(
-                '/settings/' + argList[0] + '/delete_device/' + argList[1],
-                { deviceId: argList[0], role: argList[1] },
+                '/settings/delete_device/' + deviceName,
+                { deviceName: deviceName },
                 function(data, status) {
                   if (status === 'success') {
                     location.reload()
@@ -104,100 +103,12 @@
       $('#testDeviceBtn').show()
       $('#saveDeviceBtn').attr('disabled', 'disabled')
       $('#testDeviceBtn').click(function() {
-        var errors = []
-        var deviceName = $('#deviceName').val()
-        var deviceUrl = $('#deviceUrl').val()
-        var deviceExtNo = $('#deviceExtNo').val()
-        var deviceUsername = $('#deviceUsername').val()
-        var devicePassword = $('#devicePassword').val()
-
-        if (!deviceName) {
-          errors.push('Device Unique Name is required')
-        }
-        if (!deviceUrl) {
-          errors.push('Device Endpoint Url is required')
-        }
-        if (!deviceExtNo) {
-          errors.push('Device Extension Number is required')
-        }
-        if (!deviceUsername) {
-          errors.push('Device Username is required')
-        }
-        if (!devicePassword) {
-          errors.push('Device Password is required')
-        }
-
-        if (errors.length === 0) {
-          $('#error_msg_container').hide()
-          $.post(
-            '/settings/check_status',
-            {
-              deviceUrl: deviceUrl,
-              deviceUsername: deviceUsername,
-              devicePassword: devicePassword
-            },
-            function(response) {
-              if (response) {
-                $('#success_msg').text('Test Passed.')
-                $('#success_msg_container').show()
-                $('#error_msg_container').hide()
-                $('#saveDeviceBtn').removeAttr('disabled')
-              } else {
-                $('#error_msg').text('Test Failed.')
-                $('#error_msg_container').show()
-                $('#success_msg_container').hide()
-              }
-            }
-          )
-        } else {
-          $('#error_msg').text(errors.join(' . '))
-          $('#error_msg_container').show()
-          $('#success_msg_container').hide()
-        }
+        testDeviceStatus('#saveDeviceBtn')
       })
 
       $('#saveDeviceBtn').click(function(e) {
         e.preventDefault()
-        var errors = []
-        var deviceName = $('#deviceName').val()
-        var deviceUrl = $('#deviceUrl').val()
-        var deviceExtNo = $('#deviceExtNo').val()
-        var deviceUsername = $('#deviceUsername').val()
-        var devicePassword = $('#devicePassword').val()
-
-        if (!deviceName) {
-          errors.push('Device Name is required')
-        }
-        if (!deviceExtNo) {
-          errors.push('Device Extension Number is required')
-        }
-        if (!deviceUrl) {
-          errors.push('Device Endpoint Url is required')
-        }
-        if (!deviceUsername) {
-          errors.push('Device Username is required')
-        }
-        if (!devicePassword) {
-          errors.push('Device Password is required')
-        }
-
-        if (errors.length === 0) {
-          checkDeviceNameUniqueness(deviceName, function(response) {
-            if (response) {
-              $('#error_msg').text(
-                'This Device Name is taken. Please choose another name.'
-              )
-              $('#error_msg_container').show()
-              $('#success_msg_container').hide()
-            } else {
-              $('#createDeviceForm').submit()
-            }
-          })
-        } else {
-          $('#error_msg').text(errors.join(' . '))
-          $('#error_msg_container').show()
-          $('#success_msg_container').hide()
-        }
+        saveDeviceDetails('add', '#createDeviceForm')
       })
     } else if (isDeviceApiControlled === 'uncontrolled') {
       $('#deviceTypeContainer').hide()
@@ -227,6 +138,7 @@
               $('#error_msg_container').show()
               $('#success_msg_container').hide()
             } else {
+              $('#deviceType').val('')
               $('#createDeviceForm').submit()
             }
           })
@@ -237,6 +149,16 @@
         }
       })
     }
+  })
+
+  //edit page
+  $('#saveEditDeviceBtn').attr('disabled', 'disabled')
+  $('#testEditDeviceBtn').click(function() {
+    testDeviceStatus('#saveEditDeviceBtn')
+  })
+  $('#saveEditDeviceBtn').click(function(e) {
+    e.preventDefault()
+    saveDeviceDetails('edit', '#editDeviceForm')
   })
 
   $('.deviceTestStatusButton').click(function(e) {
@@ -269,12 +191,12 @@
         if (response) {
           $(targetId)
             .removeClass('yellow')
-            .addClass('ui green ribbon label')
+            .addClass('green')
             .text('OK')
         } else {
           $(targetId)
             .removeClass('yellow')
-            .addClass('ui red ribbon label')
+            .addClass('red')
             .text('Offline')
         }
       }
@@ -300,7 +222,110 @@
   else $('#pourcloud_menu').show()
 
   //utils
-  function checkDeviceNameUniqueness(deviceName, cb) {
-    $.post('/settings/check_uniqueness', { deviceName: deviceName }, cb)
+  function saveDeviceDetails(action, formName) {
+    var errors = []
+    var deviceName = $('#deviceName').val()
+    var deviceUrl = $('#deviceUrl').val()
+    var deviceExtNo = $('#deviceExtNo').val()
+    var deviceUsername = $('#deviceUsername').val()
+    var devicePassword = $('#devicePassword').val()
+    var oldName = $('#deviceOldName')
+    var oldNameVal = oldName ? oldName.val() : ''
+
+    if (!deviceName) {
+      errors.push('Device Name is required')
+    }
+    if (!deviceExtNo) {
+      errors.push('Device Extension Number is required')
+    }
+    if (!deviceUrl) {
+      errors.push('Device Endpoint Url is required')
+    }
+    if (!deviceUsername) {
+      errors.push('Device Username is required')
+    }
+    if (!devicePassword) {
+      errors.push('Device Password is required')
+    }
+
+    if (errors.length === 0) {
+      checkDeviceNameUniqueness(deviceName, oldNameVal, action, function(
+        response
+      ) {
+        if (response) {
+          $('#error_msg').text(
+            'This Device Name is taken. Please choose another name.'
+          )
+          $('#error_msg_container').show()
+          $('#success_msg_container').hide()
+        } else {
+          $(formName).submit()
+        }
+      })
+    } else {
+      $('#error_msg').text(errors.join(' . '))
+      $('#error_msg_container').show()
+      $('#success_msg_container').hide()
+    }
+  }
+
+  function testDeviceStatus(saveButtonSelector) {
+    var errors = []
+    var deviceName = $('#deviceName').val()
+    var deviceUrl = $('#deviceUrl').val()
+    var deviceExtNo = $('#deviceExtNo').val()
+    var deviceUsername = $('#deviceUsername').val()
+    var devicePassword = $('#devicePassword').val()
+
+    if (!deviceName) {
+      errors.push('Device Unique Name is required')
+    }
+    if (!deviceUrl) {
+      errors.push('Device Endpoint Url is required')
+    }
+    if (!deviceExtNo) {
+      errors.push('Device Extension Number is required')
+    }
+    if (!deviceUsername) {
+      errors.push('Device Username is required')
+    }
+    if (!devicePassword) {
+      errors.push('Device Password is required')
+    }
+
+    if (errors.length === 0) {
+      $('#error_msg_container').hide()
+      $.post(
+        '/settings/check_status',
+        {
+          deviceUrl: deviceUrl,
+          deviceUsername: deviceUsername,
+          devicePassword: devicePassword
+        },
+        function(response) {
+          if (response) {
+            $('#success_msg').text('Test Passed.')
+            $('#success_msg_container').show()
+            $('#error_msg_container').hide()
+            $(saveButtonSelector).removeAttr('disabled')
+          } else {
+            $('#error_msg').text('Test Failed.')
+            $('#error_msg_container').show()
+            $('#success_msg_container').hide()
+          }
+        }
+      )
+    } else {
+      $('#error_msg').text(errors.join(' . '))
+      $('#error_msg_container').show()
+      $('#success_msg_container').hide()
+    }
+  }
+  function checkDeviceNameUniqueness(deviceName, oldName, action, cb) {
+    $.post(
+      '/settings/check_uniqueness',
+      { deviceName: deviceName, oldName: oldName, action: action },
+      cb
+    )
   }
 })(jQuery)

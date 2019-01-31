@@ -34,18 +34,19 @@
         <td class="three wide">
           <div class="ui three buttons">
             <a
-              href="/settings/<%= deviceId %>/edit_device/<%= devices[i].role %>"
+              href="/settings/edit_device/<%= devices[i].deviceName %>"
             >
               <button class="ui positive button">Edit</button>
             </a>
             <div class="or"></div>
             <a
-              href="/settings/<%= deviceId %>/delete_device/<%= devices[i].role %>"
+              href="/settings/delete_device/<%= devices[i].deviceName %>"
             >
               <form
                 action="/settings/delete"
                 method="POST"
                 class="delete_device"
+                name=<%= devices[i].deviceName %>
               >
                 <button class="ui negative button" type="submit">Delete</button>
               </form>

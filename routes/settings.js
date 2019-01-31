@@ -42,42 +42,36 @@ router.get('/add_device', async (req, res) => {
 })
 
 // GET /settings/add_device
-router.get('/:deviceId/edit_device/:role', async (req, res) => {
+router.get('/edit_device/:deviceName', async (req, res) => {
   const { _id } = req.user
-  const { deviceId, role } = req.params
+  const { deviceName } = req.params
   const settings = (await getDeviceSettingsByUserID(_id)) || {}
   const { devices } = settings
-  const deviceExitingRoles = devices.map(device => device.role)
-  const targetDevice = devices.find(device => device.role === role)
-  const { name } = req.user
+  const targetDevice = devices.find(device => device.deviceName === deviceName)
+  const { deviceType, isDeviceApiControlled } = targetDevice
 
   const deviceKeys = Object.keys(deviceTypes)
-  const currentDeviceIndex = deviceKeys.findIndex(
-    key => key === settings.deviceType
+  const currentDeviceIndex = Object.keys(deviceTypes).findIndex(
+    key => deviceTypes[key] === deviceType
   )
 
-  // available roles contains any unused roles, plus current device role
-  let deviceRoleKeys = Object.keys(deviceRoles)
-  deviceRoleKeys = deviceRoleKeys.filter(key => {
-    return !deviceExitingRoles.includes(key.toLocaleLowerCase())
-  })
-  deviceRoleKeys.push(targetDevice.role.toUpperCase())
-  const currentDeviceRoleIndex = deviceRoleKeys.findIndex(
-    key => key.toLocaleLowerCase() === targetDevice.role.toLocaleLowerCase()
-  )
-
-  // read user settings
-  res.render('edit_device', {
-    title: 'Edit Device Details',
-    name,
-    deviceId,
-    settings: targetDevice,
-    deviceKeys,
-    currentDeviceIndex,
-    deviceRoleKeys,
-    currentDeviceRole: targetDevice.role,
-    currentDeviceRoleIndex
-  })
+  if (isDeviceApiControlled === 'controlled') {
+    // read user settings
+    res.render('edit_device_controlled', {
+      title: 'Edit Device Details',
+      deviceName,
+      settings: targetDevice,
+      deviceKeys,
+      currentDeviceIndex
+    })
+  } else if (isDeviceApiControlled === 'uncontrolled') {
+    // read user settings
+    res.render('edit_device_uncontrolled', {
+      title: 'Edit Device Details',
+      deviceName,
+      settings: targetDevice
+    })
+  }
 })
 
 // GET /settings/admin_devices
@@ -114,8 +108,13 @@ router.post('/check_status', async (req, res) => {
 router.post('/check_uniqueness', async (req, res) => {
   try {
     const { _id } = req.user
-    const { deviceName } = req.body
-    const response = await checkDeviceNameUniqueness(deviceName, _id)
+    const { deviceName, oldName, action } = req.body
+    const response = await checkDeviceNameUniqueness(
+      deviceName,
+      oldName,
+      action,
+      _id
+    )
     res.status(200).send(response)
   } catch (err) {
     res.status(400).send(err)
@@ -144,21 +143,24 @@ router.post('/add_device', async (req, res) => {
   }
 })
 
-// POST /settings/5c37f750991eab536cb237f2/edit_device/primary
-router.post('/:deviceId/edit_device/:role', async (req, res) => {
-  const { deviceId, role } = req.params
+// POST /settings/edit_device/myDevice
+router.post('/edit_device/:deviceName', async (req, res) => {
+  const { _id } = req.user
+  const { deviceName } = req.params
   try {
-    const targetDeviceObj = await Device.findOne({ _id: deviceId })
+    const targetDeviceObj = await Device.findOne({ userID: _id })
     const { devices } = targetDeviceObj || []
-    let newDevicesList = devices
-    const targetDeviceIndex = devices.findIndex(device => device.role !== role)
+    let newDevicesList = [...devices]
+    const targetDeviceIndex = devices.findIndex(
+      device => device.deviceName === deviceName
+    )
     newDevicesList[targetDeviceIndex] = { ...req.body }
     const newDeviceObj = {
       _id: targetDeviceObj._id,
       devices: newDevicesList,
-      userID: targetDeviceObj.userID
+      userID: _id
     }
-    await Device.updateOne({ _id: deviceId }, newDeviceObj)
+    await Device.updateOne({ userID: _id }, newDeviceObj)
 
     req.flash('success_msg', 'Your device has been updated.')
     res.redirect('/settings/admin_devices')
@@ -171,19 +173,24 @@ router.post('/:deviceId/edit_device/:role', async (req, res) => {
   }
 })
 
-// POST /settings/5c37f750991eab536cb237f2/delete_device/primary
-router.post('/:deviceId/delete_device/:role', async (req, res) => {
-  const { deviceId, role } = req.params
+// POST /settings/delete_device/myDevice
+router.post('/delete_device/:deviceName', async (req, res) => {
+  const { _id } = req.user
+  const { deviceName } = req.params
+  console.log('deviceName', deviceName)
   try {
-    const targetDeviceObj = await Device.findOne({ _id: deviceId })
+    const targetDeviceObj = await Device.findOne({ userID: _id })
     const { devices } = targetDeviceObj || []
-    const newDeviceList = devices.filter(device => device.role !== role)
+    const newDeviceList = devices.filter(
+      device => device.deviceName !== deviceName
+    )
+    console.log('newDeviceList', newDeviceList)
     const newDeviceObj = {
-      _id: deviceId,
+      _id: targetDeviceObj._id,
       devices: newDeviceList,
       userID: targetDeviceObj.userID
     }
-    await Device.updateOne({ _id: deviceId }, newDeviceObj)
+    await Device.updateOne({ userID: _id }, newDeviceObj)
 
     req.flash('success_msg', 'Your device has been deleted.')
     res.redirect('/settings/admin_devices')

@@ -1,0 +1,92 @@
+<section class="ui center aligned page relaxed grid" style="width: 80%;">
+    <div class="row">
+      <h1>
+        <i class="fas fa-desktop"></i> <%= title %>
+      </h1>
+    </div>
+    <div class="ui hidden divider"></div>
+    <div class="eight column relaxed row">
+       <div class="ui stacked segment eight wide column">
+        <% include ./partials/messages_semantic_ui %>
+        <form action="/settings/edit_device/<%= deviceName %>" method="POST" class="ui medium form" id="editDeviceForm">
+          <div class="field">
+              <label for="deviceName">Device Unique Name</label>
+              <input
+                type="text"
+                id="deviceName"
+                name="deviceName"
+                class="form-control"
+                placeholder="Enter A Unique Device Name"
+                value="<%= settings && settings.deviceName ? settings.deviceName : '' %>"
+              />
+            </div>
+          <input type="hidden" name="deviceOldName" id="deviceOldName" value="<%= settings && settings.deviceName ? settings.deviceName : '' %>">
+          <input type="hidden" name="isDeviceApiControlled" id="isDeviceApiControlled" value="<%= settings && settings.isDeviceApiControlled ? settings.isDeviceApiControlled : '' %>">
+          <div class="field">
+            <label for="deviceType">Device Type</label>
+            <select name="deviceType" id="device_type">
+                <% for(var i=0;i<deviceKeys.length;i++) { var selected = ( i === currentDeviceIndex ) ? "selected" : ""; %>
+                  <option value=<%= deviceKeys[i] %> <%= selected %> ><%= deviceKeys[i] %></option>
+                <% } %>
+            </select>
+          </div>
+          <div class="field">
+            <label for="deviceUrl">Device Endpoint Url</label>
+            <input
+              type="text"
+              id="deviceUrl"
+              name="deviceUrl"
+              class="form-control"
+              placeholder="Enter Endpoint Url"
+              value="<%= settings && settings.deviceUrl ? settings.deviceUrl : '' %>"
+            />
+          </div>
+          <div class="field">
+            <label for="deviceExtNo">Device Extension Number</label>
+            <input
+              type="text"
+              id="deviceExtNo"
+              name="deviceExtNo"
+              class="form-control"
+              placeholder="Enter Device Extension Number"
+              value="<%= settings && settings.deviceExtNo ? settings.deviceExtNo : '' %>"
+            />
+          </div>
+          <div class="field">
+            <label for="deviceUsername">Device Login Username</label>
+            <input
+              type="text"
+              id="deviceUsername"
+              name="deviceUsername"
+              class="form-control"
+              placeholder="Enter Device Login Username"
+              value="<%= settings && settings.deviceUsername ? settings.deviceUsername : '' %>"
+            />
+          </div>
+          <div class="field">
+            <label for="devicePassword">Device Login Password</label>
+            <input
+              type="text"
+              id="devicePassword"
+              name="devicePassword"
+              class="form-control"
+              placeholder="Enter Device Login Password"
+              value="<%= settings && settings.devicePassword ? settings.devicePassword : '' %>"
+            />
+          </div>
+          <div class="ui negative message" id="error_msg_container">
+              <i class="close icon"></i> <span id="error_msg"></span>
+           </div>
+           <div class="ui positive message" id="success_msg_container">
+              <i class="close icon"></i> <span id="success_msg"></span>
+           </div>
+           <div class="ui hidden divider"></div>
+           <div class="ui two buttons">
+              <button type="button" class="ui green button" id="testEditDeviceBtn">Test</button>
+              <button type="submit" class="ui primary button" id="saveEditDeviceBtn">Save</button>
+           </div>
+        </form>
+       </div>
+    </div>
+  </section>
+  
