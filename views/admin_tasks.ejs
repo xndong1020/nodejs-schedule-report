@@ -7,7 +7,8 @@
   <table class="ui stripped celled sortable table">
     <thead>
       <tr>
-        <th class="two wide">Description</th>
+        <th class="one wide">Task Status</th>
+        <th class="one wide">Description</th>
         <th class="one wide">Task Type</th>
         <th class="two wide">Primary Device</th>
         <th class="two wide">Secondary Device</th>
@@ -22,7 +23,8 @@
     <tbody>
       <% for(var i=0; i< tasks.length; i++) {%>
       <tr>
-        <td class="two wide"><%= tasks[i].text %></td>
+        <td class="one wide"><%= tasks[i].Status %></td>
+        <td class="one wide"><%= tasks[i].text %></td>
         <td class="one wide"><%= tasks[i].task_type %></td>
         <td class="two wide"><%= tasks[i].primary_device %></td>
         <td class="two wide"><%= tasks[i].secondary_device %></td>
@@ -55,7 +57,7 @@
     <tfoot>
       <tr>
         <th></th>
-        <th colspan="10">
+        <th colspan="11">
           <a href="/tasks/create">
             <div class="ui right floated small primary labeled icon button">
               <i class="task icon"></i> Create New Task

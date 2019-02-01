@@ -87,7 +87,14 @@ router.post('/edit/:taskId', async (req, res) => {
   const { taskId } = req.params
 
   try {
-    await Task.updateOne({ _id: taskId }, { ...req.body })
+    await Task.updateOne(
+      { _id: taskId },
+      {
+        ...req.body,
+        start_date: (new Date(req.body.start_date)).toISOString(),
+        end_date: (new Date(req.body.end_date)).toISOString()
+      }
+    )
     io.sockets.emit('taskUpdated', taskId)
     req.flash('success_msg', 'Task has been updated successfully.')
     res.redirect('/tasks/admin_tasks')
@@ -104,6 +111,8 @@ router.post('/create', async (req, res) => {
   const { _id } = req.user
   const data = {
     ...req.body,
+    start_date: (new Date(req.body.start_date)).toISOString(),
+    end_date: (new Date(req.body.end_date)).toISOString(),
     userID: _id,
     status: 'pending',
     reportId: '',
@@ -129,6 +138,7 @@ router.post('/delete/:taskId', async (req, res) => {
 
   try {
     await Task.deleteOne({ _id: taskId })
+    io.sockets.emit('taskDeleted', taskId)
     req.flash('success_msg', 'Task has been deleted successfully.')
     res.redirect('/tasks/admin_tasks')
   } catch (err) {
