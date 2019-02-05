@@ -1,6 +1,6 @@
 /* eslint camelcase:0 */
 
-const moment = require('moment')
+const { DateTime } = require('luxon')
 const io = require('socket.io').listen(4000)
 const { updateTaskStatus } = require('./mongodbHelpers')
 
@@ -19,7 +19,7 @@ io.sockets.on('connection', socket => {
     const { reportId, taskID, error } = data
     console.log('reportId', reportId)
     const task_status = reportId && !error ? 'complete' : 'fail'
-    const completion_date = moment().format('MMMM Do YYYY, h:mm:ss a')
+    const completion_date = DateTime.local().toLocaleString(DateTime.DATETIME_MED_WITH_SECONDS)
     await updateTaskStatus(
       taskID,
       task_status,

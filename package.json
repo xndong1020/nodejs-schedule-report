@@ -36,7 +36,7 @@
     "express-validator": "^5.3.1",
     "http-errors": "~1.6.2",
     "js2xmlparser": "^3.0.0",
-    "moment": "^2.22.2",
+    "luxon": "^1.11.0",
     "mongoose": "^5.3.15",
     "morgan": "~1.9.0",
     "mysql2": "^1.6.4",

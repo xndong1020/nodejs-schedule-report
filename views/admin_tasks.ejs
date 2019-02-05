@@ -10,12 +10,12 @@
         <th class="one wide">Task Status</th>
         <th class="one wide">Description</th>
         <th class="one wide">Task Type</th>
-        <th class="two wide">Primary Device</th>
-        <th class="two wide">Secondary Device</th>
-        <th class="two wide">Third Device</th>
+        <th class="one wide">Primary Device</th>
+        <th class="one wide">Secondary Device</th>
+        <th class="one wide">Third Device</th>
         <th class="one wide">Fourth Device</th>
-        <th class="one wide">Start Date</th>
-        <th class="one wide">End Date</th>
+        <th class="two wide">Start Date</th>
+        <th class="two wide">End Date</th>
         <th class="one wide">Run At</th>
         <th class="one wide">Report</th>
         <th class="two wide">Actions</th>
@@ -27,14 +27,14 @@
         <td class="one wide"><%= tasks[i].status %></td>
         <td class="one wide"><%= tasks[i].text %></td>
         <td class="one wide"><%= tasks[i].task_type %></td>
-        <td class="two wide"><%= tasks[i].primary_device %></td>
-        <td class="two wide"><%= tasks[i].secondary_device %></td>
-        <td class="two wide"><%= tasks[i].third_device %></td>
+        <td class="one wide"><%= tasks[i].primary_device %></td>
+        <td class="one wide"><%= tasks[i].secondary_device %></td>
+        <td class="one wide"><%= tasks[i].third_device %></td>
         <td class="one wide"><%= tasks[i].fourth_device %></td>
-        <td class="one wide"><%= tasks[i].start_date %></td>
-        <td class="one wide"><%= tasks[i].end_date %></td>
+        <td class="two wide"><%= tasks[i].start_date %></td>
+        <td class="two wide"><%= tasks[i].end_date %></td>
         <td class="one wide"><%= tasks[i].run_at %></td>
-        <th class="one wide"><a href="/reports/<%= tasks[i].task_type %>/<%= tasks[i].reportId %>" style="padding-left:15px;">link</a></th>
+        <td class="one wide"><% if(tasks[i].reportId) { %><a href="/reports/<%= tasks[i].task_type %>/<%= tasks[i].reportId %>" style="padding-left:15px;">Link</a><% } %></td>
         <td class="two wide">
           <div class="ui two buttons">
             <a href="/tasks/edit/<%= tasks[i]._id %>">

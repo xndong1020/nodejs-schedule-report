@@ -1,7 +1,7 @@
 /* eslint camelcase:0 */
 
 const express = require('express')
-const moment = require('moment')
+const { DateTime } = require('luxon')
 const router = express.Router()
 const { Task } = require('../models/Task')
 const { taskType } = require('../enums')
@@ -64,8 +64,14 @@ router.get('/edit/:taskId', async (req, res) => {
   const fourthDeviceIndex = deviceNameList.findIndex(
     device => device === fourth_device
   )
-  const start_date_str = moment(targetTaskObj.start_date).format('L')
-  const end_date_str = moment(targetTaskObj.end_date).format('L')
+  const start_date_str = DateTime.fromFormat(
+    targetTaskObj.start_date,
+    'MMMM d, yyyy'
+  ).toISODate()
+  const end_date_str = DateTime.fromFormat(
+    targetTaskObj.end_date,
+    'MMMM d, yyyy'
+  ).toISODate()
 
   res.render('edit_task', {
     title: 'Edit Task',
@@ -85,14 +91,11 @@ router.get('/edit/:taskId', async (req, res) => {
 
 router.post('/edit/:taskId', async (req, res) => {
   const { taskId } = req.params
-
   try {
     await Task.updateOne(
       { _id: taskId },
       {
-        ...req.body,
-        start_date: (new Date(req.body.start_date)).toISOString(),
-        end_date: (new Date(req.body.end_date)).toISOString()
+        ...req.body
       }
     )
     io.sockets.emit('taskUpdated', taskId)
@@ -111,8 +114,14 @@ router.post('/create', async (req, res) => {
   const { _id } = req.user
   const data = {
     ...req.body,
-    start_date: (new Date(req.body.start_date)).toISOString(),
-    end_date: (new Date(req.body.end_date)).toISOString(),
+    start_date: DateTime.fromFormat(
+      req.body.start_date,
+      'MMMM d, yyyy'
+    ).toLocaleString(DateTime.DATE_FULL),
+    end_date: DateTime.fromFormat(
+      req.body.end_date,
+      'MMMM d, yyyy'
+    ).toLocaleString(DateTime.DATE_FULL),
     userID: _id,
     status: 'pending',
     reportId: '',
