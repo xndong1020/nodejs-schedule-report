@@ -24,7 +24,15 @@
     <tbody>
       <% for(var i=0; i< tasks.length; i++) {%>
       <tr>
-        <td class="one wide"><%= tasks[i].status %></td>
+        <td class="one wide">
+          <% if(tasks[i].status==='pending') { %>
+          <div class="ui yellow ribbon label"><%= tasks[i].status %></div>
+          <% } else if(tasks[i].status==='complete') { %>
+          <div class="ui green ribbon label"><%= tasks[i].status %></div>
+          <% } else if(tasks[i].status==='fail') { %>
+          <div class="ui red ribbon label"><%= tasks[i].status %></div>
+          <% } %>
+        </td>
         <td class="one wide"><%= tasks[i].text %></td>
         <td class="one wide"><%= tasks[i].task_type %></td>
         <td class="one wide"><%= tasks[i].primary_device %></td>
@@ -34,7 +42,13 @@
         <td class="two wide"><%= tasks[i].start_date %></td>
         <td class="two wide"><%= tasks[i].end_date %></td>
         <td class="one wide"><%= tasks[i].run_at %></td>
-        <td class="one wide"><% if(tasks[i].reportId) { %><a href="/reports/<%= tasks[i].task_type %>/<%= tasks[i].reportId %>" style="padding-left:15px;">Link</a><% } %></td>
+        <td class="one wide">
+          <% if(tasks[i].reportId) { %><a
+            href="/reports/<%= tasks[i].task_type %>/<%= tasks[i].reportId %>"
+            style="padding-left:15px;"
+            >Link</a
+          ><% } %>
+        </td>
         <td class="two wide">
           <div class="ui two buttons">
             <a href="/tasks/edit/<%= tasks[i]._id %>">
@@ -42,11 +56,13 @@
             </a>
             <div class="or"></div>
             <a href="/tasks/delete/<%= tasks[i]._id %>">
-              <form action="/tasks/delete/<%= tasks[i]._id %>" method="POST" class="delete_task" name="<%= tasks[i]._id %>">
-                <button
-                  class="ui negative button"
-                  type="submit"
-                >
+              <form
+                action="/tasks/delete/<%= tasks[i]._id %>"
+                method="POST"
+                class="delete_task"
+                name="<%= tasks[i]._id %>"
+              >
+                <button class="ui negative button" type="submit">
                   Delete
                 </button>
               </form>
