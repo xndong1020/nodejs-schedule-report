@@ -90,26 +90,123 @@ router.get('/edit/:taskId', async (req, res) => {
   })
 })
 
-router.post('/edit/:taskId', async (req, res) => {
-  const { taskId } = req.params
-  try {
-    await Task.updateOne(
-      { _id: taskId },
-      {
-        ...req.body
+router.post(
+  '/edit/:taskId',
+  [
+    check('text')
+      .not()
+      .isEmpty()
+      .withMessage('Please provide a valid task description'),
+    check('task_type')
+      .not()
+      .isEmpty()
+      .withMessage('Please select a valid task type'),
+    check('primary_device')
+      .not()
+      .isEmpty()
+      .withMessage('Please select a device for testing'),
+    check('secondary_device')
+      .not()
+      .isEmpty()
+      .withMessage('Please select a device for testing'),
+    check('third_device')
+      .not()
+      .isEmpty()
+      .withMessage('Please select a device for testing'),
+    check('start_date')
+      .not()
+      .isEmpty()
+      .withMessage('Please select a start date'),
+    check('end_date')
+      .not()
+      .isEmpty()
+      .withMessage('Please select an end date'),
+    check('run_at')
+      .not()
+      .isEmpty()
+      .withMessage('Please select start time')
+  ],
+  async (req, res) => {
+    const { taskId } = req.params
+    const { _id } = req.user
+    const checkResult = validationResult(req)
+    const errors = checkResult.array()
+
+    if (!checkResult.isEmpty()) {
+      const taskTypeKeys = Object.keys(taskType)
+      const taskTypeValues = Object.keys(taskType).map(key => {
+        return taskType[key]
+      })
+      const {
+        primary_device,
+        secondary_device,
+        third_device,
+        fourth_device,
+        task_type
+      } = req.body
+      const taskTypeIndex = taskTypeValues.findIndex(key => key === task_type)
+
+      const deviceNameList = await getDevicesList(_id)
+
+      const primaryDeviceIndex = deviceNameList.findIndex(
+        device => device === primary_device
+      )
+      const secondaryDeviceIndex = deviceNameList.findIndex(
+        device => device === secondary_device
+      )
+      const thirdDeviceIndex = deviceNameList.findIndex(
+        device => device === third_device
+      )
+      const fourthDeviceIndex = deviceNameList.findIndex(
+        device => device === fourth_device
+      )
+      const start_date_str = DateTime.fromFormat(
+        req.body.start_date,
+        'MMMM d, yyyy'
+      ).toISODate()
+      const end_date_str = DateTime.fromFormat(
+        req.body.end_date,
+        'MMMM d, yyyy'
+      ).toISODate()
+      res.render('edit_task', {
+        title: 'Edit Task',
+        errors,
+        deviceNameList,
+        taskTypeKeys,
+        taskTypeValues,
+        task: { ...req.body, _id: taskId },
+        taskTypeIndex,
+        primaryDeviceIndex,
+        secondaryDeviceIndex,
+        thirdDeviceIndex,
+        fourthDeviceIndex,
+        start_date: start_date_str,
+        end_date: end_date_str,
+        error_msg: '',
+        success_msg: ''
+      })
+    } else {
+      try {
+        await Task.updateOne(
+          { _id: taskId },
+          {
+            ...req.body
+          }
+        )
+        io.sockets.emit('taskUpdated', taskId)
+        req.flash('success_msg', 'Task has been updated successfully.')
+        res.redirect('/tasks/admin_tasks')
+      } catch (err) {
+        req.flash(
+          'error_msg',
+          'Oops. Something went wrong on our server. Please try again later' +
+            err
+        )
+        res.redirect('/tasks/admin_tasks')
       }
-    )
-    io.sockets.emit('taskUpdated', taskId)
-    req.flash('success_msg', 'Task has been updated successfully.')
-    res.redirect('/tasks/admin_tasks')
-  } catch (err) {
-    req.flash(
-      'error_msg',
-      'Oops. Something went wrong on our server. Please try again later' + err
-    )
-    res.redirect('/tasks/admin_tasks')
+    }
   }
-})
+)
 
 router.post(
   '/create',
@@ -159,7 +256,6 @@ router.post(
 
     if (!checkResult.isEmpty()) {
       // client-side validation failed
-      console.log(' req.body', req.body)
       const {
         text,
         task_type,
