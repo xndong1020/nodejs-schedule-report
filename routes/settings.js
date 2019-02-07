@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const { Device } = require('../models/Device')
-const { deviceTypes, deviceRoles } = require('../enums')
+const { deviceTypes } = require('../enums')
 const { getDeviceSettingsByUserID } = require('../mongodbHelpers')
 const { checkDeviceStatus } = require('../services/callHistoryService')
 const { checkDeviceNameUniqueness } = require('../utils/device.util')
@@ -10,23 +10,11 @@ const { checkDeviceNameUniqueness } = require('../utils/device.util')
 router.get('/add_device', async (req, res) => {
   const { _id } = req.user
   const settings = (await getDeviceSettingsByUserID(_id)) || {}
-  const { devices } = settings
-  const deviceExitingRoles = devices.map(device => device.role)
   const { name } = req.user
 
   const deviceKeys = Object.keys(deviceTypes)
   const currentDeviceIndex = deviceKeys.findIndex(
     key => key === settings.deviceType
-  )
-
-  // available roles contains any unused roles
-  let deviceRoleKeys = Object.keys(deviceRoles)
-  deviceRoleKeys = deviceRoleKeys.filter(key => {
-    return !deviceExitingRoles.includes(key.toLocaleLowerCase())
-  })
-
-  const currentDeviceRoleIndex = deviceRoleKeys.findIndex(
-    key => key === settings.role
   )
 
   // read user settings
@@ -35,9 +23,7 @@ router.get('/add_device', async (req, res) => {
     name,
     settings,
     deviceKeys,
-    currentDeviceIndex,
-    deviceRoleKeys,
-    currentDeviceRoleIndex
+    currentDeviceIndex
   })
 })
 
@@ -78,7 +64,8 @@ router.get('/edit_device/:deviceName', async (req, res) => {
 router.get('/admin_devices', async (req, res) => {
   const { _id } = req.user
   const settings = (await getDeviceSettingsByUserID(_id)) || {}
-  const { devices } = settings
+  let { devices } = settings
+  devices = devices || []
   const deviceId = settings._id
   const { name } = req.user
 
@@ -126,7 +113,8 @@ router.post('/add_device', async (req, res) => {
   const { _id } = req.user
   try {
     const settings = (await getDeviceSettingsByUserID(_id)) || {}
-    const { devices } = settings || []
+    let { devices } = settings
+    devices = devices || []
     const newDeviceObj = { userID: _id, devices: [...devices, req.body] }
     if (devices.length === 0) await Device.create(newDeviceObj)
     else await Device.updateOne({ _id: settings._id }, newDeviceObj)
