@@ -11,50 +11,50 @@
       <form action="/tasks/create" method="POST" class="ui medium form">
         <div class="field">
           <label for="text">Task Name</label>
-          <input type="text" name="text" id="text" placeholder="Please Enter A Description of the New Task">
+          <input type="text" name="text" id="text" value="<%= typeof text != 'undefined' ? text : '' %>" placeholder="Please Enter A Description of the New Task">
         </div>
         <div class="field">
           <label for="task_type">Task Type</label>
           <select name="task_type" id="task_type">
               <option value="">-- Please Select --</option>
-              <% for(var i=0;i<taskTypeKeys.length;i++) {  %>
-                <option value=<%= taskTypeValues[i] %> ><%= taskTypeKeys[i] %></option>
+              <% for(var i=0;i<taskTypeKeys.length;i++) { var selected = typeof task_type != 'undefined' && task_type && taskTypeKeys[i].toLowerCase() === task_type.toLowerCase()? 'selected' : '' %>
+                <option value=<%= taskTypeValues[i] %> <%= selected %> ><%= taskTypeKeys[i] %></option>
               <% } %>
           </select>
         </div>
         <div class="field">
-          <label for="text">Task Primary Device</label>
+          <label for="primary_device">Task Primary Device</label>
           <select name="primary_device" id="primary_device">
             <option value="">-- Please Select --</option>
-            <% for(var i=0;i<deviceNameList.length;i++) {  %>
-              <option value=<%= deviceNameList[i] %> ><%= deviceNameList[i] %></option>
+            <% for(var i=0;i<deviceNameList.length;i++) { var selected = typeof primary_device != 'undefined' && primary_device && deviceNameList[i].toLowerCase() === primary_device.toLowerCase()? 'selected' : '' %>
+              <option value=<%= deviceNameList[i] %> <%= selected %> ><%= deviceNameList[i] %></option>
             <% } %>
           </select>
         </div>
         <div class="field">
-          <label for="text">Task Secondary Device</label>
+          <label for="secondary_device">Task Secondary Device</label>
           <select name="secondary_device" id="secondary_device">
             <option value="">-- Please Select --</option>
-            <% for(var i=0;i<deviceNameList.length;i++) {  %>
-              <option value=<%= deviceNameList[i] %> ><%= deviceNameList[i] %></option>
+            <% for(var i=0;i<deviceNameList.length;i++) { var selected = typeof secondary_device != 'undefined' && secondary_device && deviceNameList[i].toLowerCase() === secondary_device.toLowerCase()? 'selected' : '' %>
+              <option value=<%= deviceNameList[i] %> <%= selected %> ><%= deviceNameList[i] %></option>
             <% } %>
           </select>
         </div>
         <div class="field">
-          <label for="text">Task Third Device</label>
+          <label for="third_device">Task Third Device</label>
           <select name="third_device" id="third_device">
             <option value="">-- Please Select --</option>
-            <% for(var i=0;i<deviceNameList.length;i++) {  %>
-              <option value=<%= deviceNameList[i] %> ><%= deviceNameList[i] %></option>
+            <% for(var i=0;i<deviceNameList.length;i++) { var selected = typeof third_device != 'undefined'&& third_device && deviceNameList[i].toLowerCase() === third_device.toLowerCase()? 'selected' : '' %>
+              <option value=<%= deviceNameList[i] %> <%= selected %> ><%= deviceNameList[i] %></option>
             <% } %>
           </select>
         </div>
         <div class="field">
-          <label for="text">Task Fourth Device (Optional)</label>
+          <label for="fourth_device">Task Fourth Device (Optional)</label>
           <select name="fourth_device" id="fourth_device">
             <option value="">-- Please Select --</option>
-            <% for(var i=0;i<deviceNameList.length;i++) {  %>
-              <option value=<%= deviceNameList[i] %> ><%= deviceNameList[i] %></option>
+            <% for(var i=0;i<deviceNameList.length;i++) { var selected = typeof fourth_device != 'undefined'&& fourth_device && deviceNameList[i].toLowerCase() === fourth_device.toLowerCase()? 'selected' : '' %>
+              <option value=<%= deviceNameList[i] %> <%= selected %> ><%= deviceNameList[i] %></option>
             <% } %>
           </select>
         </div>
@@ -64,7 +64,7 @@
                 <div class="ui calendar" id="task_start_date_picker">
                   <div class="ui input left icon">
                     <i class="calendar icon"></i>
-                    <input type="text" name="start_date" id="start_date" placeholder="Start Date">
+                    <input type="text" name="start_date" id="start_date" value="<%= typeof start_date != 'undefined'? start_date : '' %>" placeholder="Start Date">
                   </div>
                 </div>
             </div>
@@ -73,7 +73,7 @@
                 <div class="ui calendar" id="task_end_date_picker">
                   <div class="ui input left icon">
                     <i class="calendar icon"></i>
-                    <input type="text" name="end_date" id="end_date" placeholder="End Date">
+                    <input type="text" name="end_date" id="end_date" value="<%= typeof end_date != 'undefined'? end_date : '' %>" placeholder="End Date">
                   </div>
                 </div>
             </div>
@@ -82,7 +82,7 @@
               <div class="ui calendar" id="run_at_time_picker">
                 <div class="ui input left icon">
                   <i class="calendar icon"></i>
-                  <input type="text" name="run_at" id="run_at" placeholder="Run At">
+                  <input type="text" name="run_at" id="run_at" value="<%= typeof run_at != 'undefined'? run_at : '' %>" placeholder="Run At">
                 </div>
               </div>
           </div>
