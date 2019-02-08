@@ -24,7 +24,7 @@
     <tbody>
       <% for(var i=0; i< tasks.length; i++) {%>
       <tr>
-        <td class="one wide">
+        <td class="one wide" id="task_status_<%= tasks[i]._id %>">
           <% if(tasks[i].status==='pending') { %>
           <div class="ui yellow ribbon label"><%= tasks[i].status %></div>
           <% } else if(tasks[i].status==='complete') { %>

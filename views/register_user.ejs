@@ -31,8 +31,8 @@
             <label for="role" style="text-align:left;">Role</label>
             <select name="role" id="role">
               <option value="">-- Please select --</option>
-              <% for(var i=0;i<roleKeys.length;i++) { %>
-              <option value=<%= roleValues[i] %>><%= roleKeys[i] %></option>
+              <% for(var i=0;i<roleKeys.length;i++) { var selected = typeof selectedIndex !== 'undefined'  && selectedIndex === i ? 'selected' : '' %>
+              <option value=<%= roleValues[i] %> <%= selected %> ><%= roleKeys[i] %></option>
               <% } %>
             </select>
           </div>

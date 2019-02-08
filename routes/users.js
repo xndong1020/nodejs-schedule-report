@@ -1,6 +1,7 @@
 const express = require('express')
-const { check, validationResult } = require('express-validator/check')
+const { check, body, validationResult } = require('express-validator/check')
 const bcrypt = require('bcryptjs')
+const { DateTime } = require('luxon')
 const User = require('../models/User')
 const passport = require('passport')
 const { ensureAuthenticated, ensureAdminAccess } = require('../auth/auth')
@@ -34,8 +35,16 @@ router.get(
   [ensureAuthenticated, ensureAdminAccess],
   async (req, res) => {
     const users = await User.find({})
-    console.log('users', users)
-    res.render('admin_user', { users })
+    const usersWithDates = []
+    users.forEach(user => {
+      usersWithDates.push({
+        ...user.toObject(),
+        dateFormatted: DateTime.fromISO(user.date.toISOString()).toLocaleString(
+          DateTime.DATETIME_MED_WITH_SECONDS
+        )
+      })
+    })
+    res.render('admin_user', { users: usersWithDates })
   }
 )
 
@@ -74,7 +83,9 @@ router.get('/edit', [ensureAuthenticated], async (req, res) => {
     userId: _id,
     selectedIndex,
     roleKeys,
-    roleValues
+    roleValues,
+    profileTab: 'active',
+    passwordTab: ''
   })
 })
 
@@ -93,17 +104,27 @@ router.get('/edit/:userId', [ensureAuthenticated], async (req, res) => {
     userId,
     selectedIndex,
     roleKeys,
-    roleValues
+    roleValues,
+    profileTab: 'active',
+    passwordTab: ''
   })
 })
 
 router.post(
   '/edit/:userId',
   [
+    check('name')
+      .not()
+      .isEmpty()
+      .withMessage('Please provide a valid user name'),
     // email must be an email
     check('email')
       .isEmail()
-      .withMessage('Please provide a valid email address')
+      .withMessage('Please provide a valid email address'),
+    check('role')
+      .not()
+      .isEmpty()
+      .withMessage('Please select an user role')
   ],
   async (req, res) => {
     const { name, email, role } = req.body
@@ -121,6 +142,8 @@ router.post(
       // client-side validation failed
       res.render('edit_user', {
         errors,
+        profileTab: 'active',
+        passwordTab: '',
         name,
         email,
         userId,
@@ -141,6 +164,8 @@ router.post(
         console.log('error', error)
         res.render('edit_user', {
           errors: error,
+          profileTab: 'active',
+          passwordTab: '',
           name,
           email,
           userId,
@@ -161,7 +186,10 @@ router.post(
   [
     check('password')
       .isLength({ min: 6 })
-      .withMessage('Password must be at least 6 chars long')
+      .withMessage('Password must be at least 6 chars long'),
+    body('password2').custom((value, { req }) => {
+      if (!value || value.length < 6) { throw new Error('Password confirmation must be at least 6 chars long') } else if (value !== req.body.password) { throw new Error('Password confirmation does not match password') } else return true
+    })
   ],
   async (req, res) => {
     const { password, password2 } = req.body
@@ -181,6 +209,8 @@ router.post(
       // client-side validation failed
       res.render('edit_user', {
         errors,
+        profileTab: '',
+        passwordTab: 'active',
         password,
         password2,
         userId,
@@ -202,6 +232,8 @@ router.post(
       } catch (error) {
         res.render('edit_user', {
           errors: error,
+          profileTab: '',
+          passwordTab: 'active',
           password,
           password2,
           userId,
@@ -220,14 +252,34 @@ router.post(
 router.post(
   '/register',
   [
+    check('name')
+      .not()
+      .isEmpty()
+      .withMessage('Please provide a valid user name'),
     // email must be an email
-    check('email')
+    body('email')
       .isEmail()
-      .withMessage('Please provide a valid email address'),
+      .withMessage('Please provide a valid email address')
+      .trim(),
+    // email is not in use
+    body('email').custom(value => {
+      return User.findOne({ email: value }).then(user => {
+        if (user) {
+          return Promise.reject(new Error('E-mail already in use'))
+        }
+      })
+    }),
+    check('role')
+      .not()
+      .isEmpty()
+      .withMessage('Please select an user role'),
     // password must be at least 6 chars long
-    check('password')
+    body('password')
       .isLength({ min: 6 })
-      .withMessage('Password must be at least 6 chars long')
+      .withMessage('Password must be at least 6 chars long'),
+    body('password2').custom((value, { req }) => {
+      if (!value || value.length < 6) { throw new Error('Password confirmation must be at least 6 chars long') } else if (value !== req.body.password) { throw new Error('Password confirmation does not match password') } else return true
+    })
   ],
   async (req, res) => {
     const roleKeys = Object.keys(userRole)
@@ -235,6 +287,7 @@ router.post(
       return userRole[key]
     })
     const { name, email, role, password, password2 } = req.body
+    const selectedIndex = roleValues.findIndex(roleValue => roleValue === role)
     const checkResult = validationResult(req)
     const errors = checkResult.array()
     if (!checkResult.isEmpty()) {
@@ -246,6 +299,7 @@ router.post(
         role,
         roleKeys,
         roleValues,
+        selectedIndex,
         password,
         password2,
         error_msg: '',
@@ -254,31 +308,14 @@ router.post(
     } else {
       // client-side validation passed
       try {
-        const user = await User.findOne({ email })
-        // if an user with the same email address already exists
-        if (user) {
-          res.render('register_user', {
-            errors: ['User with the same email address already exists'],
-            name,
-            email,
-            role,
-            roleKeys,
-            roleValues,
-            password,
-            password2,
-            error_msg: '',
-            success_msg: ''
-          })
-        } else {
-          const salt = await bcrypt.genSalt(10)
-          const hash = await bcrypt.hash(password, salt)
-          const newUser = { name, email, role, password: hash }
-          await User.create(newUser)
-          req.flash('success_msg', 'You have successfully created a new user')
-          res.redirect('/users/admin')
-        }
+        const salt = await bcrypt.genSalt(10)
+        const hash = await bcrypt.hash(password, salt)
+        const newUser = { name, email, role, password: hash }
+        await User.create(newUser)
+        req.flash('success_msg', 'You have successfully created a new user')
+        res.redirect('/users/admin')
       } catch (error) {
-        console.log(error)
+        // console.log(error)
         res.render('register_user', {
           errors: error,
           name,
@@ -286,6 +323,7 @@ router.post(
           role,
           roleKeys,
           roleValues,
+          selectedIndex,
           password,
           password2,
           error_msg: '',
