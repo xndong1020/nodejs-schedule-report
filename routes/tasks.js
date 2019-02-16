@@ -25,7 +25,8 @@ router.get('/create', async (req, res) => {
   const taskTypeValues = Object.keys(taskType).map(key => {
     return taskType[key]
   })
-  const deviceNameList = await getDevicesList(_id)
+  const deviceList = (await getDevicesList(_id)) || []
+  const deviceNameList = deviceList.map(device => device.deviceName)
   res.render('create_task', {
     title: 'Create Task',
     deviceNameList,
@@ -51,7 +52,8 @@ router.get('/edit/:taskId', async (req, res) => {
   })
   const taskTypeIndex = taskTypeValues.findIndex(key => key === task_type)
 
-  const deviceNameList = await getDevicesList(_id)
+  const deviceList = (await getDevicesList(_id)) || []
+  const deviceNameList = deviceList.map(device => device.deviceName)
 
   const primaryDeviceIndex = deviceNameList.findIndex(
     device => device === primary_device
@@ -112,19 +114,7 @@ router.post(
     check('third_device')
       .not()
       .isEmpty()
-      .withMessage('Please select a device for testing'),
-    check('start_date')
-      .not()
-      .isEmpty()
-      .withMessage('Please select a start date'),
-    check('end_date')
-      .not()
-      .isEmpty()
-      .withMessage('Please select an end date'),
-    check('run_at')
-      .not()
-      .isEmpty()
-      .withMessage('Please select start time')
+      .withMessage('Please select a device for testing')
   ],
   async (req, res) => {
     const { taskId } = req.params
@@ -146,7 +136,8 @@ router.post(
       } = req.body
       const taskTypeIndex = taskTypeValues.findIndex(key => key === task_type)
 
-      const deviceNameList = await getDevicesList(_id)
+      const deviceList = (await getDevicesList(_id)) || []
+      const deviceNameList = deviceList.map(device => device.deviceName)
 
       const primaryDeviceIndex = deviceNameList.findIndex(
         device => device === primary_device
@@ -160,14 +151,13 @@ router.post(
       const fourthDeviceIndex = deviceNameList.findIndex(
         device => device === fourth_device
       )
-      const start_date_str = DateTime.fromFormat(
-        req.body.start_date,
-        'MMMM d, yyyy'
-      ).toISODate()
-      const end_date_str = DateTime.fromFormat(
-        req.body.end_date,
-        'MMMM d, yyyy'
-      ).toISODate()
+      const start_date_str = req.body.start_date
+        ? DateTime.fromFormat(req.body.start_date, 'MMMM d, yyyy').toISODate()
+        : ''
+      const end_date_str = req.body.end_date
+        ? DateTime.fromFormat(req.body.end_date, 'MMMM d, yyyy').toISODate()
+        : ''
+
       res.render('edit_task', {
         title: 'Edit Task',
         errors,
@@ -187,13 +177,19 @@ router.post(
       })
     } else {
       try {
+        const run_now =
+          !req.body.start_date && !req.body.end_date && !req.body.run_at
         await Task.updateOne(
           { _id: taskId },
           {
-            ...req.body
+            ...req.body,
+            run_now
           }
         )
-        io.sockets.emit('taskUpdated', taskId)
+        io.sockets.emit('taskUpdated', {
+          ...req.body,
+          run_now
+        })
         req.flash('success_msg', 'Task has been updated successfully.')
         res.redirect('/tasks/admin_tasks')
       } catch (err) {
@@ -230,19 +226,7 @@ router.post(
     check('third_device')
       .not()
       .isEmpty()
-      .withMessage('Please select a device for testing'),
-    check('start_date')
-      .not()
-      .isEmpty()
-      .withMessage('Please select a start date'),
-    check('end_date')
-      .not()
-      .isEmpty()
-      .withMessage('Please select an end date'),
-    check('run_at')
-      .not()
-      .isEmpty()
-      .withMessage('Please select start time')
+      .withMessage('Please select a device for testing')
   ],
   async (req, res) => {
     const { _id } = req.user
@@ -250,7 +234,8 @@ router.post(
     const taskTypeValues = Object.keys(taskType).map(key => {
       return taskType[key]
     })
-    const deviceNameList = await getDevicesList(_id)
+    const deviceList = (await getDevicesList(_id)) || []
+    const deviceNameList = deviceList.map(device => device.deviceName)
     const checkResult = validationResult(req)
     const errors = checkResult.array()
 
@@ -286,20 +271,33 @@ router.post(
         success_msg: ''
       })
     } else {
-      const data = {
-        ...req.body,
-        start_date: DateTime.fromFormat(
-          req.body.start_date,
-          'MMMM d, yyyy'
-        ).toLocaleString(DateTime.DATE_FULL),
-        end_date: DateTime.fromFormat(
-          req.body.end_date,
-          'MMMM d, yyyy'
-        ).toLocaleString(DateTime.DATE_FULL),
-        userID: _id,
-        status: 'pending',
-        reportId: '',
-        completion_date: []
+      let data
+      if (req.body.start_date && req.body.end_date && req.body.run_at) {
+        data = {
+          ...req.body,
+          start_date: DateTime.fromFormat(
+            req.body.start_date,
+            'MMMM d, yyyy'
+          ).toLocaleString(DateTime.DATE_FULL),
+          end_date: DateTime.fromFormat(
+            req.body.end_date,
+            'MMMM d, yyyy'
+          ).toLocaleString(DateTime.DATE_FULL),
+          run_now: false,
+          userID: _id,
+          status: 'pending',
+          reportId: '',
+          completion_date: []
+        }
+      } else {
+        data = {
+          ...req.body,
+          run_now: true,
+          userID: _id,
+          status: 'pending',
+          reportId: '',
+          completion_date: []
+        }
       }
 
       try {
@@ -308,6 +306,7 @@ router.post(
         req.flash('success_msg', 'New task has been created successfully.')
         res.redirect('/tasks/admin_tasks')
       } catch (err) {
+        console.error('create err', err)
         req.flash(
           'error_msg',
           'Oops. Something went wrong on our server. Please try again later' +
@@ -326,6 +325,54 @@ router.post('/delete/:taskId', async (req, res) => {
     await Task.deleteOne({ _id: taskId })
     io.sockets.emit('taskDeleted', taskId)
     req.flash('success_msg', 'Task has been deleted successfully.')
+    res.redirect('/tasks/admin_tasks')
+  } catch (err) {
+    req.flash(
+      'error_msg',
+      'Oops. Something went wrong on our server. Please try again later' + err
+    )
+    res.redirect('/tasks/admin_tasks')
+  }
+})
+
+router.post('/reset/:taskId', async (req, res) => {
+  const { taskId } = req.params
+
+  try {
+    await Task.updateOne(
+      { _id: taskId },
+      {
+        $set: {
+          status: 'pending'
+        }
+      }
+    )
+    req.flash('success_msg', 'Task has been reset successfully.')
+    res.redirect('/tasks/admin_tasks')
+  } catch (err) {
+    req.flash(
+      'error_msg',
+      'Oops. Something went wrong on our server. Please try again later' + err
+    )
+    res.redirect('/tasks/admin_tasks')
+  }
+})
+
+router.post('/run/:taskId', async (req, res) => {
+  const { taskId } = req.params
+
+  try {
+    await Task.updateOne(
+      { _id: taskId },
+      {
+        $set: {
+          status: 'pending'
+        }
+      }
+    )
+    const updatedTask = await Task.findOne({ _id: taskId })
+    io.sockets.emit('taskUpdated', updatedTask)
+    req.flash('success_msg', 'Task has been updated successfully.')
     res.redirect('/tasks/admin_tasks')
   } catch (err) {
     req.flash(

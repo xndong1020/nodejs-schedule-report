@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const { io } = require('../io')
 const { Device } = require('../models/Device')
 const { deviceTypes } = require('../enums')
 const { checkDeviceStatus } = require('../services/callHistoryService')
@@ -101,6 +102,7 @@ router.post('/add_device', async (req, res) => {
       modifiedBy: `created by ${name}`
     })
     req.flash('success_msg', 'Your device has been saved for testing')
+    io.sockets.emit('deviceListUpdated')
     // read user settings
     res.redirect('/devices/admin_devices')
   } catch (err) {
@@ -123,6 +125,7 @@ router.post('/edit_device/:deviceId', async (req, res) => {
     )
 
     req.flash('success_msg', 'Your device has been updated.')
+    io.sockets.emit('deviceListUpdated')
     res.redirect('/devices/admin_devices')
   } catch (err) {
     req.flash(
@@ -139,6 +142,7 @@ router.post('/delete_device/:deviceId', async (req, res) => {
   try {
     await Device.findOneAndRemove({ _id: deviceId })
     req.flash('success_msg', 'Your device has been deleted.')
+    io.sockets.emit('deviceListUpdated')
     res.redirect('/devices/admin_devices')
   } catch (err) {
     req.flash(

@@ -9,6 +9,8 @@
      <div class="ui stacked segment fourteen wide column">
       <% include ./partials/messages_semantic_ui %>
       <form action="/tasks/edit/<%= task._id %>" method="POST" class="ui medium form">
+        <input type="hidden" name="_id" value="<%= task._id %>">
+        <input type="hidden" name="userID" value="<%= task.userID %>">
         <div class="field">
           <label for="text">Task Name</label>
           <input type="text" name="text" id="text" value="<%= task.text %>" placeholder="Please enter a description of the new task">
@@ -57,6 +59,14 @@
               <option value=<%= deviceNameList[i] %> <%= selected %>><%= deviceNameList[i] %></option>
             <% } %>
           </select>
+        </div>
+        <h4 class="ui horizontal divider header" style="margin-top: 40px;">
+            <i class="bar chart icon"></i>
+            Choose Task Plan
+          </h4>
+        <button type="submit" class="ui teal labeled icon button" style="margin: 10px 0;"> <i class="add icon"></i>Create New Task And Run It Now</button>
+        <div class="ui horizontal divider">
+          Or Create Recurring Task
         </div>
         <div>
             <div style="display: inline-block;padding-right: 2rem;">
