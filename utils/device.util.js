@@ -1,5 +1,6 @@
 const { Device } = require('../models/Device')
 
+// returns true means a device with the same name was already created
 const checkDeviceNameUniqueness = async (
   deviceName,
   oldName,
@@ -7,38 +8,38 @@ const checkDeviceNameUniqueness = async (
   userID
 ) => {
   try {
-    const deviceSettings = (await Device.findOne({ userID })) || {}
-    const { devices } = deviceSettings
-    if (Array.isArray(devices)) {
-      if (action === 'add') {
-        return devices.some(
-          device => device.deviceName.toLowerCase() === deviceName.toLowerCase()
-        )
-      } else if (action === 'edit') {
-        const otherDevices = devices.filter(
-          device => device.deviceName.toLowerCase() !== oldName.toLowerCase()
-        )
-        return otherDevices.some(
-          device => device.deviceName.toLowerCase() === deviceName.toLowerCase()
-        )
-      }
+    if (action === 'add') {
+      const device = await Device.findOne({ deviceName })
+      return !!device
+    } else if (action === 'edit') {
+      const device = await Device.findOne({ oldName })
+      return !!device
     }
   } catch (e) {
-    console.log(e)
+    console.error(e)
   }
 }
 
-const getDevicesList = async userID => {
+const getDevicesList = async () => {
   try {
-    const deviceSettings = (await Device.findOne({ userID })) || {}
-    const { devices } = deviceSettings
-    return devices.map(device => device.deviceName)
+    const devices = (await Device.find({ })) || []
+    return devices
   } catch (e) {
-    console.log(e)
+    console.error(e)
+  }
+}
+
+const getDeviceById = async deviceId => {
+  try {
+    const device = (await Device.findOne({ _id: deviceId })) || {}
+    return device
+  } catch (e) {
+    console.error(e)
   }
 }
 
 module.exports = {
   getDevicesList,
+  getDeviceById,
   checkDeviceNameUniqueness
 }

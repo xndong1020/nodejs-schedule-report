@@ -13,7 +13,7 @@ const usersRouter = require('./routes/users')
 const reportsRouter = require('./routes/reports')
 const tasksRouter = require('./routes/tasks')
 const emailsRouter = require('./routes/email')
-const settingsRouter = require('./routes/settings')
+const devicesRouter = require('./routes/devices')
 
 // mongodb
 require('./db')
@@ -68,7 +68,7 @@ app.use('/users', usersRouter)
 app.use('/reports', [ensureAuthenticated], reportsRouter)
 app.use('/tasks', [ensureAuthenticated], tasksRouter)
 app.use('/emails', [ensureAuthenticated], emailsRouter)
-app.use('/settings', [ensureAuthenticated], settingsRouter)
+app.use('/devices', [ensureAuthenticated], devicesRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

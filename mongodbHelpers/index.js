@@ -127,9 +127,9 @@ const updateTaskStatus = async (taskId, status, date, reportId) => {
 }
 
 /* for Device */
-const getDeviceSettingsByUserID = userID => {
+const getDevicesList = userID => {
   return new Promise((resolve, reject) => {
-    Device.findOne({ userID }, { __v: 0 }, (err, data) => {
+    Device.find({}, { __v: 0 }, (err, data) => {
       if (err) {
         return reject(err)
       }
@@ -150,5 +150,5 @@ module.exports = {
   updateTaskStatus,
   findTaskByID,
   updateTaskByID,
-  getDeviceSettingsByUserID
+  getDevicesList
 }

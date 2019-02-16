@@ -8,7 +8,7 @@
     <div class="eight column relaxed row">
        <div class="ui stacked segment eight wide column">
         <% include ./partials/messages_semantic_ui %>
-        <form action="/settings/edit_device/<%= deviceName %>" method="POST" class="ui medium form" id="editDeviceForm">
+        <form action="/devices/edit_device/<%= settings._id %>" method="POST" class="ui medium form" id="editDeviceForm">
           <div class="field">
               <label for="deviceName">Device Unique Name</label>
               <input
@@ -22,25 +22,52 @@
             </div>
           <input type="hidden" name="deviceOldName" id="deviceOldName" value="<%= settings && settings.deviceName ? settings.deviceName : '' %>">
           <input type="hidden" name="isDeviceApiControlled" id="isDeviceApiControlled" value="<%= settings && settings.isDeviceApiControlled ? settings.isDeviceApiControlled : '' %>">
+          <input type="hidden" name="addedBy" id="addedBy" value="<%= settings && settings.addedBy ? settings.addedBy : '' %>">
           <div class="field">
             <label for="deviceType">Device Type</label>
-            <select name="deviceType" id="device_type">
+            <select name="deviceType" id="deviceType">
                 <% for(var i=0;i<deviceKeys.length;i++) { var selected = ( i === currentDeviceIndex ) ? "selected" : ""; %>
                   <option value=<%= deviceKeys[i] %> <%= selected %> ><%= deviceKeys[i] %></option>
                 <% } %>
             </select>
           </div>
-          <div class="field">
-            <label for="deviceUrl">Device Endpoint Url</label>
-            <input
-              type="text"
-              id="deviceUrl"
-              name="deviceUrl"
-              class="form-control"
-              placeholder="Enter Endpoint Url"
-              value="<%= settings && settings.deviceUrl ? settings.deviceUrl : '' %>"
-            />
-          </div>
+          <div class="fields">
+            <label for="deviceProtocol" style="padding-left: 10px;">Please select device protocol:</label>
+            <div class="field">
+              <div class="ui radio checkbox">
+                  <input type="radio" name="deviceProtocol" value="http" tabindex="1" class="hidden" <%= httpCheckedStatus %> >
+                  <label>http</label>
+              </div>
+              </div>
+              <div class="field">
+                  <div class="ui radio checkbox">
+                    <input type="radio" name="deviceProtocol" value="https" tabindex="2" class="hidden" <%= httpsCheckedStatus %>>
+                    <label>https</label>
+                  </div>
+              </div>
+            </div>
+            <div class="field">
+                <label for="deviceIPAddress">Device Endpoint IP Address</label>
+                <input
+                  type="text"
+                  id="deviceIPAddress"
+                  name="deviceIPAddress"
+                  class="form-control"
+                  placeholder="Enter Endpoint IP Address"
+                  value="<%= settings && settings.deviceIPAddress ? settings.deviceIPAddress : '' %>"
+                  />
+            </div>
+            <div class="field">
+              <label for="devicePortNumber">Device Endpoint Port Number</label>
+              <input
+                  type="text"
+                  id="devicePortNumber"
+                  name="devicePortNumber"
+                  class="form-control"
+                  placeholder="Enter Endpoint Port Number"
+                  value="<%= settings && settings.devicePortNumber ? settings.devicePortNumber : '' %>"
+                  />
+            </div>
           <div class="field">
             <label for="deviceExtNo">Device Extension Number</label>
             <input

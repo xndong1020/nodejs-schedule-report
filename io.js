@@ -15,17 +15,19 @@ io.sockets.on('connection', socket => {
     io.sockets.emit('client connect', socketCounter)
   })
 
+  // forward message to client side
+  socket.on('taskComplete', data => {
+    io.sockets.emit('taskComplete', data)
+  })
+
   socket.on('taskComplete', async data => {
     const { reportId, taskID, error } = data
     console.log('reportId', reportId)
     const task_status = reportId && !error ? 'complete' : 'fail'
-    const completion_date = DateTime.local().toLocaleString(DateTime.DATETIME_MED_WITH_SECONDS)
-    await updateTaskStatus(
-      taskID,
-      task_status,
-      completion_date,
-      reportId
+    const completion_date = DateTime.local().toLocaleString(
+      DateTime.DATETIME_MED_WITH_SECONDS
     )
+    await updateTaskStatus(taskID, task_status, completion_date, reportId)
   })
 })
 

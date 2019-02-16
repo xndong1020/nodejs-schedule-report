@@ -11,11 +11,14 @@
         <th class="one wide">Device Name</th>
         <th class="one wide">Device Type</th>
         <th class="one wide">Is API Controlled?</th>
-        <th class="three wide">Device Endpoint Url</th>
+        <th class="one wide">Device Protocol</th>
+        <th class="one wide">Device IP Address</th>
+        <th class="one wide">Device Port Number</th>
         <th class="one wide">Device Extension Number</th>
         <th class="one wide">Device Number/Address</th>
-        <th class="two wide">Account Username</th>
+        <th class="one wide">Account Username</th>
         <th class="two wide">Account Password</th>
+        <th class="one wide">Added By</th>
         <th class="three wide">Actions</th>
       </tr>
     </thead>
@@ -26,56 +29,64 @@
         <td class="one wide"><%= devices[i].deviceName %></td>
         <td class="one wide"><%= devices[i].deviceType %></td>
         <td class="one wide"><%= devices[i].isDeviceApiControlled %></td>
-        <td class="three wide"><%= devices[i].deviceUrl %></td>
+        <td class="one wide"><%= devices[i].deviceProtocol %></td>
+        <td class="one wide"><%= devices[i].deviceIPAddress %></td>
+        <td class="one wide"><%= devices[i].devicePortNumber %></td>
         <td class="one wide"><%= devices[i].deviceExtNo %></td>
         <td class="one wide"><%= devices[i].deviceNumberAddr %></td>
-        <td class="two wide"><%= devices[i].deviceUsername %></td>
+        <td class="one wide"><%= devices[i].deviceUsername %></td>
         <td class="two wide"><%= devices[i].devicePassword %></td>
+        <td class="one wide"><%= devices[i].addedBy %></td>
         <td class="three wide">
           <div class="ui three buttons">
             <a
-              href="/settings/edit_device/<%= devices[i].deviceName %>"
+              href="/devices/edit_device/<%= devices[i]._id %>"
             >
               <button class="ui positive button">Edit</button>
             </a>
             <div class="or"></div>
-            <a
-              href="/settings/delete_device/<%= devices[i].deviceName %>"
+            <form
+              action="/devices/delete"
+              method="POST"
+              class="delete_device"
+              name=<%= devices[i]._id %>
             >
-              <form
-                action="/settings/delete"
-                method="POST"
-                class="delete_device"
-                name=<%= devices[i].deviceName %>
-              >
-                <button class="ui negative button" type="submit">Delete</button>
-              </form>
-            </a>
+              <button class="ui negative button" type="submit">Delete</button>
+            </form>
             <% if(devices[i].isDeviceApiControlled === 'controlled') { %>
             <div class="or"></div>
-            <a href="/settings/check_status">
               <form
-                action="/settings/check_status"
+                action="/devices/check_status"
                 method="POST"
               >
                 <input
                   type="hidden"
-                  name=deviceName_<%= deviceId %>_<%= devices[i].deviceName %>
+                  name=deviceName_<%= devices[i]._id %>_<%= devices[i].deviceName %>
                   value="<%= devices[i].deviceName %>"
                 />
                 <input
                   type="hidden"
-                  name=deviceUrl_<%= deviceId %>_<%= devices[i].deviceName %>
-                  value="<%= devices[i].deviceUrl %>"
+                  name=deviceProtocol_<%= devices[i]._id %>_<%= devices[i].deviceProtocol %>
+                  value="<%= devices[i].deviceProtocol %>"
                 />
                 <input
                   type="hidden"
-                  name=deviceUsername_<%= deviceId %>_<%= devices[i].deviceName %>
+                  name=deviceIPAddress_<%= devices[i]._id %>_<%= devices[i].deviceIPAddress %>
+                  value="<%= devices[i].deviceIPAddress %>"
+                />
+                <input
+                  type="hidden"
+                  name=devicePortNumber_<%= devices[i]._id %>_<%= devices[i].devicePortNumber %>
+                  value="<%= devices[i].devicePortNumber %>"
+                />
+                <input
+                  type="hidden"
+                  name=deviceUsername_<%= devices[i]._id %>_<%= devices[i].deviceName %>
                   value="<%= devices[i].deviceUsername %>"
                 />
                 <input
                   type="hidden"
-                  name=devicePassword_<%= deviceId %>_<%= devices[i].deviceName %>
+                  name=devicePassword_<%= devices[i]._id %>_<%= devices[i].deviceName %>
                   value="<%= devices[i].devicePassword %>"
                 />
                 <button
@@ -85,7 +96,6 @@
                   Test Status
                 </button>
               </form>
-            </a>
             <% } %>
           </div>
         </td>
@@ -95,8 +105,8 @@
     <tfoot>
       <tr>
         <th></th>
-        <th colspan="9">
-          <a href="/settings/add_device">
+        <th colspan="13">
+          <a href="/devices/add_device">
             <div class="ui right floated small primary labeled icon button">
               <i class="desktop icon"></i> Add Device
             </div>

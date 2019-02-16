@@ -8,7 +8,7 @@
     <div class="eight column relaxed row">
        <div class="ui stacked segment eight wide column">
           <% include ./partials/messages_semantic_ui %>
-          <form action="/settings/add_device" method="POST" class="ui medium form" id="createDeviceForm">
+          <form action="/devices/add_device" method="POST" class="ui medium form" id="createDeviceForm">
              <div class="field">
                 <label for="deviceName">Device Unique Name</label>
                 <input type="text" name="deviceName" id="deviceName" placeholder="Please enter an unique device name">
@@ -16,8 +16,8 @@
              <div class="field"  id="deviceTypeContainer">
                 <label for="deviceType">Device Type</label>
                 <select name="deviceType" id="deviceType">
-                   <% for(var i=0;i<deviceKeys.length;i++) { var selected = ( i === currentDeviceIndex ) ? "selected" : ""; %>
-                   <option value=<%= deviceKeys[i] %> <%= selected %> ><%= deviceKeys[i] %></option>
+                   <% for(var i=0;i<deviceKeys.length;i++) {  %>
+                   <option value=<%= deviceKeys[i] %> ><%= deviceKeys[i] %></option>
                    <% } %>
                 </select>
              </div>
@@ -36,18 +36,46 @@
                    </div>
                 </div>
              </div>
+             <h4 class="ui horizontal divider header">
+               <i class="edit outline icon"></i>
+               Device Details
+             </h4>
              <div id="controlled">
+               <div class="fields">
+                  <label for="deviceProtocol" style="padding-left: 10px;">Please select device protocol:</label>
+                  <div class="field">
+                     <div class="ui radio checkbox">
+                        <input type="radio" name="deviceProtocol" value="http" tabindex="1" class="hidden">
+                        <label>http</label>
+                     </div>
+                  </div>
+                  <div class="field">
+                     <div class="ui radio checkbox">
+                        <input type="radio" name="deviceProtocol" value="https" tabindex="2" class="hidden">
+                        <label>https</label>
+                     </div>
+                  </div>
+               </div>
                 <div class="field">
-                   <label for="deviceUrl">Device Endpoint Url</label>
+                   <label for="deviceIPAddress">Device Endpoint IP Address</label>
                    <input
                       type="text"
-                      id="deviceUrl"
-                      name="deviceUrl"
+                      id="deviceIPAddress"
+                      name="deviceIPAddress"
                       class="form-control"
-                      placeholder="Enter Endpoint Url"
-                      value="<%= settings && settings.deviceUrl ? settings.deviceUrl : '' %>"
+                      placeholder="Enter Endpoint IP Address"
                       />
                 </div>
+                <div class="field">
+                  <label for="devicePortNumber">Device Endpoint Port Number</label>
+                  <input
+                     type="text"
+                     id="devicePortNumber"
+                     name="devicePortNumber"
+                     class="form-control"
+                     placeholder="Enter Endpoint Port Number"
+                     />
+               </div>
                 <div class="field">
                    <label for="deviceExtNo">Device Extension Number</label>
                    <input
@@ -56,7 +84,6 @@
                       name="deviceExtNo"
                       class="form-control"
                       placeholder="Enter Device Extension Number"
-                      value="<%= settings && settings.deviceExtNo ? settings.deviceExtNo : '' %>"
                       />
                 </div>
                 <div class="field">
@@ -67,7 +94,6 @@
                       name="deviceUsername"
                       class="form-control"
                       placeholder="Enter Device Login Username"
-                      value="<%= settings && settings.deviceUsername ? settings.deviceUsername : '' %>"
                       />
                 </div>
                 <div class="field">
@@ -78,7 +104,6 @@
                       name="devicePassword"
                       class="form-control"
                       placeholder="Enter Device Login Password"
-                      value="<%= settings && settings.devicePassword ? settings.devicePassword : '' %>"
                       />
                 </div>
              </div>

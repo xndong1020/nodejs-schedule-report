@@ -1,7 +1,23 @@
 /*eslint --no-ignore */
-;(function($) {
+;(function($, io) {
   'use strict'
   $(document).ready(function() {
+    var socket = io('http://localhost:4000')
+    socket.on('connect', function() {
+      console.log('connected!!!')
+    })
+    socket.on('connect', function() {
+      var data = { taskID: '5c53888a2a52278f70f52da8' }
+      console.log('connect!!!', data)
+      if (data && data.taskID) {
+        var selectorTask = '#task_status_' + data.taskID
+        var targetDOM = $(selectorTask)
+
+        if (targetDOM) {
+          console.log('targetDOM', targetDOM.html())
+        }
+      }
+    })
     // left sidebar nav
     $('.accordion').accordion({
       selector: {
@@ -46,11 +62,11 @@
         .modal({
           onDeny: function() {},
           onApprove: function() {
-            var deviceName = event.target.name
-            if (deviceName) {
+            var deviceId = event.target.name
+            if (deviceId) {
               $.post(
-                '/settings/delete_device/' + deviceName,
-                { deviceName: deviceName },
+                '/devices/delete_device/' + deviceId,
+                { deviceId: deviceId },
                 function(data, status) {
                   if (status === 'success') {
                     location.reload()
@@ -148,8 +164,14 @@
 
   $('.deviceTestStatusButton').click(function(e) {
     e.preventDefault()
-    var deviceUrl = $(this)
-      .siblings('input[name*="deviceUrl"]')
+    var deviceProtocol = $(this)
+      .siblings('input[name*="deviceProtocol"]')
+      .val()
+    var deviceIPAddress = $(this)
+      .siblings('input[name*="deviceIPAddress"]')
+      .val()
+    var devicePortNumber = $(this)
+      .siblings('input[name*="devicePortNumber"]')
       .val()
     var deviceUsername = $(this)
       .siblings('input[name*="deviceUsername"]')
@@ -166,9 +188,15 @@
     $(targetId).text('Checking ...')
 
     $.post(
-      '/settings/check_status',
+      '/devices/check_status',
       {
-        deviceUrl: deviceUrl,
+        deviceUrl:
+          deviceProtocol +
+          '://' +
+          deviceIPAddress +
+          ':' +
+          devicePortNumber +
+          '/putxml',
         deviceUsername: deviceUsername,
         devicePassword: devicePassword
       },
@@ -215,7 +243,10 @@
   function saveControlledDeviceDetails(action, formName) {
     var errors = []
     var deviceName = $('#deviceName').val()
-    var deviceUrl = $('#deviceUrl').val()
+    var deviceType = $('#deviceType').val()
+    var deviceProtocol = $('input[name="deviceProtocol"]:checked').val()
+    var deviceIPAddress = $('#deviceIPAddress').val()
+    var devicePortNumber = $('#devicePortNumber').val()
     var deviceExtNo = $('#deviceExtNo').val()
     var deviceUsername = $('#deviceUsername').val()
     var devicePassword = $('#devicePassword').val()
@@ -225,11 +256,20 @@
     if (!deviceName) {
       errors.push('Device Name is required')
     }
+    if (!deviceType) {
+      errors.push('Device Type is required')
+    }
     if (!deviceExtNo) {
       errors.push('Device Extension Number is required')
     }
-    if (!deviceUrl) {
-      errors.push('Device Endpoint Url is required')
+    if (!deviceProtocol) {
+      errors.push('Device Protocol is required')
+    }
+    if (!devicePortNumber) {
+      errors.push('Device Port Number is required')
+    }
+    if (!deviceIPAddress) {
+      errors.push('Device IP Address is required')
     }
     if (!deviceUsername) {
       errors.push('Device Username is required')
@@ -256,6 +296,7 @@
       $('#error_msg').text(errors.join(' . '))
       $('#error_msg_container').show()
       $('#success_msg_container').hide()
+      $('#msg_loader').hide()
     }
   }
 
@@ -291,6 +332,7 @@
       $('#error_msg').text(errors.join(' . '))
       $('#error_msg_container').show()
       $('#success_msg_container').hide()
+      $('#msg_loader').hide()
     }
   }
 
@@ -300,7 +342,9 @@
     $('#error_msg_container').hide()
     $('#success_msg_container').hide()
     var deviceName = $('#deviceName').val()
-    var deviceUrl = $('#deviceUrl').val()
+    var deviceProtocol = $('input[name="deviceProtocol"]:checked').val()
+    var deviceIPAddress = $('#deviceIPAddress').val()
+    var devicePortNumber = $('#devicePortNumber').val()
     var deviceExtNo = $('#deviceExtNo').val()
     var deviceUsername = $('#deviceUsername').val()
     var devicePassword = $('#devicePassword').val()
@@ -308,8 +352,14 @@
     if (!deviceName) {
       errors.push('Device Unique Name is required')
     }
-    if (!deviceUrl) {
-      errors.push('Device Endpoint Url is required')
+    if (!deviceProtocol) {
+      errors.push('Device Protocol is required')
+    }
+    if (!deviceIPAddress) {
+      errors.push('Device Endpoint IP Address is required')
+    }
+    if (!devicePortNumber) {
+      errors.push('Device Port Number is required')
     }
     if (!deviceExtNo) {
       errors.push('Device Extension Number is required')
@@ -324,9 +374,15 @@
     if (errors.length === 0) {
       $('#error_msg_container').hide()
       $.post(
-        '/settings/check_status',
+        '/devices/check_status',
         {
-          deviceUrl: deviceUrl,
+          deviceUrl:
+            deviceProtocol +
+            '://' +
+            deviceIPAddress +
+            ':' +
+            devicePortNumber +
+            '/putxml',
           deviceUsername: deviceUsername,
           devicePassword: devicePassword
         },
@@ -341,6 +397,7 @@
             $('#error_msg').text('Test Failed.')
             $('#error_msg_container').show()
             $('#success_msg_container').hide()
+            $(saveButtonSelector).attr('disabled', 'disabled')
           }
         }
       )
@@ -348,13 +405,14 @@
       $('#error_msg').text(errors.join(' . '))
       $('#error_msg_container').show()
       $('#success_msg_container').hide()
+      $('#msg_loader').hide()
     }
   }
   function checkDeviceNameUniqueness(deviceName, oldName, action, cb) {
     $.post(
-      '/settings/check_uniqueness',
+      '/devices/check_uniqueness',
       { deviceName: deviceName, oldName: oldName, action: action },
       cb
     )
   }
-})(jQuery)
+})(jQuery, io)

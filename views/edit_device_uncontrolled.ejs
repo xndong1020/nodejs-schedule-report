@@ -7,7 +7,7 @@
     <div class="ui stacked segment eight wide column">
       <% include ./partials/messages_semantic_ui %>
       <form
-        action="/settings/edit_device/<%= deviceName %>"
+        action="/devices/edit_device/<%= settings._id %>"
         method="POST"
         class="ui medium form"
         id="editDeviceFormUncontrolled"

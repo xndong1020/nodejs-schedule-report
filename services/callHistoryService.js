@@ -3,8 +3,8 @@ const xml2jsonConverter = require('../utils/xml2json')
 const { getBasicAuthHeader } = require('../utils/auth.util')
 const { payloadFactory } = require('../factories/payloadFactory')
 
-const getCallHistory = async settings => {
-  const { deviceUrl, deviceUsername, devicePassword } = settings
+const getCallHistory = async device => {
+  const { deviceUrl, deviceUsername, devicePassword } = device
   const callResponse = await axios.post(
     deviceUrl,
     payloadFactory('callHistoryGet', null),
@@ -15,9 +15,9 @@ const getCallHistory = async settings => {
   return callResponseJson
 }
 
-const checkDeviceStatus = async settings => {
+const checkDeviceStatus = async device => {
   try {
-    const callHistoryResponse = await getCallHistory(settings)
+    const callHistoryResponse = await getCallHistory(device)
     return !!callHistoryResponse
   } catch (e) {
     return false
