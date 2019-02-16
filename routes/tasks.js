@@ -14,8 +14,7 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/admin_tasks', async (req, res) => {
-  const { _id } = req.user
-  const tasks = await Task.find({ userID: _id }, { __v: 0 })
+  const tasks = await Task.find({}, { __v: 0 })
   res.render('admin_tasks', { tasks })
 })
 
