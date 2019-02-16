@@ -34,7 +34,7 @@ const DeviceSchema = new mongoose.Schema({
   deviceNumberAddr: {
     type: String
   },
-  addedBy: {
+  modifiedBy: {
     type: String,
     required: true
   },

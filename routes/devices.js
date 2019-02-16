@@ -98,7 +98,7 @@ router.post('/add_device', async (req, res) => {
     await Device.create({
       ...req.body,
       userID: _id,
-      addedBy: name
+      modifiedBy: `created by ${name}`
     })
     req.flash('success_msg', 'Your device has been saved for testing')
     // read user settings
@@ -114,18 +114,17 @@ router.post('/add_device', async (req, res) => {
 
 // POST /devices/edit_device/myDevice
 router.post('/edit_device/:deviceId', async (req, res) => {
-  const { _id } = req.user
+  const { _id, name } = req.user
   const { deviceId } = req.params
   try {
     await Device.findOneAndUpdate(
       { _id: deviceId },
-      { ...req.body, userID: _id }
+      { ...req.body, userID: _id, modifiedBy: `last modified by ${name}` }
     )
 
     req.flash('success_msg', 'Your device has been updated.')
     res.redirect('/devices/admin_devices')
   } catch (err) {
-    console.error('edit_device', err)
     req.flash(
       'error_msg',
       'Oops. Something went wrong on our server. Please try again later: ' + err
