@@ -33,6 +33,13 @@
       var messageBox = $('#messageBox')
       $('.ui.modal.run_now')
         .modal({
+          onHide: function() {
+            // when close modal, if there are some testing message left from last test, then reload for next testing
+            var messageContent = messageBox.text()
+            if (messageContent) {
+              location.reload()
+            }
+          },
           onDeny: function() {},
           onApprove: function() {
             var taskId = event.target.name
@@ -48,7 +55,6 @@
               var cancelBtn = $('#run_cancel_btn')
               submitBtn.attr('disabled', 'disabled')
               cancelBtn.attr('disabled', 'disabled')
-              console.log('response', data, status)
             })
 
             return false
