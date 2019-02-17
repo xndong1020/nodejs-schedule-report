@@ -113,7 +113,7 @@ const updateTaskStatus = async (taskId, status, date, reportId) => {
 
     if (taskInDb) {
       let { completion_date } = taskInDb
-      completion_date.push(date)
+      completion_date.push({ reportId, date })
       taskInDb.completion_date = completion_date
       taskInDb.status = status
       taskInDb.reportId = reportId

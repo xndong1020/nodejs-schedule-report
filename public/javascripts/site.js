@@ -4,19 +4,7 @@
   $(document).ready(function() {
     var socket = io('http://localhost:4000')
     socket.on('connect', function() {
-      console.log('connected!!!')
-    })
-    socket.on('connect', function() {
-      var data = { taskID: '5c53888a2a52278f70f52da8' }
-      console.log('connect!!!', data)
-      if (data && data.taskID) {
-        var selectorTask = '#task_status_' + data.taskID
-        var targetDOM = $(selectorTask)
-
-        if (targetDOM) {
-          console.log('targetDOM', targetDOM.html())
-        }
-      }
+      console.log('socket.io is connected!!!')
     })
     // left sidebar nav
     $('.accordion').accordion({
@@ -37,6 +25,34 @@
       $(this)
         .closest('.message')
         .transition('fade')
+    })
+    // delete user modal handler
+    $('form.run_task').submit(function(event) {
+      event.preventDefault()
+      $('.ui.modal.run_now')
+        .modal({
+          onDeny: function() {},
+          onApprove: function() {
+            var taskId = event.target.name
+            var messageBox = $('#messageBox')
+            var taskLiveMessage = ''
+
+            socket.on('testProcessReport', function(data) {
+              taskLiveMessage += data + '<br />'
+              messageBox.html(taskLiveMessage)
+            })
+
+            $.post('/tasks/run/' + taskId, {}, function(data, status) {
+              var submitBtn = $(this).children('button')
+              console.log(submitBtn)
+              submitBtn.attr('disabled', 'disabled')
+              console.log('response', data, status)
+            })
+
+            return false
+          }
+        })
+        .modal('show')
     })
     // delete user modal handler
     $('form.delete_user').submit(function(event) {

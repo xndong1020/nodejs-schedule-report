@@ -182,6 +182,7 @@ router.post(
           { _id: taskId },
           {
             ...req.body,
+            status: 'pending',
             run_now
           }
         )
@@ -371,14 +372,20 @@ router.post('/run/:taskId', async (req, res) => {
     )
     const updatedTask = await Task.findOne({ _id: taskId })
     io.sockets.emit('taskUpdated', updatedTask)
-    req.flash('success_msg', 'Task has been updated successfully.')
-    res.redirect('/tasks/admin_tasks')
+    io.sockets.emit(
+      'testProcessReport',
+      `Connecting server to start running your task...`
+    )
+    return res.status(200).send()
   } catch (err) {
-    req.flash(
-      'error_msg',
+    console.error(
       'Oops. Something went wrong on our server. Please try again later' + err
     )
-    res.redirect('/tasks/admin_tasks')
+    io.sockets.emit(
+      'testProcessReport',
+      `failed to connect server to start your task...`
+    )
+    return res.status(400).send()
   }
 })
 
