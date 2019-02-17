@@ -2,7 +2,7 @@
 ;(function($, io) {
   'use strict'
   $(document).ready(function() {
-    var socket = io('http://localhost:4000')
+    var socket = io('http://demo.teleapps.net:4000')
     socket.on('connect', function() {
       console.log('socket.io is connected!!!')
     })
