@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const {
   getCallHistoryGetResultByID,
+  getReportsByTaskId,
   getCallHistoryGetResultByAssociatedReportId,
   getCallHistoryReportList,
   getCallHoldResumeReportByID,
@@ -26,6 +27,24 @@ router.get('/call_status/:reportId', async (req, res) => {
     title: `Report for ${id}`,
     results: result.data,
     results_str: JSON.stringify(result.data)
+  })
+})
+
+// GET: /reports/call_status/
+router.get('/related_report/:taskId', async (req, res) => {
+  const { taskId } = req.params
+  const response = await getReportsByTaskId(taskId)
+  const results = response.map(data => {
+    return {
+      taskId: taskId,
+      reportId: data._id,
+      type: data.type,
+      date: data.date
+    }
+  })
+  res.render('related_reports_list', {
+    title: `Related Reports`,
+    results
   })
 })
 

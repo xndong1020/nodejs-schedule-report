@@ -35,7 +35,6 @@ const getCallHistoryGetResultByAssociatedReportId = associatedReportId => {
 
 const getCallHistoryReportList = async userID => {
   const result = await CallHistoryGetResultReport.find({
-    userID,
     type: taskType.CALL_STATUS
   }).sort({
     date: -1
@@ -56,10 +55,34 @@ const getCallHoldResumeReportByID = id => {
 }
 
 const getCallHoldResumeReportList = async userID => {
-  const result = await CallHoldResumeResultReport.find({ userID }).sort({
+  const result = await CallHoldResumeResultReport.find({}).sort({
     date: -1
   })
   return result
+}
+
+const getReportsByTaskId = async taskId => {
+  const callHoldResumeResultReports =
+    (await CallHoldResumeResultReport.find({
+      taskId
+    }).sort({
+      date: -1
+    })) || []
+  const callHistoryGetResultReports =
+    (await CallHistoryGetResultReport.find({
+      taskId
+    }).sort({
+      date: -1
+    })) || []
+  const callUnattendedTransferResultReports =
+    (await CallUnattendedTransferResultReport.find({ taskId }).sort({
+      date: -1
+    })) || []
+  return [
+    ...callHoldResumeResultReports,
+    ...callHistoryGetResultReports,
+    ...callUnattendedTransferResultReports
+  ]
 }
 
 /* for Call Unattended Transfer */
@@ -75,11 +98,9 @@ const getCallUnattendedTransferResultReportID = id => {
 }
 
 const getCallUnattendedTransferResultReportList = async userID => {
-  const result = await CallUnattendedTransferResultReport.find({ userID }).sort(
-    {
-      date: -1
-    }
-  )
+  const result = await CallUnattendedTransferResultReport.find({}).sort({
+    date: -1
+  })
   return result
 }
 /* for Task */
@@ -148,6 +169,7 @@ module.exports = {
   getCallHoldResumeReportList,
   getCallUnattendedTransferResultReportID,
   getCallUnattendedTransferResultReportList,
+  getReportsByTaskId,
   updateTaskStatus,
   findTaskByID,
   updateTaskByID,

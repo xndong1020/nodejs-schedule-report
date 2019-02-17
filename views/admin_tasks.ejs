@@ -17,7 +17,7 @@
         <th class="one wide">Start Date</th>
         <th class="one wide">End Date</th>
         <th class="one wide">Run At</th>
-        <th class="one wide">Report</th>
+        <th class="one wide">Related Reports</th>
         <th class="four wide">Actions</th>
       </tr>
     </thead>
@@ -44,9 +44,9 @@
         <td class="one wide"><%= tasks[i].run_at %></td>
         <td class="one wide">
           <% if(tasks[i].reportId) { %><a
-            href="/reports/<%= tasks[i].task_type %>/<%= tasks[i].reportId %>"
+            href="/reports/related_report/<%= tasks[i]._id %>"
             style="padding-left:15px;"
-            >Link</a
+            >Reports List</a
           ><% } %>
         </td>
         <td class="four wide">

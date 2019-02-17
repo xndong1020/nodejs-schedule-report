@@ -1,0 +1,32 @@
+<!-- .section -->
+<section class="ui raised segment">
+  <h2>Related Report for Task <%= results[0].taskId %></h2>
+  <table class="ui striped celled  table">
+    <thead>
+      <tr>
+        <th>Report Id</th>
+        <th>Date</th>
+        <th>Task Type</th>
+        <th>Details</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for(var i=0; i< results.length; i++) {%>
+      <tr>
+        <td><%= results[i].reportId %></td>
+        <td><%= results[i].date %></td>
+        <td><%= results[i].type %></td>
+        <td>
+          <a href="/reports/<%= results[i].type %>/<%= results[i].reportId %>">Details</a>
+        </td>
+        <td>
+          <a href="/emails/<%= results[i].reportId %>">Email this report to me</a>
+        </td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+  <!--  data table -->
+</section>
+<!-- .section -->
