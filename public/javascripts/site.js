@@ -3,6 +3,7 @@
   'use strict'
   $(document).ready(function() {
     var socket = io('http://demo.teleapps.net:4000')
+    // var socket = io('http://localhost:4000')
     socket.on('connect', function() {
       console.log('socket.io is connected!!!')
     })
@@ -29,12 +30,12 @@
     // delete user modal handler
     $('form.run_task').submit(function(event) {
       event.preventDefault()
+      var messageBox = $('#messageBox')
       $('.ui.modal.run_now')
         .modal({
           onDeny: function() {},
           onApprove: function() {
             var taskId = event.target.name
-            var messageBox = $('#messageBox')
             var taskLiveMessage = ''
 
             socket.on('testProcessReport', function(data) {
@@ -43,8 +44,10 @@
             })
 
             $.post('/tasks/run/' + taskId, {}, function(data, status) {
-              var submitBtn = $('#run_now_btn');
+              var submitBtn = $('#run_now_btn')
+              var cancelBtn = $('#run_cancel_btn')
               submitBtn.attr('disabled', 'disabled')
+              cancelBtn.attr('disabled', 'disabled')
               console.log('response', data, status)
             })
 
