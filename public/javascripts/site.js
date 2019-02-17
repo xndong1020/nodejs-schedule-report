@@ -43,8 +43,7 @@
             })
 
             $.post('/tasks/run/' + taskId, {}, function(data, status) {
-              var submitBtn = $(this).children('button')
-              console.log(submitBtn)
+              var submitBtn = $('#run_now_btn');
               submitBtn.attr('disabled', 'disabled')
               console.log('response', data, status)
             })
