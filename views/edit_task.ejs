@@ -62,44 +62,59 @@
         </div>
         <h4 class="ui horizontal divider header" style="margin-top: 40px;">
             <i class="bar chart icon"></i>
-            Choose Task Plan
-          </h4>
-        <button type="submit" class="ui teal labeled icon button" style="margin: 10px 0;"> <i class="add icon"></i>Create Once-Off Task</button>
-        <div class="ui horizontal divider">
-          Or Create Recurring Task
+            Choose Task Running Plan
+        </h4>
+        <div class="fields">
+            <label for="run_now" style="padding-left: 10px;">Please select a task running plan:</label>
+            <div class="field isTaskRecurringField">
+               <div class="ui radio checkbox <%= checkOnceOffRadioBtn %>">
+                  <input type="radio" name="run_now" value="true" tabindex="1" <%= checkOnceOffRadioBtn %>>
+                  <label>Once-Off</label>
+               </div>
+            </div>
+            <div class="field isTaskRecurringField">
+               <div class="ui radio checkbox <%= checkRecurringTaskRadioBtn %>">
+                  <input type="radio" name="run_now" value="false" tabindex="2" <%= checkRecurringTaskRadioBtn %>>
+                  <label>Recurring Task</label>
+               </div>
+            </div>
+         </div>
+        <div id="once_off_task_container" class="<%= hideOnceOffContainer %>">
+          <div class="ui divider"></div>
+          <button type="submit" class="ui teal labeled icon button" style="margin: 10px 0;"> <i class="add icon"></i>Create Once-Off Task</button>
         </div>
-        <div>
-            <div style="display: inline-block;padding-right: 2rem;">
-                <h3>Start Date</h3>
-                <div class="ui calendar" id="task_start_date_picker">
-                  <div class="ui input left icon">
-                    <i class="calendar icon"></i>
-                    <input type="text" name="start_date" id="start_date" value="<%= start_date %>" placeholder="Start Date">
-                  </div>
-                </div>
-            </div>
-            <div style="display: inline-block;padding-right: 2rem;"">
-                <h3>End Date</h3>
-                <div class="ui calendar" id="task_end_date_picker">
-                  <div class="ui input left icon">
-                    <i class="calendar icon"></i>
-                    <input type="text" name="end_date" id="end_date" value="<%= end_date %>" placeholder="End Date">
-                  </div>
-                </div>
-            </div>
-            <div style="display: inline-block;">
-              <h3>Run At</h3>
-              <div class="ui calendar" id="run_at_time_picker">
+        <div id="recurring_task_container" class="<%= hideRecurringTaskContainer %>">
+          <div class="ui divider"></div>
+          <div style="display: inline-block;padding-right: 2rem;">
+              <h3>Start Date</h3>
+              <div class="ui calendar" id="task_start_date_picker">
                 <div class="ui input left icon">
                   <i class="calendar icon"></i>
-                  <input type="text" name="run_at" id="run_at" value="<%= task.run_at %>" placeholder="Run At">
+                  <input type="text" name="start_date" id="start_date" value="<%= typeof start_date != 'undefined'? start_date : '' %>" placeholder="Start Date">
                 </div>
               </div>
           </div>
+          <div style="display: inline-block;padding-right: 2rem;"">
+              <h3>End Date</h3>
+              <div class="ui calendar" id="task_end_date_picker">
+                <div class="ui input left icon">
+                  <i class="calendar icon"></i>
+                  <input type="text" name="end_date" id="end_date" value="<%= typeof end_date != 'undefined'? end_date : '' %>" placeholder="End Date">
+                </div>
+              </div>
+          </div>
+          <div style="display: inline-block;">
+            <h3>Run At</h3>
+            <div class="ui calendar" id="run_at_time_picker">
+              <div class="ui input left icon">
+                <i class="calendar icon"></i>
+                <input type="text" name="run_at" id="run_at" value="<%= typeof run_at != 'undefined'? run_at : '' %>" placeholder="Run At">
+              </div>
+            </div>
+          </div>
+          <div class="ui divider"></div>
+          <button type="submit" class="ui primary labeled icon button"> <i class="add icon"></i>Save Recurring Task</button>
         </div>
-        
-        <div class="ui hidden divider"></div>
-        <button type="submit" class="ui primary button">Save</button>
       </form>
      </div>
   </div>

@@ -134,6 +134,20 @@
   $('#run_at_time_picker').calendar({
     ampm: false,
     type: 'time'
+  })  
+
+  // for create/edit task page, show/hide once-off task container and recurring task container
+  $('.isTaskRecurringField').click(function() {
+    var selectedTaskPlan = $(this)
+      .find('input[type="radio"]')
+      .val()
+    if (selectedTaskPlan === 'true') {
+      $('#once_off_task_container').show()
+      $('#recurring_task_container').hide()
+    } else if (selectedTaskPlan === 'false') {
+      $('#once_off_task_container').hide()
+      $('#recurring_task_container').show()
+    }
   })
 
   $('#controlled').hide()

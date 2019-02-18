@@ -60,13 +60,28 @@
         </div>
         <h4 class="ui horizontal divider header" style="margin-top: 40px;">
             <i class="bar chart icon"></i>
-            Choose Task Plan
-          </h4>
-        <button type="submit" class="ui teal labeled icon button" style="margin: 10px 0;"> <i class="add icon"></i>Create Once-Off Task</button>
-        <div class="ui horizontal divider">
-          Or Create Recurring Task
+            Choose Task Running Plan
+        </h4>
+        <div class="fields">
+            <label for="run_now" style="padding-left: 10px;">Please select a task running plan:</label>
+            <div class="field isTaskRecurringField">
+               <div class="ui radio checkbox">
+                  <input type="radio" name="run_now" value="true" tabindex="1">
+                  <label>Once-Off</label>
+               </div>
+            </div>
+            <div class="field isTaskRecurringField">
+               <div class="ui radio checkbox">
+                  <input type="radio" name="run_now" value="false" tabindex="2">
+                  <label>Recurring Task</label>
+               </div>
+            </div>
+         </div>
+        <div class="ui divider"></div>
+        <div id="once_off_task_container" class="hidden">
+          <button type="submit" class="ui teal labeled icon button" style="margin: 10px 0;"> <i class="add icon"></i>Create Once-Off Task</button>
         </div>
-        <div>
+        <div id="recurring_task_container" class="hidden">
           <div style="display: inline-block;padding-right: 2rem;">
               <h3>Start Date</h3>
               <div class="ui calendar" id="task_start_date_picker">
@@ -94,10 +109,9 @@
               </div>
             </div>
           </div>
+          <div class="ui divider"></div>
+          <button type="submit" class="ui primary labeled icon button"> <i class="add icon"></i>Save Recurring Task</button>
         </div>
-        
-        <div class="ui hidden divider"></div>
-        <button type="submit" class="ui primary labeled icon button"> <i class="add icon"></i>Save Recurring Task</button>
       </form>
      </div>
   </div>
