@@ -4,7 +4,7 @@
   </div>
   <div class="ui hidden divider"></div>
   <% include ./partials/messages_semantic_ui %>
-  <table class="ui stripped celled sortable table" style="font-size: 0.6em;width: 80vw!important;max-width: 80vw;">
+  <table class="ui stripped celled sortable table" style="font-size: 0.8em;width: 80vw!important;max-width: 80vw;">
     <thead>
       <tr>
         <th class="one wide">Task Status</th>
@@ -50,7 +50,7 @@
           ><% } %>
         </td>
         <td class="four wide">
-          <div class="mini ui four buttons">
+          <div class="mini ui three buttons">
             <a href="/tasks/edit/<%= tasks[i]._id %>">
               <button class=" ui positive button">Edit</button>
             </a>
@@ -61,12 +61,12 @@
               class="delete_task"
               name="<%= tasks[i]._id %>"
             >
-              <button class=" ui negative button" type="submit">
+              <button class="ui negative button" type="submit">
                 Delete
               </button>
             </form>
             <div class="or"></div>
-            <form
+            <!-- <form
               action="/tasks/reset/<%= tasks[i]._id %>"
               method="POST"
               class="reset_task"
@@ -76,7 +76,7 @@
                 Reset Pending
               </button>
             </form>
-            <div class="or"></div>
+            <div class="or"></div> -->
             <form
               action="/tasks/run/<%= tasks[i]._id %>"
               method="POST"
@@ -97,7 +97,7 @@
         <th></th>
         <th colspan="12">
           <a href="/tasks/create">
-            <div class="ui right floated small primary labeled icon button">
+            <div class="ui right floated mini primary labeled icon button">
               <i class="tasks icon"></i> Create New Task
             </div>
           </a>
