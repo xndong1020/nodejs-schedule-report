@@ -4,7 +4,7 @@
   </div>
   <div class="ui hidden divider"></div>
   <% include ./partials/messages_semantic_ui %>
-  <table class="ui stripped celled sortable table">
+  <table class="ui stripped celled sortable table" style="font-size: 0.6em;width: 80vw!important;max-width: 80vw;">
     <thead>
       <tr>
         <th class="one wide">Task Status</th>
@@ -50,9 +50,9 @@
           ><% } %>
         </td>
         <td class="four wide">
-          <div class="ui three buttons">
+          <div class="mini ui four buttons">
             <a href="/tasks/edit/<%= tasks[i]._id %>">
-              <button class="ui positive button">Edit</button>
+              <button class=" ui positive button">Edit</button>
             </a>
             <div class="or"></div>
             <form
@@ -61,7 +61,7 @@
               class="delete_task"
               name="<%= tasks[i]._id %>"
             >
-              <button class="ui negative button" type="submit">
+              <button class=" ui negative button" type="submit">
                 Delete
               </button>
             </form>
@@ -72,7 +72,7 @@
               class="reset_task"
               name="<%= tasks[i]._id %>"
             >
-              <button class="ui yellow button" type="submit">
+              <button class=" ui yellow button" type="submit">
                 Reset Pending
               </button>
             </form>
@@ -83,7 +83,7 @@
               class="run_task"
               name="<%= tasks[i]._id %>"
             >
-              <button class="ui teal button" type="submit">
+              <button class=" ui teal button" type="submit">
                 Run Now
               </button>
             </form>
