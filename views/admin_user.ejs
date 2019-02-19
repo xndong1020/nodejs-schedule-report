@@ -4,7 +4,7 @@
   </div>
   <div class="ui hidden divider"></div>
   <% include ./partials/messages_semantic_ui %>
-  <table class="ui stripped celled sortable table">
+  <table class="ui stripped celled sortable table" style="font-size: 0.9em;width: 80vw!important;max-width: 80vw;">
     <thead>
       <tr>
         <th class="three wide">Name</th>
@@ -22,7 +22,7 @@
         <td class="two wide"><%= users[i].role %></td>
         <td class="four wide"><%= users[i].dateFormatted %></td>
         <td class="four wide">
-          <div class="ui two buttons">
+          <div class="mini ui two buttons">
             <a href="/users/edit/<%= users[i]._id %>">
               <button class="ui positive button">Edit</button>
             </a>
@@ -47,7 +47,7 @@
         <th></th>
         <th colspan="4">
           <a href="/users/register">
-            <div class="ui right floated small primary labeled icon button">
+            <div class="ui right floated mini primary labeled icon button">
               <i class="user icon"></i> Add User
             </div>
           </a>

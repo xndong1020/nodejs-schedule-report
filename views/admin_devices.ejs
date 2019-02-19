@@ -4,21 +4,21 @@
   </div>
   <div class="ui hidden divider"></div>
   <% include ./partials/messages_semantic_ui %>
-  <table class="ui stripped celled sortable table">
+  <table class="ui stripped celled sortable table" style="font-size: 0.75em;width: 80vw!important;max-width: 80vw;">
     <thead>
       <tr>
-        <th class="one wide">Device Status</th>
-        <th class="one wide">Device Name</th>
-        <th class="one wide">Device Type</th>
-        <th class="one wide">Is API Controlled?</th>
-        <th class="one wide">Device Protocol</th>
-        <th class="one wide">Device IP Address</th>
-        <th class="one wide">Device Port Number</th>
-        <th class="one wide">Device Extension Number</th>
-        <th class="one wide">Device Number/Address</th>
+        <th class="one wide">Status</th>
+        <th class="one wide">Name</th>
+        <th class="one wide">Type</th>
+        <th class="one wide">API Controlled</th>
+        <th class="one wide">Protocol</th>
+        <th class="one wide">IP Address</th>
+        <th class="one wide">Port Number</th>
+        <th class="one wide">Extension Number</th>
+        <th class="one wide">Number/Address</th>
         <th class="one wide">Account Username</th>
         <th class="two wide">Account Password</th>
-        <th class="one wide">Added By</th>
+        <th class="one wide">Modified By</th>
         <th class="three wide">Actions</th>
       </tr>
     </thead>
@@ -38,7 +38,7 @@
         <td class="two wide"><%= devices[i].devicePassword %></td>
         <td class="one wide"><%= devices[i].modifiedBy %></td>
         <td class="three wide">
-          <div class="ui three buttons">
+          <div class="mini ui three buttons">
             <a
               href="/devices/edit_device/<%= devices[i]._id %>"
             >
@@ -93,7 +93,7 @@
                   class="ui teal button deviceTestStatusButton"
                   type="button"
                 >
-                  Test Status
+                  Test
                 </button>
               </form>
             <% } %>
@@ -107,7 +107,7 @@
         <th></th>
         <th colspan="13">
           <a href="/devices/add_device">
-            <div class="ui right floated small primary labeled icon button">
+            <div class="ui right floated mini primary labeled icon button">
               <i class="desktop icon"></i> Add Device
             </div>
           </a>
