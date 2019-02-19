@@ -1,4 +1,4 @@
-<section class="ui center aligned page grid">
+<section class="ui center aligned page grid" style="width: 75vw;">
   <div class="row">
     <div
       class="five wide column"
@@ -27,7 +27,7 @@
   </div>
 </section>
 <!-- .section -->
-<table class="ui stripped celled  center aligned table " style="width: 89%">
+<table class="ui stripped celled center aligned table " style="width: 75vw;">
   <thead>
     <tr>
       <th rowspan="3" class="one wide">Call Id</th>
@@ -37,6 +37,25 @@
       <th rowspan="3" class="one wide">Disconnect Cause</th>
       <th rowspan="3" class="one wide">Disconnect Cause Origin</th>
       <th rowspan="3" class="one wide">Disconnect Cause Type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% for(var i=0; i< results.length; i++) {%>
+    <tr>
+      <td><%= results[i].callId %></td>
+      <td><%= results[i].status %></td>
+      <td><%= results[i].Duration %> second(s)</td>
+      <td><%= results[i].Protocol %></td>
+      <td><%= results[i].DisconnectCause %></td>
+      <td><%= results[i].DisconnectCauseOrigin %></td>
+      <td><%= results[i].DisconnectCauseType %></td>
+    </tr>
+    <% } %>
+  </tbody>
+</table>
+<table class="ui stripped celled center aligned table " style="width: 75vw;">
+  <thead>
+    <tr>
       <th colspan="6" class="four wide">Incoming Quality Statistics</th>
       <th colspan="6" class="four wide">Outgoing Quality Statistics</th>
     </tr>
@@ -64,13 +83,6 @@
   <tbody>
     <% for(var i=0; i< results.length; i++) {%>
     <tr>
-      <td><%= results[i].callId %></td>
-      <td><%= results[i].status %></td>
-      <td><%= results[i].Duration %> second(s)</td>
-      <td><%= results[i].Protocol %></td>
-      <td><%= results[i].DisconnectCause %></td>
-      <td><%= results[i].DisconnectCauseOrigin %></td>
-      <td><%= results[i].DisconnectCauseType %></td>
       <td><%= results[i].VideoIncomingPacketLose %></td>
       <td><%= results[i].VideoIncomingPacketLosePercent %></td>
       <td><%= results[i].VideoIncomingMaxJitter %></td>
