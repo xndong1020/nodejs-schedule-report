@@ -1,14 +1,12 @@
 <div class="ui page grid" style="margin-top: 14vh;">
   <% if(showWebexComponents){ %>
   <div class="six wide column">
-    <div class="ui raised padded segment">
-      <div style="display:inline-block;">
-        <span
-          class="fas fa-file-alt"
-          style="font-size:60px; color: #2185d0;padding-right: 30px;"
-        ></span>
-      </div>
-      <div style="display:inline-block; vertical-align: top;">
+    <div class="ui raised padded segment" style="display: flex">
+      <span
+        class="fas fa-file-alt"
+        style="font-size:60px; color: #2185d0;padding-right: 30px; flex:1;"
+      ></span>
+      <span style="flex:5;">
         <h3>Reports Management</h3>
         <div><a href="/reports/call_status">Call Status Reports</a></div>
         <div>
@@ -18,57 +16,50 @@
           <a href="/reports/unattended_transfer">Unattended Transfer Reports</a>
           <span class="ui left pointing red label">New!</span>
         </div>
-      </div>
+      </span>
     </div>
   </div>
   <div class="six wide column">
-    <div class="ui raised padded segment">
-      <div style="display:inline-block;">
-        <span
-          class="fas fa-tasks"
-          style="font-size:60px; color: #2185d0;padding-right: 30px;"
-        ></span>
-      </div>
-      <div style="display:inline-block; vertical-align: top;">
+    <div class="ui raised padded segment" style="display: flex;">
+      <span
+        class="fas fa-tasks"
+        style="font-size:60px; color: #2185d0;padding-right: 30px; flex:1;"
+      ></span>
+      <span style="flex: 5;">
         <h3>Task Management</h3>
         <div><a href="/tasks/admin_tasks">Manage Existing Tasks</a></div>
         <div><a href="/tasks/create">Create New Task</a></div>
         <div><br /></div>
-      </div>
+      </span>
     </div>
   </div>
   <div class="six wide column">
-    <div class="ui raised padded segment">
-      <div style="display:inline-block;">
-        <span
-          class="fas fa-network-wired"
-          style="font-size:60px; color: #2185d0;padding-right: 30px;"
-        ></span>
-      </div>
-      <div style="display:inline-block; vertical-align: top;">
+    <div class="ui raised padded segment" style="display: flex;">
+      <span
+        class="fas fa-network-wired"
+        style="font-size:60px; color: #2185d0;padding-right: 30px; flex:1;"
+      ></span>
+      <span style="flex:5;">
         <h3>Devices Management</h3>
         <div><a href="/devices/admin_devices">Manage Existing Devices</a></div>
         <div><a href="/devices/add_device">Add A Device</a></div>
         <div><br /></div>
-      </div>
+      </span>
     </div>
   </div>
-  <% } %>
-  <% if(showAdminComponents){ %>
+  <% } %> <% if(showAdminComponents){ %>
   <div class="six wide column">
-    <div class="ui raised padded segment">
-      <div style="display:inline-block;">
-        <span
-          class="fas fa-users"
-          style="font-size:60px; color: #2185d0;padding-right: 30px;"
-        ></span>
-      </div>
-      <div style="display:inline-block; vertical-align: top;">
+    <div class="ui raised padded segment" style="display: flex;">
+      <span
+        class="fas fa-users"
+        style="font-size:60px; color: #2185d0;padding-right: 30px; flex:1;"
+      ></span>
+      <span style="flex:5;">
         <h3>User Management</h3>
         <div><a class="item" href="/users/admin">Manage Existing User</a></div>
         <div><a class="item" href="/users/register">Add New User</a></div>
         <div><br /></div>
-      </div>
+      </span>
     </div>
   </div>
   <% } %>
