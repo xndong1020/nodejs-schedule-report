@@ -273,6 +273,7 @@
   //utils
   function saveControlledDeviceDetails(action, formName) {
     var errors = []
+    var deviceId = $('#deviceId').val() || ''
     var deviceName = $('#deviceName').val()
     var deviceType = $('#deviceType').val()
     var deviceProtocol = $('input[name="deviceProtocol"]:checked').val()
@@ -281,8 +282,6 @@
     var deviceExtNo = $('#deviceExtNo').val()
     var deviceUsername = $('#deviceUsername').val()
     var devicePassword = $('#devicePassword').val()
-    var oldName = $('#deviceOldName')
-    var oldNameVal = oldName ? oldName.val() : ''
 
     if (!deviceName) {
       errors.push('Device Name is required')
@@ -310,19 +309,22 @@
     }
 
     if (errors.length === 0) {
-      checkDeviceNameUniqueness(deviceName, oldNameVal, action, function(
-        response
-      ) {
-        if (response) {
-          $('#error_msg').text(
-            'This Device Name is taken. Please choose another name.'
-          )
-          $('#error_msg_container').show()
-          $('#success_msg_container').hide()
-        } else {
-          $(formName).submit()
+      checkDeviceNameUniqueness(
+        deviceId,
+        deviceName,
+        action,
+        function(response) {
+          if (response) {
+            $('#error_msg').text(
+              'This Device Name is taken. Please choose another name.'
+            )
+            $('#error_msg_container').show()
+            $('#success_msg_container').hide()
+          } else {
+            $(formName).submit()
+          }
         }
-      })
+      )
     } else {
       $('#error_msg').text(errors.join(' . '))
       $('#error_msg_container').show()
@@ -333,10 +335,9 @@
 
   function saveUncontrolledDeviceDetails(action, formName) {
     var errors = []
+    var deviceId = $('#deviceId').val() || ''
     var deviceName = $('#deviceName').val()
     var deviceNumberAddr = $('#deviceNumberAddr').val()
-    var oldName = $('#deviceOldName')
-    var oldNameVal = oldName ? oldName.val() : ''
 
     if (!deviceName) {
       errors.push('Device Name is required')
@@ -345,20 +346,23 @@
       errors.push('Device Number or Address is required')
     }
     if (errors.length === 0) {
-      checkDeviceNameUniqueness(deviceName, oldNameVal, action, function(
-        response
-      ) {
-        if (response) {
-          $('#error_msg').text(
-            'This Device Name is taken. Please choose another name.'
-          )
-          $('#error_msg_container').show()
-          $('#success_msg_container').hide()
-        } else {
-          $('#deviceType').val('')
-          $(formName).submit()
+      checkDeviceNameUniqueness(
+        deviceId,
+        deviceName,
+        action,
+        function(response) {
+          if (response) {
+            $('#error_msg').text(
+              'This Device Name is taken. Please choose another name.'
+            )
+            $('#error_msg_container').show()
+            $('#success_msg_container').hide()
+          } else {
+            $('#deviceType').val('')
+            $(formName).submit()
+          }
         }
-      })
+      )
     } else {
       $('#error_msg').text(errors.join(' . '))
       $('#error_msg_container').show()
@@ -434,10 +438,19 @@
       $('#msg_loader').hide()
     }
   }
-  function checkDeviceNameUniqueness(deviceName, oldName, action, cb) {
+  function checkDeviceNameUniqueness(
+    deviceId,
+    deviceName,
+    action,
+    cb
+  ) {
     $.post(
       '/devices/check_uniqueness',
-      { deviceName: deviceName, oldName: oldName, action: action },
+      {
+        deviceId: deviceId,
+        deviceName: deviceName,
+        action: action
+      },
       cb
     )
   }

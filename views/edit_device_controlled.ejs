@@ -25,9 +25,9 @@
         </div>
         <input
           type="hidden"
-          name="deviceOldName"
-          id="deviceOldName"
-          value="<%= settings && settings.deviceName ? settings.deviceName : '' %>"
+          name="deviceId"
+          id="deviceId"
+          value="<%= settings && settings._id ? settings._id : '' %>"
         />
         <input
           type="hidden"
@@ -64,7 +64,8 @@
                 value="http"
                 tabindex="1"
                 class="hidden"
-                <%= httpCheckedStatus %> />
+                <%= httpCheckedStatus %> 
+              />
               <label>http</label>
             </div>
           </div>
@@ -76,7 +77,8 @@
                 value="https"
                 tabindex="2"
                 class="hidden"
-                <%= httpsCheckedStatus %> />
+                <%= httpsCheckedStatus %>
+              />
               <label>https</label>
             </div>
           </div>

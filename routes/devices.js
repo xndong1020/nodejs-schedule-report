@@ -71,11 +71,11 @@ router.post('/check_status', async (req, res) => {
 router.post('/check_uniqueness', async (req, res) => {
   try {
     const { _id } = req.user
-    const { deviceName, oldName, action } = req.body
+    const { deviceId, deviceName, action } = req.body
     // checkDeviceNameUniqueness returns true means a device with the same name was already created
     const response = await checkDeviceNameUniqueness(
+      deviceId,
       deviceName,
-      oldName,
       action,
       _id
     )

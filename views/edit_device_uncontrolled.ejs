@@ -23,8 +23,18 @@
             value="<%= settings && settings.deviceName ? settings.deviceName : '' %>"
           />
         </div>
-        <input type="hidden" name="deviceOldName" id="deviceOldName" value="<%= settings && settings.deviceName ? settings.deviceName : '' %>">
-        <input type="hidden" name="isDeviceApiControlled" id="isDeviceApiControlled" value="<%= settings && settings.isDeviceApiControlled ? settings.isDeviceApiControlled : '' %>">
+        <input
+          type="hidden"
+          name="deviceId"
+          id="deviceId"
+          value="<%= settings && settings._id ? settings._id : '' %>"
+        />
+        <input
+          type="hidden"
+          name="isDeviceApiControlled"
+          id="isDeviceApiControlled"
+          value="<%= settings && settings.isDeviceApiControlled ? settings.isDeviceApiControlled : '' %>"
+        />
         <div class="field">
           <label for="deviceNumberAddr">Device Number/Address</label>
           <input
@@ -37,13 +47,19 @@
           />
         </div>
         <div class="ui negative message" id="error_msg_container">
-            <i class="close icon"></i> <span id="error_msg"></span>
-         </div>
-         <div class="ui positive message" id="success_msg_container">
-            <i class="close icon"></i> <span id="success_msg"></span>
-         </div>
+          <i class="close icon"></i> <span id="error_msg"></span>
+        </div>
+        <div class="ui positive message" id="success_msg_container">
+          <i class="close icon"></i> <span id="success_msg"></span>
+        </div>
         <div class="ui hidden divider"></div>
-        <button type="submit" class="ui primary button" id="saveEditDeviceUncontrolledBtn">Save</button>
+        <button
+          type="submit"
+          class="ui primary button"
+          id="saveEditDeviceUncontrolledBtn"
+        >
+          Save
+        </button>
       </form>
     </div>
   </div>
