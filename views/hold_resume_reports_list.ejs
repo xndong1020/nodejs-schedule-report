@@ -1,5 +1,8 @@
 <!-- .section -->
-<section class="ui center aligned raised segment" style="width: 75vw; margin-left: 1vw;">
+<section
+  class="ui center aligned raised segment"
+  style="width: 75vw; margin-left: 1vw;"
+>
   <h2>Call Hold And Resume Report</h2>
   <table class="ui striped celled  table">
     <thead>
@@ -25,9 +28,12 @@
           <a href="/reports/hold_resume/<%= results[i].reportId %>">Details</a>
         </td>
         <td>
-          <a href="/emails/<%= results[i].reportId %>"
-            >Email this report to me</a
-          >
+          <form action="/emails/<%= results[i].reportId %>" method="POST">
+            <input type="hidden" name="reportType" value="hold_resume" />
+            <button class="ui tiny teal button">
+              Send Report
+            </button>
+          </form>
         </td>
       </tr>
       <% } %>

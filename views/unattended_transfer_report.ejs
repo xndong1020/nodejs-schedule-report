@@ -1,34 +1,36 @@
-<section class="ui center aligned page grid" style="width: 75vw;">
-  <div class="row">
-    <div class="five wide column">
-      <h4>Unattended Transfer Success</h4>
-      <canvas id="bothSuccessChart" width="100" height="100"></canvas>
+<div id="report-container">
+  <section class="ui center aligned page grid" style="width: 75vw;">
+    <div class="row">
+      <div class="five wide column">
+        <h4>Unattended Transfer Success</h4>
+        <canvas id="bothSuccessChart" width="100" height="100"></canvas>
+      </div>
     </div>
-  </div>
-</section>
-<!-- .section -->
-<table class="ui stripped celled center aligned table " style="width: 75vw;">
-  <thead>
-    <tr>
-      <th>Call Id</th>
-      <th>Call Unattended Transfer Status</th>
-      <th>Call Unattended Transfer Error Cause</th>
-      <th>Call Unattended Transfer Error Description</th>
-      <th>Call Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% for(var i=0; i< results.length; i++) {%>
-    <tr>
-      <td><%= results[i].callId %></td>
-      <td><%= results[i].CallUnattendedTransferStatus %></td>
-      <td><%= results[i].CallUnattendedTransferErrorCause %></td>
-      <td><%= results[i].CallUnattendedTransferDescription %></td>
-      <td><a href="/reports/call_history/<%= reportId %>">Call Status</a></td>
-    </tr>
-    <% } %>
-  </tbody>
-</table>
+  </section>
+  <!-- .section -->
+  <table class="ui stripped celled center aligned table " style="width: 75vw;">
+    <thead>
+      <tr>
+        <th>Call Id</th>
+        <th>Call Unattended Transfer Status</th>
+        <th>Call Unattended Transfer Error Cause</th>
+        <th>Call Unattended Transfer Error Description</th>
+        <th>Call Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for(var i=0; i< results.length; i++) {%>
+      <tr>
+        <td><%= results[i].callId %></td>
+        <td><%= results[i].CallUnattendedTransferStatus %></td>
+        <td><%= results[i].CallUnattendedTransferErrorCause %></td>
+        <td><%= results[i].CallUnattendedTransferDescription %></td>
+        <td><a href="/reports/call_history/<%= reportId %>">Call Status</a></td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
 <script>
   var dataStr = '<%=results_str%>'

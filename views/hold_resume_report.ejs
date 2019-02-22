@@ -1,39 +1,41 @@
-<section class="ui center aligned page grid" style="width: 75vw;">
-  <div class="row">
-    <div class="five wide column">
-      <h4>Hold and Resume both success</h4>
-      <canvas id="bothSuccessChart" width="100" height="100"></canvas>
+<div id="report-container">
+  <section class="ui center aligned page grid" style="width: 75vw;">
+    <div class="row">
+      <div class="five wide column">
+        <h4>Hold and Resume both success</h4>
+        <canvas id="bothSuccessChart" width="100" height="100"></canvas>
+      </div>
     </div>
-  </div>
-</section>
-<table class="ui stripped celled center aligned table" style="width: 75vw;">
-  <thead>
-    <tr>
-      <th>Call Id</th>
-      <th>Call Hold Status</th>
-      <th>Call Hold Error Cause</th>
-      <th>Call Hold Error Description</th>
-      <th>Call Resume Status</th>
-      <th>Call Resume Error Cause</th>
-      <th>Call Resume Error Description</th>
-      <th>Call Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% for(var i=0; i< results.length; i++) {%>
-    <tr>
-      <td><%= results[i].callId %></td>
-      <td><%= results[i].CallHoldStatus %></td>
-      <td><%= results[i].CallHoldErrorCause %></td>
-      <td><%= results[i].CallHoldErrorDescription %></td>
-      <td><%= results[i].CallResumeStatus %></td>
-      <td><%= results[i].CallResumeErrorCause %></td>
-      <td><%= results[i].CallResumeErrorDescription %></td>
-      <td><a href="/reports/call_history/<%= reportId %>">Call Status</a></td>
-    </tr>
-    <% } %>
-  </tbody>
-</table>
+  </section>
+  <table class="ui stripped celled center aligned table" style="width: 75vw;">
+    <thead>
+      <tr>
+        <th>Call Id</th>
+        <th>Call Hold Status</th>
+        <th>Call Hold Error Cause</th>
+        <th>Call Hold Error Description</th>
+        <th>Call Resume Status</th>
+        <th>Call Resume Error Cause</th>
+        <th>Call Resume Error Description</th>
+        <th>Call Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for(var i=0; i< results.length; i++) {%>
+      <tr>
+        <td><%= results[i].callId %></td>
+        <td><%= results[i].CallHoldStatus %></td>
+        <td><%= results[i].CallHoldErrorCause %></td>
+        <td><%= results[i].CallHoldErrorDescription %></td>
+        <td><%= results[i].CallResumeStatus %></td>
+        <td><%= results[i].CallResumeErrorCause %></td>
+        <td><%= results[i].CallResumeErrorDescription %></td>
+        <td><a href="/reports/call_history/<%= reportId %>">Call Status</a></td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
 <script>

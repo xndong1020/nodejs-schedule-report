@@ -27,9 +27,12 @@
           >
         </td>
         <td>
-          <a href="/emails/<%= results[i].reportId %>"
-            >Email this report to me</a
-          >
+            <form action="/emails/<%= results[i].reportId %>" method="POST">
+              <input type="hidden" name="reportType" value="unattended_transfer" />
+              <button class="ui tiny teal button">
+                Send Report
+              </button>
+            </form>
         </td>
       </tr>
       <% } %>

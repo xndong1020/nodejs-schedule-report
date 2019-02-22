@@ -1,104 +1,104 @@
-<section class="ui center aligned page grid" style="width: 75vw;">
-  <div class="row">
-    <div
-      class="five wide column"
-    >
-      <h4>Successful/Failed calls</h4>
-      <canvas id="callSuccessRateChart" width="100" height="100"></canvas>
+<div id="report-container">
+  <section class="ui center aligned page grid" style="width: 75vw;">
+    <div class="row">
+      <div class="five wide column">
+        <h4>Successful/Failed calls</h4>
+        <canvas id="callSuccessRateChart" width="100" height="100"></canvas>
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="four wide column">
-      <h4>Incoming Packet Lose</h4>
-      <canvas id="incomingPacketLoseChart" width="100" height="100"></canvas>
+    <div class="row">
+      <div class="four wide column">
+        <h4>Incoming Packet Lose</h4>
+        <canvas id="incomingPacketLoseChart" width="100" height="100"></canvas>
+      </div>
+      <div class="four wide column">
+        <h4>Outgoing Packet Lose</h4>
+        <canvas id="outgoingPacketLoseChart" width="100" height="100"></canvas>
+      </div>
+      <div class="four wide column">
+        <h4>Incoming Max Jitter</h4>
+        <canvas id="incomingJitterChart" width="100" height="100"></canvas>
+      </div>
+      <div class="four wide column">
+        <h4>Outgoing Max Jitter</h4>
+        <canvas id="outgoingJitterChart" width="100" height="100"></canvas>
+      </div>
     </div>
-    <div class="four wide column">
-      <h4>Outgoing Packet Lose</h4>
-      <canvas id="outgoingPacketLoseChart" width="100" height="100"></canvas>
-    </div>
-    <div class="four wide column">
-      <h4>Incoming Max Jitter</h4>
-      <canvas id="incomingJitterChart" width="100" height="100"></canvas>
-    </div>
-    <div class="four wide column">
-      <h4>Outgoing Max Jitter</h4>
-      <canvas id="outgoingJitterChart" width="100" height="100"></canvas>
-    </div>
-  </div>
-</section>
-<!-- .section -->
-<table class="ui stripped celled center aligned table " style="width: 75vw;">
-  <thead>
-    <tr>
-      <th rowspan="3" class="one wide">Call Id</th>
-      <th rowspan="3" class="one wide">Call status</th>
-      <th rowspan="3" class="one wide">Call Duration</th>
-      <th rowspan="3" class="one wide">Call Protocol</th>
-      <th rowspan="3" class="one wide">Disconnect Cause</th>
-      <th rowspan="3" class="one wide">Disconnect Cause Origin</th>
-      <th rowspan="3" class="one wide">Disconnect Cause Type</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% for(var i=0; i< results.length; i++) {%>
-    <tr>
-      <td><%= results[i].callId %></td>
-      <td><%= results[i].status %></td>
-      <td><%= results[i].Duration %> second(s)</td>
-      <td><%= results[i].Protocol %></td>
-      <td><%= results[i].DisconnectCause %></td>
-      <td><%= results[i].DisconnectCauseOrigin %></td>
-      <td><%= results[i].DisconnectCauseType %></td>
-    </tr>
-    <% } %>
-  </tbody>
-</table>
-<table class="ui stripped celled center aligned table " style="width: 75vw;">
-  <thead>
-    <tr>
-      <th colspan="6" class="four wide">Incoming Quality Statistics</th>
-      <th colspan="6" class="four wide">Outgoing Quality Statistics</th>
-    </tr>
-    <tr>
-      <th colspan="3">Video</th>
-      <th colspan="3">Audio</th>
-      <th colspan="3">Video</th>
-      <th colspan="3">Audio</th>
-    </tr>
-    <tr>
-      <th>Packet Lose</th>
-      <th>Packet Lose Percent</th>
-      <th>Max Jitter</th>
-      <th>Packet Lose</th>
-      <th>Packet Lose Percent</th>
-      <th>Max Jitter</th>
-      <th>Packet Lose</th>
-      <th>Packet Lose Percent</th>
-      <th>Max Jitter</th>
-      <th>Packet Lose</th>
-      <th>Packet Lose Percent</th>
-      <th>Max Jitter</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% for(var i=0; i< results.length; i++) {%>
-    <tr>
-      <td><%= results[i].VideoIncomingPacketLose %></td>
-      <td><%= results[i].VideoIncomingPacketLosePercent %></td>
-      <td><%= results[i].VideoIncomingMaxJitter %></td>
-      <td><%= results[i].VoiceIncomingPacketLose %></td>
-      <td><%= results[i].VoiceIncomingPacketLosePercent %></td>
-      <td><%= results[i].VoiceIncomingMaxJitter %></td>
-      <td><%= results[i].VideoOutgoingPacketLose %></td>
-      <td><%= results[i].VideoOutgoingPacketLosePercent %></td>
-      <td><%= results[i].VideoOutgoingMaxJitter %></td>
-      <td><%= results[i].VoiceOutgoingPacketLose %></td>
-      <td><%= results[i].VoiceOutgoingPacketLosePercent %></td>
-      <td><%= results[i].VoiceOutgoingMaxJitter %></td>
-    </tr>
-    <% } %>
-  </tbody>
-</table>
+  </section>
+  <!-- .section -->
+  <table class="ui stripped celled center aligned table " style="width: 75vw;">
+    <thead>
+      <tr>
+        <th rowspan="3" class="one wide">Call Id</th>
+        <th rowspan="3" class="one wide">Call status</th>
+        <th rowspan="3" class="one wide">Call Duration</th>
+        <th rowspan="3" class="one wide">Call Protocol</th>
+        <th rowspan="3" class="one wide">Disconnect Cause</th>
+        <th rowspan="3" class="one wide">Disconnect Cause Origin</th>
+        <th rowspan="3" class="one wide">Disconnect Cause Type</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for(var i=0; i< results.length; i++) {%>
+      <tr>
+        <td><%= results[i].callId %></td>
+        <td><%= results[i].status %></td>
+        <td><%= results[i].Duration %> second(s)</td>
+        <td><%= results[i].Protocol %></td>
+        <td><%= results[i].DisconnectCause %></td>
+        <td><%= results[i].DisconnectCauseOrigin %></td>
+        <td><%= results[i].DisconnectCauseType %></td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+  <table class="ui stripped celled center aligned table " style="width: 75vw;">
+    <thead>
+      <tr>
+        <th colspan="6" class="four wide">Incoming Quality Statistics</th>
+        <th colspan="6" class="four wide">Outgoing Quality Statistics</th>
+      </tr>
+      <tr>
+        <th colspan="3">Video</th>
+        <th colspan="3">Audio</th>
+        <th colspan="3">Video</th>
+        <th colspan="3">Audio</th>
+      </tr>
+      <tr>
+        <th>Packet Lose</th>
+        <th>Packet Lose Percent</th>
+        <th>Max Jitter</th>
+        <th>Packet Lose</th>
+        <th>Packet Lose Percent</th>
+        <th>Max Jitter</th>
+        <th>Packet Lose</th>
+        <th>Packet Lose Percent</th>
+        <th>Max Jitter</th>
+        <th>Packet Lose</th>
+        <th>Packet Lose Percent</th>
+        <th>Max Jitter</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for(var i=0; i< results.length; i++) {%>
+      <tr>
+        <td><%= results[i].VideoIncomingPacketLose %></td>
+        <td><%= results[i].VideoIncomingPacketLosePercent %></td>
+        <td><%= results[i].VideoIncomingMaxJitter %></td>
+        <td><%= results[i].VoiceIncomingPacketLose %></td>
+        <td><%= results[i].VoiceIncomingPacketLosePercent %></td>
+        <td><%= results[i].VoiceIncomingMaxJitter %></td>
+        <td><%= results[i].VideoOutgoingPacketLose %></td>
+        <td><%= results[i].VideoOutgoingPacketLosePercent %></td>
+        <td><%= results[i].VideoOutgoingMaxJitter %></td>
+        <td><%= results[i].VoiceOutgoingPacketLose %></td>
+        <td><%= results[i].VoiceOutgoingPacketLosePercent %></td>
+        <td><%= results[i].VoiceOutgoingMaxJitter %></td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
 <script>

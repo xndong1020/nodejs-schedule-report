@@ -1,15 +1,25 @@
 const express = require('express')
 const router = express.Router()
-const { getCallHistoryGetResultByID } = require('../mongodbHelpers')
-const mailer = require('../services/emailService')
+// const emailService = require('../services/emailService')
+const { getImageBase64String } = require('../services/screenshotsService')
 
-router.get('/:reportId', async (req, res) => {
-  const reportId = req.params.reportId
-  const result = await getCallHistoryGetResultByID(reportId)
+router.post('/:reportId', async (req, res) => {
+  const { id } = req.user
+  const { reportId } = req.params
+  const { reportType } = req.body
+  const reportUrl = `${req.protocol}://${req.get(
+    'host'
+  )}/reports/${reportType}/${reportId}`
   // send email to users
   try {
-    await mailer.sendMail('isdance2004@hotmail.com', result.data)
-    res.render('email', { title: 'Report has been sent to user.', reportId })
+    // await emailService.sendMail('isdance2004@hotmail.com', result.data)
+    // console.log('reportUrl', reportUrl, reportId)
+    const imageStr = await getImageBase64String(id, reportUrl, reportId)
+    res.render('email', {
+      title: 'Report has been sent to user.',
+      layout: 'layout_clear',
+      imageStr: imageStr.data
+    })
   } catch (error) {
     res.render('error')
   }
