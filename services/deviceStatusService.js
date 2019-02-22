@@ -35,18 +35,7 @@ const getDeviceInfo = async device => {
   return info
 }
 
-const checkDeviceStatus = async device => {
-  try {
-    const deviceInfoResponse = await getDeviceInfo(device)
-    const { status } = deviceInfoResponse
-    return status && status.toLowerCase() === 'Registered'.toLowerCase()
-  } catch (e) {
-    return false
-  }
-}
-
 module.exports = {
   getDeviceStatus,
-  getDeviceInfo,
-  checkDeviceStatus
+  getDeviceInfo
 }

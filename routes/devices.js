@@ -2,8 +2,7 @@ const express = require('express')
 const router = express.Router()
 const { io } = require('../io')
 const { Device } = require('../models/Device')
-const { deviceTypes } = require('../enums')
-const { checkDeviceStatus, getDeviceInfo } = require('../services/deviceStatusService')
+const { getDeviceInfo } = require('../services/deviceStatusService')
 const {
   checkDeviceNameUniqueness,
   getDeviceById
@@ -11,10 +10,8 @@ const {
 
 // GET /devices/add_device
 router.get('/add_device', async (req, res) => {
-  const deviceKeys = Object.keys(deviceTypes)
   res.render('add_device', {
-    title: 'Add Device for Testing',
-    deviceKeys
+    title: 'Add Device for Testing'
   })
 })
 
@@ -22,12 +19,7 @@ router.get('/add_device', async (req, res) => {
 router.get('/edit_device/:deviceId', async (req, res) => {
   const { deviceId } = req.params
   const targetDevice = (await getDeviceById(deviceId)) || {}
-  const { deviceType, isDeviceApiControlled, deviceProtocol } = targetDevice
-
-  const deviceKeys = Object.keys(deviceTypes)
-  const currentDeviceIndex = Object.keys(deviceTypes).findIndex(
-    key => deviceTypes[key] === deviceType
-  )
+  const { isDeviceApiControlled, deviceProtocol } = targetDevice
 
   const httpCheckedStatus = deviceProtocol === 'http' ? 'checked' : ''
   const httpsCheckedStatus = deviceProtocol === 'https' ? 'checked' : ''
@@ -37,8 +29,6 @@ router.get('/edit_device/:deviceId', async (req, res) => {
     res.render('edit_device_controlled', {
       title: 'Edit Device Details',
       settings: targetDevice,
-      deviceKeys,
-      currentDeviceIndex,
       httpCheckedStatus,
       httpsCheckedStatus
     })
@@ -54,30 +44,23 @@ router.get('/edit_device/:deviceId', async (req, res) => {
 // GET /devices/admin_devices
 router.get('/admin_devices', async (req, res) => {
   const devices = (await Device.find({}, { __v: 0 })) || []
-  const deviceKeys = Object.keys(deviceTypes)
 
   // read user settings
   res.render('admin_devices', {
     title: 'Devices',
-    devices,
-    deviceKeys
+    devices
   })
 })
 
 // POST /devices/check_status
 router.post('/check_status', async (req, res) => {
   try {
-    const response = await checkDeviceStatus(req.body)
-    res.status(200).send(response)
-  } catch (err) {
-    res.status(400).send(err)
-  }
-})
-
-// POST /devices/check_status
-router.post('/get_info', async (req, res) => {
-  try {
-    const response = await getDeviceInfo(req.body)
+    const info = await await getDeviceInfo(req.body)
+    const { status } = info
+    const response = {
+      ...info,
+      status: status && status.toLowerCase() === 'Registered'.toLowerCase()
+    }
     res.status(200).send(response)
   } catch (err) {
     res.status(400).send(err)

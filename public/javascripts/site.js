@@ -409,18 +409,17 @@
       }
       $.post('/devices/check_status', data, function(response) {
         $('#msg_loader').hide()
-        if (response) {
-          $.post('/devices/get_info', data, function(response) {
-            var productId = response.productId
-            var uri = response.uri
-            $('#deviceType').val(productId)
-            $('#deviceExtNo').val(uri)
+        var productId = response.productId
+        var uri = response.uri
+        var status = response.status
+        if (status) {
+          $('#deviceType').val(productId)
+          $('#deviceExtNo').val(uri)
 
-            $('#success_msg').text('Test Passed.')
-            $('#success_msg_container').show()
-            $('#error_msg_container').hide()
-            $(saveButtonSelector).removeAttr('disabled')
-          })
+          $('#success_msg').text('Test Passed.')
+          $('#success_msg_container').show()
+          $('#error_msg_container').hide()
+          $(saveButtonSelector).removeAttr('disabled')
         } else {
           $('#error_msg').text('Test Failed.')
           $('#error_msg_container').show()
