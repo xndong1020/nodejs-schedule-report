@@ -134,7 +134,7 @@
   $('#run_at_time_picker').calendar({
     ampm: false,
     type: 'time'
-  })  
+  })
 
   // for create/edit task page, show/hide once-off task container and recurring task container
   $('.isTaskRecurringField').click(function() {
@@ -224,34 +224,27 @@
     var targetId = '#status_div_' + deviceName
     $(targetId).addClass('ui yellow ribbon label')
     $(targetId).text('Checking ...')
+    var data = {
+      deviceProtocol: deviceProtocol,
+      deviceIPAddress: deviceIPAddress,
+      devicePortNumber: devicePortNumber,
+      deviceUsername: deviceUsername,
+      devicePassword: devicePassword
+    }
 
-    $.post(
-      '/devices/check_status',
-      {
-        deviceUrl:
-          deviceProtocol +
-          '://' +
-          deviceIPAddress +
-          ':' +
-          devicePortNumber +
-          '/putxml',
-        deviceUsername: deviceUsername,
-        devicePassword: devicePassword
-      },
-      function(response) {
-        if (response) {
-          $(targetId)
-            .removeClass('yellow')
-            .addClass('green')
-            .text('OK')
-        } else {
-          $(targetId)
-            .removeClass('yellow')
-            .addClass('red')
-            .text('Offline')
-        }
+    $.post('/devices/check_status', data, function(response) {
+      if (response) {
+        $(targetId)
+          .removeClass('yellow')
+          .addClass('green')
+          .text('OK')
+      } else {
+        $(targetId)
+          .removeClass('yellow')
+          .addClass('red')
+          .text('Offline')
       }
-    )
+    })
   })
 
   $('#saveEditDeviceUncontrolledBtn').click(function(e) {
@@ -383,7 +376,6 @@
     var deviceProtocol = $('input[name="deviceProtocol"]:checked').val()
     var deviceIPAddress = $('#deviceIPAddress').val()
     var devicePortNumber = $('#devicePortNumber').val()
-    var deviceExtNo = $('#deviceExtNo').val()
     var deviceUsername = $('#deviceUsername').val()
     var devicePassword = $('#devicePassword').val()
 
@@ -399,9 +391,6 @@
     if (!devicePortNumber) {
       errors.push('Device Port Number is required')
     }
-    if (!deviceExtNo) {
-      errors.push('Device Extension Number is required')
-    }
     if (!deviceUsername) {
       errors.push('Device Username is required')
     }
@@ -411,34 +400,34 @@
 
     if (errors.length === 0) {
       $('#error_msg_container').hide()
-      $.post(
-        '/devices/check_status',
-        {
-          deviceUrl:
-            deviceProtocol +
-            '://' +
-            deviceIPAddress +
-            ':' +
-            devicePortNumber +
-            '/putxml',
-          deviceUsername: deviceUsername,
-          devicePassword: devicePassword
-        },
-        function(response) {
-          $('#msg_loader').hide()
-          if (response) {
+      var data = {
+        deviceProtocol: deviceProtocol,
+        deviceIPAddress: deviceIPAddress,
+        devicePortNumber: devicePortNumber,
+        deviceUsername: deviceUsername,
+        devicePassword: devicePassword
+      }
+      $.post('/devices/check_status', data, function(response) {
+        $('#msg_loader').hide()
+        if (response) {
+          $.post('/devices/get_info', data, function(response) {
+            var productId = response.productId
+            var uri = response.uri
+            $('#deviceType').val(productId)
+            $('#deviceExtNo').val(uri)
+
             $('#success_msg').text('Test Passed.')
             $('#success_msg_container').show()
             $('#error_msg_container').hide()
             $(saveButtonSelector).removeAttr('disabled')
-          } else {
-            $('#error_msg').text('Test Failed.')
-            $('#error_msg_container').show()
-            $('#success_msg_container').hide()
-            $(saveButtonSelector).attr('disabled', 'disabled')
-          }
+          })
+        } else {
+          $('#error_msg').text('Test Failed.')
+          $('#error_msg_container').show()
+          $('#success_msg_container').hide()
+          $(saveButtonSelector).attr('disabled', 'disabled')
         }
-      )
+      })
     } else {
       $('#error_msg').text(errors.join(' . '))
       $('#error_msg_container').show()

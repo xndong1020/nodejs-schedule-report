@@ -1,139 +1,183 @@
 <section class="ui center aligned page relaxed grid" style="width: 80%;">
-    <div class="row">
-       <h1>
-          <i class="fas fa-desktop"></i> <%= title %>
-       </h1>
-    </div>
-    <div class="ui hidden divider"></div>
-    <div class="eight column relaxed row">
-       <div class="ui stacked segment eight wide column">
-          <% include ./partials/messages_semantic_ui %>
-          <form action="/devices/add_device" method="POST" class="ui medium form" id="createDeviceForm">
-             <div class="field">
-                <label for="deviceName">Device Unique Name</label>
-                <input type="text" name="deviceName" id="deviceName" placeholder="Please enter an unique device name">
-             </div>
-             <div class="field"  id="deviceTypeContainer">
-                <label for="deviceType">Device Type</label>
-                <select name="deviceType" id="deviceType">
-                   <% for(var i=0;i<deviceKeys.length;i++) {  %>
-                   <option value=<%= deviceKeys[i] %> ><%= deviceKeys[i] %></option>
-                   <% } %>
-                </select>
-             </div>
-             <div class="fields">
-                <label for="isDeviceApiControlled">Is your device API controlled:</label>
-                <div class="field">
-                   <div class="ui radio checkbox">
-                      <input type="radio" name="isDeviceApiControlled" value="controlled" tabindex="1" class="hidden">
-                      <label>API Controlled</label>
-                   </div>
-                </div>
-                <div class="field">
-                   <div class="ui radio checkbox">
-                      <input type="radio" name="isDeviceApiControlled" value="uncontrolled" tabindex="2" class="hidden">
-                      <label>Non API Controlled</label>
-                   </div>
-                </div>
-             </div>
-             <h4 class="ui horizontal divider header">
-               <i class="edit outline icon"></i>
-               Device Details
-             </h4>
-             <div id="controlled">
-               <div class="fields">
-                  <label for="deviceProtocol" style="padding-left: 10px;">Please select device protocol:</label>
-                  <div class="field">
-                     <div class="ui radio checkbox">
-                        <input type="radio" name="deviceProtocol" value="http" tabindex="1" class="hidden">
-                        <label>http</label>
-                     </div>
-                  </div>
-                  <div class="field">
-                     <div class="ui radio checkbox">
-                        <input type="radio" name="deviceProtocol" value="https" tabindex="2" class="hidden">
-                        <label>https</label>
-                     </div>
-                  </div>
-               </div>
-                <div class="field">
-                   <label for="deviceIPAddress">Device Endpoint IP Address</label>
-                   <input
-                      type="text"
-                      id="deviceIPAddress"
-                      name="deviceIPAddress"
-                      class="form-control"
-                      placeholder="Enter Endpoint IP Address"
-                      />
-                </div>
-                <div class="field">
-                  <label for="devicePortNumber">Device Endpoint Port Number</label>
-                  <input
-                     type="text"
-                     id="devicePortNumber"
-                     name="devicePortNumber"
-                     class="form-control"
-                     placeholder="Enter Endpoint Port Number"
-                     />
-               </div>
-                <div class="field">
-                   <label for="deviceExtNo">Device Extension Number</label>
-                   <input
-                      type="text"
-                      id="deviceExtNo"
-                      name="deviceExtNo"
-                      class="form-control"
-                      placeholder="Enter Device Extension Number"
-                      />
-                </div>
-                <div class="field">
-                   <label for="deviceUsername">Device Login Username</label>
-                   <input
-                      type="text"
-                      id="deviceUsername"
-                      name="deviceUsername"
-                      class="form-control"
-                      placeholder="Enter Device Login Username"
-                      />
-                </div>
-                <div class="field">
-                   <label for="devicePassword">Device Login Password</label>
-                   <input
-                      type="text"
-                      id="devicePassword"
-                      name="devicePassword"
-                      class="form-control"
-                      placeholder="Enter Device Login Password"
-                      />
-                </div>
-             </div>
-             <div id="uncontrolled">
-                <div class="field">
-                   <label for="deviceNumberAddr">Device Number/Address</label>
-                   <input
-                      type="text"
-                      id="deviceNumberAddr"
-                      name="deviceNumberAddr"
-                      class="form-control"
-                      placeholder="Enter Device Number or Address"
-                      />
-                </div>
-             </div>
-             <div class="ui yellow message" id="msg_loader" style="height: 40px;">
-               <div class="ui active loader"></div>
+  <div class="row">
+    <h1><i class="fas fa-desktop"></i> <%= title %></h1>
+  </div>
+  <div class="ui hidden divider"></div>
+  <div class="eight column relaxed row">
+    <div class="ui stacked segment eight wide column">
+      <% include ./partials/messages_semantic_ui %>
+      <form
+        action="/devices/add_device"
+        method="POST"
+        class="ui medium form"
+        id="createDeviceForm"
+      >
+        <div class="field">
+          <label for="deviceName">Device Unique Name</label>
+          <input
+            type="text"
+            name="deviceName"
+            id="deviceName"
+            placeholder="Please enter an unique device name"
+          />
+        </div>
+        <div class="field" id="deviceTypeContainer">
+          <label for="deviceType">Device Type</label>
+          <input
+            type="text"
+            id="deviceType"
+            name="deviceType"
+            class="form-control"
+            placeholder="This field will be auto-filled"
+            readonly
+          />
+        </div>
+        <div class="fields">
+          <label for="isDeviceApiControlled"
+            >Is your device API controlled:</label
+          >
+          <div class="field">
+            <div class="ui radio checkbox">
+              <input
+                type="radio"
+                name="isDeviceApiControlled"
+                value="controlled"
+                tabindex="1"
+                class="hidden"
+              />
+              <label>API Controlled</label>
             </div>
-             <div class="ui negative message" id="error_msg_container">
-                <i class="close icon"></i> <span id="error_msg"></span>
-             </div>
-             <div class="ui positive message" id="success_msg_container">
-                <i class="close icon"></i> <span id="success_msg"></span>
-             </div>
-             <div class="ui hidden divider"></div>
-             <div class="ui two buttons">
-                <button type="button" class="ui green button" id="testDeviceBtn">Test</button>
-                <button type="submit" class="ui primary button" id="saveDeviceBtn">Save</button>
-             </div>
-          </form>
-       </div>
+          </div>
+          <div class="field">
+            <div class="ui radio checkbox">
+              <input
+                type="radio"
+                name="isDeviceApiControlled"
+                value="uncontrolled"
+                tabindex="2"
+                class="hidden"
+              />
+              <label>Non API Controlled</label>
+            </div>
+          </div>
+        </div>
+        <h4 class="ui horizontal divider header">
+          <i class="edit outline icon"></i>
+          Device Details
+        </h4>
+        <div id="controlled">
+          <div class="fields">
+            <label for="deviceProtocol" style="padding-left: 10px;"
+              >Please select device protocol:</label
+            >
+            <div class="field">
+              <div class="ui radio checkbox">
+                <input
+                  type="radio"
+                  name="deviceProtocol"
+                  value="http"
+                  tabindex="1"
+                  class="hidden"
+                />
+                <label>http</label>
+              </div>
+            </div>
+            <div class="field">
+              <div class="ui radio checkbox">
+                <input
+                  type="radio"
+                  name="deviceProtocol"
+                  value="https"
+                  tabindex="2"
+                  class="hidden"
+                />
+                <label>https</label>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label for="deviceIPAddress">Device Endpoint IP Address</label>
+            <input
+              type="text"
+              id="deviceIPAddress"
+              name="deviceIPAddress"
+              class="form-control"
+              placeholder="Enter Endpoint IP Address"
+            />
+          </div>
+          <div class="field">
+            <label for="devicePortNumber">Device Endpoint Port Number</label>
+            <input
+              type="text"
+              id="devicePortNumber"
+              name="devicePortNumber"
+              class="form-control"
+              placeholder="Enter Endpoint Port Number"
+            />
+          </div>
+          <div class="field">
+            <label for="deviceExtNo">Device Extension Number</label>
+            <input
+              type="text"
+              id="deviceExtNo"
+              name="deviceExtNo"
+              class="form-control"
+              placeholder="This field will be auto-filled"
+              readonly
+            />
+          </div>
+          <div class="field">
+            <label for="deviceUsername">Device Login Username</label>
+            <input
+              type="text"
+              id="deviceUsername"
+              name="deviceUsername"
+              class="form-control"
+              placeholder="Enter Device Login Username"
+            />
+          </div>
+          <div class="field">
+            <label for="devicePassword">Device Login Password</label>
+            <input
+              type="text"
+              id="devicePassword"
+              name="devicePassword"
+              class="form-control"
+              placeholder="Enter Device Login Password"
+            />
+          </div>
+        </div>
+        <div id="uncontrolled">
+          <div class="field">
+            <label for="deviceNumberAddr">Device Number/Address</label>
+            <input
+              type="text"
+              id="deviceNumberAddr"
+              name="deviceNumberAddr"
+              class="form-control"
+              placeholder="Enter Device Number or Address"
+            />
+          </div>
+        </div>
+        <div class="ui yellow message" id="msg_loader" style="height: 40px;">
+          <div class="ui active loader"></div>
+        </div>
+        <div class="ui negative message" id="error_msg_container">
+          <i class="close icon"></i> <span id="error_msg"></span>
+        </div>
+        <div class="ui positive message" id="success_msg_container">
+          <i class="close icon"></i> <span id="success_msg"></span>
+        </div>
+        <div class="ui hidden divider"></div>
+        <div class="ui two buttons">
+          <button type="button" class="ui green button" id="testDeviceBtn">
+            Test
+          </button>
+          <button type="submit" class="ui primary button" id="saveDeviceBtn">
+            Save
+          </button>
+        </div>
+      </form>
     </div>
- </section>
+  </div>
+</section>

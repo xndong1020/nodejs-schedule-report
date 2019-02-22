@@ -3,7 +3,7 @@ const router = express.Router()
 const { io } = require('../io')
 const { Device } = require('../models/Device')
 const { deviceTypes } = require('../enums')
-const { checkDeviceStatus } = require('../services/callHistoryService')
+const { checkDeviceStatus, getDeviceInfo } = require('../services/deviceStatusService')
 const {
   checkDeviceNameUniqueness,
   getDeviceById
@@ -68,6 +68,16 @@ router.get('/admin_devices', async (req, res) => {
 router.post('/check_status', async (req, res) => {
   try {
     const response = await checkDeviceStatus(req.body)
+    res.status(200).send(response)
+  } catch (err) {
+    res.status(400).send(err)
+  }
+})
+
+// POST /devices/check_status
+router.post('/get_info', async (req, res) => {
+  try {
+    const response = await getDeviceInfo(req.body)
     res.status(200).send(response)
   } catch (err) {
     res.status(400).send(err)
