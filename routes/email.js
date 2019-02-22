@@ -21,7 +21,8 @@ router.post('/:reportId', async (req, res) => {
       imageStr: imageStr.data
     })
   } catch (error) {
-    res.render('error')
+    console.log('email error', error)
+    res.render('error', { message: error.message, error })
   }
 })
 
