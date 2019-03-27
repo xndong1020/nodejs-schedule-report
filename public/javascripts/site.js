@@ -7,6 +7,13 @@
     socket.on('connect', function() {
       console.log('socket.io is connected!!!')
     })
+    socket.on('taskComplete', function() {
+      console.log('taskComplete!!!')
+      var task_dashboard = $('#task_dashboard')
+      if (task_dashboard) {
+        location.reload()
+      }
+    })
     // left sidebar nav
     $('.accordion').accordion({
       selector: {
