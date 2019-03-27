@@ -2,15 +2,15 @@
 ;(function($, io) {
   'use strict'
   $(document).ready(function() {
+    var isTaskRunNowScreenPopUp = false
     var socket = io('http://demo.teleapps.net:4000')
     // var socket = io('http://localhost:4000')
     socket.on('connect', function() {
       console.log('socket.io is connected!!!')
     })
     socket.on('taskComplete', function() {
-      console.log('taskComplete!!!')
       var task_dashboard = $('#task_dashboard')
-      if (task_dashboard) {
+      if (task_dashboard && !isTaskRunNowScreenPopUp) {
         location.reload()
       }
     })
@@ -38,6 +38,7 @@
     $('form.run_task').submit(function(event) {
       event.preventDefault()
       var messageBox = $('#messageBox')
+      isTaskRunNowScreenPopUp = true
       $('.ui.modal.run_now')
         .modal({
           onHide: function() {
