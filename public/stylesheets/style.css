@@ -1,3 +1,24 @@
 .hidden {
   display: none;
 }
+
+.image.content {
+  display: flex;
+}
+.ui.medium.image {
+  flex: 1;
+}
+
+.description {
+  flex: 3;
+  flex-basis: 400px;
+}
+
+#messageBox {
+  padding: 5px;
+  background: black;
+  color: white;
+  width: 520px;
+  height: 420px;
+  min-height: 420px;
+}
