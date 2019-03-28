@@ -399,7 +399,7 @@ router.post('/run/:taskId', async (req, res) => {
       }
     )
     const updatedTask = await Task.findOne({ _id: taskId })
-    io.sockets.emit('taskUpdated', updatedTask)
+    io.sockets.emit('taskUpdated', { ...updatedTask, run_now: true })
     io.sockets.emit(
       'testProcessReport',
       `Connecting server to start running your task...`
