@@ -17,9 +17,9 @@
         <th class="one wide">Extension Number</th>
         <th class="one wide">Number/Address</th>
         <th class="one wide">Username</th>
-        <th class="two wide">Password</th>
+        <th class="one wide">Password</th>
         <th class="one wide">Modified By</th>
-        <th class="three wide">Actions</th>
+        <th class="four wide">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -35,9 +35,9 @@
         <td class="one wide"><%= devices[i].deviceExtNo %></td>
         <td class="one wide"><%= devices[i].deviceNumberAddr %></td>
         <td class="one wide"><%= devices[i].deviceUsername %></td>
-        <td class="two wide"><%= devices[i].devicePassword %></td>
+        <td class="one wide"><%= devices[i].devicePassword %></td>
         <td class="one wide"><%= devices[i].modifiedBy %></td>
-        <td class="three wide">
+        <td class="four wide">
           <div class="mini ui three buttons">
             <a
               href="/devices/edit_device/<%= devices[i]._id %>"
